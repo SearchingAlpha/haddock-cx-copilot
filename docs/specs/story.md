@@ -70,6 +70,8 @@ Teclado: `→`/`Espacio`/`Enter` siguiente, `←`/`Backspace` atrás, `Esc` sali
 - Las cifras salen de `docs/results.md` o del código. Cada cifra lleva su fuente en `note`.
 - Los tiempos de revisión simulados no se muestran como resultados.
 
+**Estilo:** una historia es una vista más de la app. Usa el mismo shell (`base.html`): el rail teal con su icono activo, el fondo gris, la cabecera `ws-head` y la barra inferior `composer`. Los visuales van en paneles blancos con borde de 1 px y radio de 4 px, como los mensajes del ticket. Las reglas de color de `DESIGN.md` se aplican igual: azul solo para la acción, rojo solo para el riesgo.
+
 **Movimiento:** los visuales entran con `story-rise` (opacidad y 10 px, 0,8 s). Con `prefers-reduced-motion`, no hay animación.
 
 ## Errors and edge cases
