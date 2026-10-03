@@ -47,7 +47,7 @@ def test_evidence_items_parse_tool_outputs_and_put_cited_first():
     ]}
     items = evidence_items(t)
     assert items[0]["id"] == "F-0101" and items[0]["cited"]
-    assert items[0]["title"] == "Makro · 842,30 €"
+    assert items[0]["title"] == "Makro · 842,30 €"  # non-breaking space: the € never wraps alone
     assert {i["id"] for i in items} == {"F-0101", "kb-02"}
 
 

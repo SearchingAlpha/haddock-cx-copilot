@@ -4,62 +4,59 @@
 
 {% macro context_panel() %}
   {% set c = t.classification or {} %}
-  <section class="ctx-section">
-    <h3><i data-lucide="store"></i>{{ customer.name }}</h3>
-    <dl class="kv">
-      <dt>Plan</dt><dd>{{ customer.plan | capitalize }} · {{ customer.locations }} {{ "local" if customer.locations == 1 else "locales" }}</dd>
-      <dt>Contacto</dt><dd>{{ customer.contact_name }}</dd>
-      <dt>Pago</dt><dd>{% if customer.billing.payment_status == "ok" %}Al día{% else %}<span class="tag risk"><i data-lucide="circle-alert"></i>Fallido</span>{% endif %}</dd>
-      <dt>Integraciones</dt>
-      <dd class="stack">
-        {% for i in customer.integrations %}
-          {% if i.status == 'ok' %}<span>{{ i.provider }} <span class="muted">· {{ labels.status.get(i.status) }}</span></span>
-          {% else %}<span><span class="tag risk"><i data-lucide="circle-alert"></i>{{ i.provider }} · {{ labels.status.get(i.status, i.status) }}</span></span>{% endif %}
-        {% else %}<span class="muted">Ninguna</span>{% endfor %}
-      </dd>
-    </dl>
-  </section>
+  {% set problems = [] %}
+  {% if customer.billing.payment_status != "ok" %}{% set _ = problems.append("Pago fallido") %}{% endif %}
+  {% for i in customer.integrations if i.status != "ok" %}{% set _ = problems.append(i.provider ~ " · " ~ labels.status.get(i.status, i.status)) %}{% endfor %}
 
-  {% if t.classification %}
   <section class="ctx-section">
-    <h3><i data-lucide="scan-text"></i>Clasificación <span class="muted">Jev</span></h3>
-    <div class="conf">
-      {% for field, label in [("category", "Categoría"), ("priority", "Prioridad"), ("sentiment", "Sentimiento"), ("language", "Idioma")] %}
-        {% set p = (t.confidence or {}).get(field) %}
-        <span class="label">{{ label }}</span><span class="value">{{ labels.value.get(field, {}).get(c[field], c[field]) }}</span>
-        <span class="pct">{{ "%d%%" | format(p * 100) if p is not none else "—" }}</span>
-        <span></span><span class="meter {{ 'low' if p is not none and p < 0.6 }}"><span style="width: {{ (p or 0) * 100 }}%"></span></span><span></span>
-      {% endfor %}
-    </div>
+    <h3>{{ customer.name }}</h3>
+    <p class="ctx-line">Plan {{ customer.plan }} · {{ customer.contact_name }}</p>
+    {% for p in problems %}<p class="ctx-problem"><i data-lucide="circle-alert"></i>{{ p }}</p>
+    {% else %}<p class="ctx-line muted">Sin incidencias en la cuenta</p>{% endfor %}
+    {% if c %}
+    <p class="ctx-line muted">
+      {{ c.category }} · {{ labels.value.priority.get(c.priority, c.priority) }} · {{ labels.value.sentiment.get(c.sentiment, c.sentiment) | lower }}
+    </p>
+    {% endif %}
   </section>
-  {% endif %}
 
   {% if not manual %}
+  {% set cited = evidence | selectattr("cited") | list %}
+  {% set rest = evidence | rejectattr("cited") | list %}
   <section class="ctx-section">
-    <h3><i data-lucide="file-check"></i>Evidencia <span class="muted">{{ evidence | selectattr("cited") | list | length }} citada{{ "s" if (evidence | selectattr("cited") | list | length) != 1 }}</span></h3>
+    <h3>Evidencia citada</h3>
     <div class="evidence">
-      {% for e in evidence %}
-      <details class="ev {{ 'cited' if e.cited }} {{ 'risk' if e.risk }}" {% if e.cited and e.kind != "Ayuda" %}open{% endif %}>
-        <summary>
-          <span class="kind">{{ e.kind }}</span><span>{% if e.cited %}<span class="tag"><i data-lucide="check"></i>Citada</span>{% endif %}</span><span class="ev-id">{{ e.id }}</span>
-          <span class="ev-title">{% if e.risk %}<i data-lucide="circle-alert"></i> {% endif %}{{ e.title }}</span>
-        </summary>
+      {% for e in cited %}
+      <details class="ev {{ 'risk' if e.risk }}" {% if e.kind != "Ayuda" %}open{% endif %}>
+        <summary><span class="ev-title">{% if e.risk %}<i data-lucide="circle-alert"></i> {% endif %}{{ e.title }}</span><span class="ev-id">{{ e.id }}</span></summary>
         <div class="ev-detail">{{ e.detail }}</div>
       </details>
       {% else %}
-      <p class="muted">El agente no consultó datos para este borrador.</p>
+      <p class="muted">El borrador no cita datos.</p>
       {% endfor %}
     </div>
+    {% if rest %}
+    <details class="more">
+      <summary>Ver {{ rest | length }} más que leyó el agente</summary>
+      <div class="evidence">
+        {% for e in rest %}
+        <details class="ev"><summary><span class="ev-title">{{ e.title }}</span><span class="ev-id">{{ e.id }}</span></summary>
+          <div class="ev-detail">{{ e.detail }}</div></details>
+        {% endfor %}
+      </div>
+    </details>
+    {% endif %}
   </section>
-  <section class="ctx-section">
-    <h3><i data-lucide="route"></i>Pasos del agente <span class="muted">${{ "%.3f" | format(t.cost_usd or 0) }} · prompt v{{ t.prompt_version or "local" }}</span></h3>
+
+  <details class="ctx-section more">
+    <summary>Cómo lo hizo el copilot</summary>
     <ol class="trail">
-      <li>Clasificó con <code>Jev</code></li>
+      <li>Clasificó con Jev{% if t.confidence %} ({{ "%d%%" | format(t.confidence.category * 100) }} en la categoría){% endif %}</li>
       {% for tool in t.tool_calls or [] %}<li><code>{{ tool }}</code></li>{% endfor %}
-      <li>Escribió el borrador · guardrails: {{ "pasan" if t.status == "ready" else "piden revisión" }}</li>
+      <li>Escribió el borrador · ${{ "%.3f" | format(t.cost_usd or 0) }} · prompt v{{ t.prompt_version or "local" }}</li>
     </ol>
-    {% if trace_url %}<p><a href="{{ trace_url }}" target="_blank" rel="noopener">Abrir la traza en Langfuse <i data-lucide="external-link"></i></a></p>{% endif %}
-  </section>
+    {% if trace_url %}<p><a href="{{ trace_url }}" target="_blank" rel="noopener">Ver la traza en Langfuse <i data-lucide="external-link"></i></a></p>{% endif %}
+  </details>
   {% endif %}
 {% endmacro %}
 
@@ -69,18 +66,14 @@
   <header class="ws-head">
     <a class="back" href="/" aria-label="Volver a la cola"><i data-lucide="arrow-left"></i></a>
     <h2>{{ t.subject }}</h2>
-    <span class="id">{{ t.id }}</span>
-    {% if t.state == "escalated" %}<span class="tag risk"><i data-lucide="triangle-alert"></i>Escalado</span>
-    {% elif t.state == "ready" %}<span class="muted">Listo para revisar</span>
-    {% elif t.state == "processing" %}<span class="tag">En proceso</span>
-    {% else %}<span class="tag">{{ labels.state.get(t.state, t.state) }}</span>{% endif %}
+    {% if t.state in ("sent", "rejected") %}<span class="muted">{{ labels.state.get(t.state) }}</span>{% endif %}
   </header>
 
   <div class="ws-body">
     <article class="message customer-msg">
       <header>
-        <span class="avatar" aria-hidden="true">{{ customer.contact_name[:1] }}</span>
-        <div><strong>{{ customer.contact_name }}</strong> <span class="muted">· {{ customer.name }}</span></div>
+        <strong>{{ customer.contact_name }}</strong>
+        <span class="muted">· {{ customer.name }}</span>
         <span class="meta">{{ t.channel }} · hace {{ ticket_age }}</span>
       </header>
       <div class="body">{{ t.body }}</div>
@@ -88,34 +81,20 @@
 
     {% if t.state == "processing" %}
       <div class="working" role="status"><span class="spinner" aria-hidden="true"></span>
-        <div><strong>El copilot está investigando.</strong><br><span class="muted">Clasifica, consulta los datos del cliente y redacta. Suele tardar entre 15 y 30 segundos.</span></div>
-      </div>
+        <span>El copilot está investigando. Suele tardar entre 15 y 30 segundos.</span></div>
     {% else %}
       {% if reasons %}
-      {% set blocking = reasons | selectattr("blocking") | list %}
       {% set others = reasons | rejectattr("code", "equalto", "agent_escalated") | list if t.escalation else reasons %}
       <div class="banner" role="alert">
         <i data-lucide="triangle-alert"></i>
         <div>
-          {% if blocking %}<strong>Bloqueado por los guardrails: edítalo antes de enviar.</strong>
-          {% elif t.escalation %}<strong>Escalado a {{ labels.team.get(t.escalation.team, t.escalation.team) }}: revísalo con atención.</strong>
+          {% if blocking %}<strong>Bloqueado: edita el borrador antes de enviar.</strong>
+          {% elif t.escalation %}<strong>Escalado a {{ labels.team.get(t.escalation.team, t.escalation.team) }}.</strong>
           {% else %}<strong>Escalado: revísalo con atención.</strong>{% endif %}
-          {% if t.escalation %}<span>Motivo del agente: {{ t.escalation.reason }}</span>{% endif %}
-          {% if others %}<ul>{% for r in others %}<li>{{ r.label }}</li>{% endfor %}</ul>{% endif %}
+          {% if t.escalation %}<span>{{ t.escalation.reason }}</span>{% endif %}
+          {% for r in others %}<span>{{ r.label }}</span>{% endfor %}
         </div>
       </div>
-      {% endif %}
-      {% if manual %}
-      <div class="banner info"><i data-lucide="pencil-line"></i>
-        <div><strong>Modo manual: escribe la respuesta sin copilot.</strong>Este ticket mide la línea base de tiempo. El borrador no se muestra.</div></div>
-      {% endif %}
-      {% if t.review_category %}
-      <div class="banner check"><i data-lucide="tag"></i>
-        <div><strong>Revisa la categoría.</strong>Jev no está seguro de «{{ (t.classification or {}).category }}». Corrígela abajo si hace falta.</div></div>
-      {% endif %}
-
-      {% if t.state in ("sent", "rejected") %}
-      <div class="banner info"><i data-lucide="circle-check"></i><div><strong>{{ "Enviado" if t.state == "sent" else "Borrador rechazado" }}.</strong>Este ticket ya tiene una decisión.</div></div>
       {% endif %}
 
       <form id="review-form" method="post" action="/tickets/{{ t.id }}/review"
@@ -123,10 +102,8 @@
         <input type="hidden" name="opened_at" value="{{ opened_at }}">
         <article class="message draft {{ 'editing' if manual }}">
           <header>
-            {% if manual %}<span class="avatar agent" aria-hidden="true"><i data-lucide="user-pen"></i></span>
-            {% else %}<span class="avatar copilot" aria-hidden="true"><i data-lucide="sparkles"></i></span>{% endif %}
-            <div><strong>{{ "Tu respuesta" if manual else "Borrador del copilot" }}</strong> <span class="muted">· así lo verá {{ customer.contact_name.split(" ")[0] }}</span></div>
-            <span class="meta">{{ t.channel }}</span>
+            {% if manual %}<strong>Tu respuesta</strong><span class="muted">· modo manual, sin copilot (mide la línea base)</span>
+            {% else %}<strong>Borrador del copilot</strong><span class="muted">· así lo verá {{ customer.contact_name.split(" ")[0] }}</span>{% endif %}
           </header>
           <div class="body rendered">{{ reply_html }}</div>
           <div class="editor">
@@ -134,6 +111,17 @@
             <textarea id="final_text" name="final_text" placeholder="Escribe la respuesta a {{ customer.contact_name.split(' ')[0] }}…">{% if not manual %}{{ t.draft }}{% endif %}</textarea>
           </div>
         </article>
+        {% if t.review_category %}
+        <div class="check-line">
+          <i data-lucide="tag"></i>
+          <label for="category_final">Jev duda de la categoría. ¿Es correcta?</label>
+          <select id="category_final" name="category_final">
+            {% for cat in categories %}<option value="{{ cat }}" {% if (t.classification or {}).category == cat %}selected{% endif %}>{{ cat }}</option>{% endfor %}
+          </select>
+        </div>
+        {% else %}
+        <input type="hidden" name="category_final" value="{{ (t.classification or {}).category or '' }}">
+        {% endif %}
         <div class="ctx-inline">{{ context_panel() }}</div>
       </form>
     {% endif %}
@@ -144,17 +132,13 @@
     <button form="review-form" type="submit" name="decision" value="send" class="btn primary" id="send-btn"
       {% if blocking or manual %}disabled{% endif %}
       title="{{ 'Edita el borrador: los guardrails lo bloquean' if blocking else ('Escribe la respuesta para enviar' if manual else 'Enviar al cliente') }}">
-      <i data-lucide="send"></i>Enviar <kbd>A</kbd></button>
+      Enviar <kbd>A</kbd></button>
     {% if not manual %}
-    <button type="button" id="edit-btn" class="btn" aria-pressed="false" onclick="toggleEdit()"><i data-lucide="pencil"></i>Editar <kbd>E</kbd></button>
-    <button form="review-form" type="submit" name="decision" value="reject" class="btn danger"><i data-lucide="x"></i>Rechazar <kbd>R</kbd></button>
+    <button type="button" id="edit-btn" class="btn" aria-pressed="false" onclick="toggleEdit()">Editar <kbd>E</kbd></button>
+    <button form="review-form" type="submit" name="decision" value="reject" class="btn quiet">Rechazar <kbd>R</kbd></button>
     {% endif %}
-    <label class="sr-only" for="category_final">Categoría</label>
-    <select id="category_final" name="category_final" form="review-form" class="{{ 'check' if t.review_category }}" title="Categoría final">
-      {% for c in categories %}<option value="{{ c }}" {% if (t.classification or {}).category == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
-    </select>
     <span class="spacer"></span>
-    <span class="hints"><span><kbd>J</kbd> siguiente</span><span><kbd>K</kbd> anterior</span><span><kbd>Esc</kbd> salir del editor</span></span>
+    {% if next_id %}<a class="btn quiet" href="/tickets/{{ next_id }}" title="Siguiente ticket">Siguiente <kbd>J</kbd></a>{% endif %}
   </footer>
   {% endif %}
 </main>

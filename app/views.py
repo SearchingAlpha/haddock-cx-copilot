@@ -134,7 +134,7 @@ def evidence_items(ticket: dict) -> list[dict]:
     items = []
     for inv in invoices.values():
         items.append({"kind": "Factura", "id": inv["id"], "cited": inv["id"] in cited,
-                      "title": f'{inv["supplier"]} · {inv["amount_eur"]:,.2f} €'.replace(",", "X").replace(".", ",").replace("X", "."),
+                      "title": f'{inv["supplier"]} · ' + f'{inv["amount_eur"]:,.2f}'.replace(",", "X").replace(".", ",").replace("X", ".") + " €",
                       "detail": status_label(inv["status"]).capitalize() + (f' · {inv["error"]}' if inv.get("error") else ""),
                       "risk": inv["status"] in ("failed", "duplicate")})
     for b in banks or []:
