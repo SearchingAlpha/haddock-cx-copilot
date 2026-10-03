@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ t.id }} · haddock CX copilot{% endblock %}
+{% block content %}
+{% set manual = t.mode == "manual" or not t.draft %}
+<hgroup>
+  <h2>{{ t.id }} · {{ t.subject }}</h2>
+  <p><span class="badge {{ t.state }}">{{ t.state }}</span>
+    {% for r in t.reasons or [] %}<span class="reason"> · {{ r }}</span>{% endfor %}
+    {% if trace_url %} · <a href="{{ trace_url }}" target="_blank">ver traza en Langfuse ↗</a>{% endif %}</p>
+</hgroup>
+
+<div class="grid-2">
+  <section>
+    <article>
+      <header><strong>{{ customer.name }}</strong> · {{ customer.city }} · plan {{ customer.plan }} · {{ t.channel }}</header>
+      <pre class="ticket">{{ t.body }}</pre>
+      <footer>
+        {% for i in customer.integrations %}
+          <span class="badge {{ 'ready' if i.status == 'ok' else 'escalated' }}">{{ i.provider }}: {{ i.status }}</span>
+        {% endfor %}
+        <span class="badge {{ 'ready' if customer.billing.payment_status == 'ok' else 'escalated' }}">pago: {{ customer.billing.payment_status }}</span>
+      </footer>
+    </article>
+
+    {% if t.classification %}
+    <article>
+      <header>Clasificación (Jev)</header>
+      {% for field in ["category", "priority", "sentiment", "language"] %}
+        <div>{{ field }}: <strong>{{ t.classification[field] }}</strong>
+          {% if t.confidence and t.confidence.get(field) is not none %}<small class="muted">confianza {{ "%.2f" | format(t.confidence.get(field)) }}</small>{% endif %}</div>
+      {% endfor %}
+    </article>
+    {% endif %}
+
+    {% if not manual %}
+    <article>
+      <header>Evidencia que usó el agente</header>
+      <p>{% for e in t.evidence or [] %}<span class="badge">{{ e }}</span> {% endfor %}</p>
+      <small class="muted">tools: {{ (t.tool_calls or []) | join(" → ") }} · coste ${{ "%.4f" | format(t.cost_usd or 0) }}
+        · prompt v{{ t.prompt_version or "local" }}</small>
+    </article>
+    {% endif %}
+  </section>
+
+  <section>
+    {% if t.state == "processing" %}
+      <article aria-busy="true">El copilot está trabajando en este ticket…</article>
+      <script>setTimeout(() => location.reload(), 3000)</script>
+    {% else %}
+    <form method="post" action="/tickets/{{ t.id }}/review">
+      <input type="hidden" name="opened_at" value="{{ opened_at }}">
+      {% if manual %}
+        <p><span class="badge">modo manual</span> <small class="muted">Este ticket mide la línea base: escribe la respuesta sin copilot.</small></p>
+      {% elif t.state == "escalated" %}
+        <p class="reason">Escalado: revisa con atención antes de enviar.</p>
+      {% endif %}
+      <label>Respuesta al cliente
+        <textarea name="final_text">{% if not manual %}{{ t.draft }}{% endif %}</textarea>
+      </label>
+      <label>Categoría
+        {% if t.review_category %}<span class="badge warn">confianza baja: revísala</span>{% endif %}
+        <select name="category_final">
+          {% for c in categories %}
+            <option value="{{ c }}" {% if t.classification and t.classification.category == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <div class="grid">
+        <button type="submit" name="decision" value="send">{{ "Enviar" if manual else "Enviar (aprobar o con tus cambios)" }}</button>
+        {% if not manual %}<button type="submit" name="decision" value="reject" class="secondary">Rechazar borrador</button>{% endif %}
+      </div>
+    </form>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

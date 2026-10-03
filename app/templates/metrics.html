@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Impacto · haddock CX copilot{% endblock %}
+{% block content %}
+<hgroup>
+  <h2>Impacto</h2>
+  <p>Medido, no declarado: el {{ "20%" }} de los tickets se responde sin copilot y da la línea base real.</p>
+</hgroup>
+
+<div class="grid">
+  <article>
+    <small class="muted">Aprobados sin editar</small>
+    <p class="stat">{{ "%.0f%%" | format(m.approved_unedited_rate * 100) if m.approved_unedited_rate is not none else "—" }}</p>
+  </article>
+  <article>
+    <small class="muted">Segundos por ticket: copilot / manual</small>
+    <p class="stat">{{ m.avg_seconds_copilot | round | int if m.avg_seconds_copilot else "—" }} /
+      {{ m.avg_seconds_manual | round | int if m.avg_seconds_manual else "—" }}</p>
+  </article>
+  <article>
+    <small class="muted">Ahorro por ticket</small>
+    <p class="stat">{{ "%.0f s" | format(m.seconds_saved_per_ticket) if m.seconds_saved_per_ticket else "—" }}</p>
+    {% if not m.avg_seconds_manual %}<small class="muted">Sin tickets manuales revisados todavía: no hay línea base.</small>{% endif %}
+  </article>
+  <article>
+    <small class="muted">Coste del agente por ticket</small>
+    <p class="stat">{{ "$%.3f" | format(m.cost_per_ticket_usd) if m.cost_per_ticket_usd is not none else "—" }}</p>
+  </article>
+</div>
+
+<div class="grid">
+  <article>
+    <header>Volumen</header>
+    <p>{{ m.tickets }} tickets · {{ m.processed }} procesados · {{ m.reviewed }} revisados</p>
+    <p>Escalados: {{ "%.0f%%" | format(m.escalation_rate * 100) if m.escalation_rate is not none else "—" }}
+      · Categorías corregidas por el agente CX: {{ m.category_corrections }}</p>
+  </article>
+  <article>
+    <header>Por categoría</header>
+    <table>
+      {% for cat, n in m.by_category | dictsort %}<tr><td>{{ cat }}</td><td>{{ n }}</td></tr>{% endfor %}
+    </table>
+  </article>
+</div>
+<small class="muted">Cada decisión también está en Langfuse como score de la traza: human_decision, edit_distance, review_seconds, category_final.</small>
+{% endblock %}

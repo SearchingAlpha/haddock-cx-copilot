@@ -1,0 +1,17 @@
+<tbody id="rows" {% if processing %}hx-get="/rows" hx-trigger="every 3s" hx-swap="outerHTML"{% endif %}>
+  {% for t in tickets %}
+  <tr>
+    <td><a href="/tickets/{{ t.id }}">{{ t.id }}</a> <small class="muted">{{ t.channel }}</small></td>
+    <td>{{ t.customer }}</td>
+    <td>{{ t.subject }}</td>
+    <td>{{ t.classification.category if t.classification else "…" }}
+      {% if t.review_category %}<span class="badge warn" title="Confianza baja: revisa la categoría">revisar</span>{% endif %}</td>
+    <td>{{ t.classification.priority if t.classification else "" }}</td>
+    <td><span class="badge {{ t.state }}">{{ t.state }}</span>
+      {% if t.mode == "manual" %}<span class="badge" title="Línea base: sin copilot">manual</span>{% endif %}</td>
+    <td>{% if t.reasons %}<small class="reason">{{ t.reasons | join(", ") }}</small>{% endif %}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7"><small class="muted">Sin tickets. Envía uno a POST /webhooks/ticket o carga la demo.</small></td></tr>
+  {% endfor %}
+</tbody>
