@@ -99,7 +99,7 @@ flowchart LR
 **Hecho cuando:**
 - [ ] `uv run pytest` se ejecuta sin errores.
 - [ ] `uv run python scripts/hello_langfuse.py` crea una traza visible en Langfuse.
-- [ ] `uv run python scripts/hello_jev.py` clasifica bien los 3 tickets en español. La llamada a Jev aparece en la traza de Langfuse.
+- [ ] `uv run python -m scripts.hello_jev` clasifica bien los 3 tickets en español. La llamada a Jev aparece en la traza de Langfuse.
 - [ ] Si Jev falla en español o no aparece en Langfuse, Pablo decide si `classify.py` vuelve a Haiku.
 
 ### Fase 1: Datos del dominio (≈2–3 h)
