@@ -7,8 +7,8 @@ Proyecto para la entrevista técnica con Enric (AI Lead) y Guillermo (Head of Te
 ```mermaid
 flowchart TD
     n1["1. POST /webhooks/ticket"] --> n2["2. classify.py — Jev"]
-    n2 -->|"confidence >= 0.6"| n3["3. agent.py — Sonnet + tools"]
-    n2 -->|"confidence < 0.6"| n6
+    n2 -->|"confidence < 0.9: marcar review_category"| n3["3. agent.py — Sonnet + tools"]
+    n2 -->|"confidence >= 0.9"| n3
     n3 --> n4["4. guardrails.py"]
     n4 -->|"blocked"| n6["6. cola de escalado"]
     n4 -->|"escalated"| n6

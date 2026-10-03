@@ -86,4 +86,4 @@ python -m evals.run_experiment --limit 5             # prueba rápida
 - [ ] El dataset `cx-tickets` tiene 40 items en Langfuse.
 - [ ] Dos ejecuciones comparables en Langfuse: Jev contra Haiku y prompt v1 contra v2.
 - [ ] La tabla de resultados está en `docs/results.md` para las slides.
-- [ ] El umbral `ESCALATION_CONFIDENCE` está elegido con los datos de calibración.
+- [x] Decisión con los datos de calibración: la confianza de la categoría no escala; marca `review_category` por debajo de `CATEGORY_REVIEW_CONFIDENCE = 0.9` (docs/results.md).

@@ -10,8 +10,8 @@ El CX Triage Copilot prepara la respuesta a cada ticket de soporte de haddock. U
 ```mermaid
 flowchart TD
     n1["1. POST /webhooks/ticket"] --> n2["2. classify.py — Jev"]
-    n2 -->|"confidence >= 0.6"| n3["3. agent.py — Sonnet + tools"]
-    n2 -->|"confidence < 0.6"| n6
+    n2 -->|"confidence < 0.9: marcar review_category"| n3["3. agent.py — Sonnet + tools"]
+    n2 -->|"confidence >= 0.9"| n3
     n3 --> n4["4. guardrails.py"]
     n4 -->|"pass"| n5["5. borrador en SQLite"]
     n4 -->|"blocked / escalated"| n6["6. cola de escalado"]
@@ -69,10 +69,10 @@ flowchart LR
 
 1. Un ticket entra por `POST /webhooks/ticket`.
 2. `classify.py` llama a Jev, un modelo de decisión de TypeSafe AI. Jev devuelve la categoría, la prioridad, el idioma y el sentimiento. Cada campo tiene una confianza calibrada.
-3. Si la confianza es 0.6 o más, `agent.py` investiga con las tools y escribe un borrador.
+3. `agent.py` investiga con las tools y escribe un borrador. Si la confianza de la categoría es menor que 0.9, el ticket lleva la marca `review_category` para el agente CX.
 4. `guardrails.py` revisa el borrador.
 5. Un borrador con status `pass` se guarda en SQLite.
-6. Un ticket con confianza baja, o con status `blocked` o `escalated`, va a la cola de escalado.
+6. Un ticket con status `blocked` o `escalated` va a la cola de escalado.
 7. Un agente CX revisa el ticket en la UI.
 8. La UI envía la decisión del agente CX a Langfuse como score de la traza.
 9. `/metrics` calcula el impacto con las revisiones guardadas.

@@ -53,16 +53,21 @@ def test_confident_ticket_with_clean_draft_is_ready(stubbed, world):
     assert result.status == "ready"
 
 
-def test_low_confidence_escalates_without_calling_the_agent(stubbed, world):
+def test_low_confidence_flags_the_category_but_never_escalates(stubbed, world):
     calls, state = stubbed
     state["confidence"] = 0.3
     customers, kb, ticket = world
 
     result = pipeline.process_ticket(ticket, customers, kb=kb)
 
-    assert result.status == "escalated"
-    assert "low_classification_confidence" in result.reasons
-    assert calls["agent"] == 0
+    assert result.status == "ready"
+    assert result.review_category
+    assert calls["agent"] == 1
+
+
+def test_high_confidence_is_not_flagged(stubbed, world):
+    customers, kb, ticket = world
+    assert not pipeline.process_ticket(ticket, customers, kb=kb).review_category
 
 
 def test_fallback_without_confidence_still_runs_the_agent(stubbed, world):

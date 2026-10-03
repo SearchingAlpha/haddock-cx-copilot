@@ -101,14 +101,15 @@ def main() -> None:
     parser.add_argument("--classifier", choices=["jev", "haiku"], default="jev")
     parser.add_argument("--prompt-label", default="production")
     parser.add_argument("--classify-only", action="store_true")
-    parser.add_argument("--threshold", type=float, help="Override ESCALATION_CONFIDENCE")
+    parser.add_argument("--review-threshold", type=float, help="Override CATEGORY_REVIEW_CONFIDENCE")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--concurrency", type=int, default=4)
     args = parser.parse_args()
 
     options = RunOptions(classifier=args.classifier, prompt_label=args.prompt_label,
                          classify_only=args.classify_only,
-                         **({"escalation_confidence": args.threshold} if args.threshold is not None else {}))
+                         **({"category_review_confidence": args.review_threshold}
+                            if args.review_threshold is not None else {}))
     run_name = args.run_name or f"{args.classifier}-{args.prompt_label}-{datetime.now():%m%d-%H%M}"
 
     langfuse = init_tracing()

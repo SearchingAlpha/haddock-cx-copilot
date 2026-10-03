@@ -6,7 +6,7 @@ import anthropic
 from langfuse import get_client, observe
 
 from app.config import AGENT_MAX_TOKENS, AGENT_MODEL, MAX_AGENT_ITERATIONS, PRICES_PER_MTOK
-from app.domain import Ticket
+from app.domain import TicketIn
 from app.prompts import AGENT_SYSTEM, Prompt, get_prompt
 from app.tools import Escalation, ToolContext, execute, tool_definitions
 
@@ -45,7 +45,7 @@ class AgentResult:
     prompt_version: int | None = None
 
 
-def ticket_message(ticket: Ticket, customer_name: str) -> str:
+def ticket_message(ticket: TicketIn, customer_name: str) -> str:
     """The ticket as the model sees it. Labels (ground truth) are never included."""
     return (
         f"Customer: {customer_name}\n"
@@ -104,7 +104,7 @@ def _call_model(client, messages: list, prompt: Prompt) -> tuple[object, float]:
 
 
 @observe(name="agent", as_type="agent")
-def run_agent(ticket: Ticket, ctx: ToolContext, *, client=None, prompt_label: str = "production") -> AgentResult:
+def run_agent(ticket: TicketIn, ctx: ToolContext, *, client=None, prompt_label: str = "production") -> AgentResult:
     client = client or anthropic.Anthropic()
     prompt = get_prompt(AGENT_SYSTEM, label=prompt_label)
     version = getattr(prompt.client, "version", None)

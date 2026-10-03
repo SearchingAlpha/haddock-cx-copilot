@@ -9,9 +9,10 @@ AGENT_MODEL = "claude-sonnet-5-5"
 AGENT_MAX_TOKENS = 8000  # effort lives in the Langfuse prompt config (app/prompts.py)
 MAX_AGENT_ITERATIONS = 6
 
-# Below this classifier confidence on `category`, escalate without running the agent.
-# Initial value; Phase 3 tunes it with calibration data.
-ESCALATION_CONFIDENCE = 0.6
+# Below this classifier confidence on `category`, the UI asks the CX agent to check the category.
+# It never escalates: escalating on it caused 1-2 wrong escalations per run (docs/results.md).
+# 0.9: above it Jev was right 97% of the time in every run.
+CATEGORY_REVIEW_CONFIDENCE = 0.9
 
 # USD per million tokens, for cost_details in Langfuse.
 PRICES_PER_MTOK = {

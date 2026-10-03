@@ -110,11 +110,18 @@ class TicketLabels(BaseModel):
     trap: Trap | None = None
 
 
-class Ticket(BaseModel):
+class TicketIn(BaseModel):
+    """A ticket as it arrives (webhook). The pipeline only ever needs this."""
+
     id: str
     customer_id: str
     channel: Literal["email", "chat"]
     created_at: datetime
     subject: str
     body: str
+
+
+class Ticket(TicketIn):
+    """A labeled ticket from data/tickets.jsonl: the ground truth for evals."""
+
     labels: TicketLabels

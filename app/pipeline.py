@@ -7,8 +7,8 @@ from langfuse import get_client, observe, propagate_attributes
 
 from app.agent import AgentResult, run_agent
 from app.classify import ClassifyResult, classify
-from app.config import ESCALATION_CONFIDENCE, FALLBACK_CLASSIFIER_MODEL
-from app.domain import Customer, Ticket
+from app.config import CATEGORY_REVIEW_CONFIDENCE, FALLBACK_CLASSIFIER_MODEL
+from app.domain import Customer, TicketIn
 from app.guardrails import GuardrailResult, check, jev_promise_check
 from app.tools import KBIndex, ToolContext
 
@@ -20,7 +20,7 @@ class RunOptions:
     classifier: Literal["jev", "haiku"] = "jev"
     prompt_label: str = "production"
     classify_only: bool = False
-    escalation_confidence: float = ESCALATION_CONFIDENCE
+    category_review_confidence: float = CATEGORY_REVIEW_CONFIDENCE
 
 
 @dataclass
@@ -32,6 +32,7 @@ class TicketResult:
     guardrails: GuardrailResult | None = None
     reasons: list[str] = field(default_factory=list)
     trace_id: str = ""
+    review_category: bool = False  # low classifier confidence: the CX agent checks the category
 
     @property
     def cost_usd(self) -> float:
@@ -39,19 +40,19 @@ class TicketResult:
 
 
 def _low_confidence(result: ClassifyResult, threshold: float) -> bool:
-    if result.confidence is None:  # Haiku has no calibrated confidence: let the agent decide
+    if result.confidence is None:  # Haiku has no calibrated confidence: nothing to flag
         return False
     return result.confidence.get("category", 1.0) < threshold
 
 
-def _route(ticket: Ticket, customers: dict[str, Customer], kb: KBIndex, options: RunOptions) -> TicketResult:
+def _route(ticket: TicketIn, customers: dict[str, Customer], kb: KBIndex, options: RunOptions) -> TicketResult:
     customer = customers[ticket.customer_id]
     model = FALLBACK_CLASSIFIER_MODEL if options.classifier == "haiku" else None
     classified = classify(ticket.subject, ticket.body, model=model)
-    if _low_confidence(classified, options.escalation_confidence):
-        return TicketResult(ticket.id, "escalated", classified, reasons=["low_classification_confidence"])
+    review_category = _low_confidence(classified, options.category_review_confidence)  # flag, never escalate
     if options.classify_only:
-        return TicketResult(ticket.id, "ready", classified, reasons=["classify_only"])
+        return TicketResult(ticket.id, "ready", classified, reasons=["classify_only"],
+                            review_category=review_category)
 
     ctx = ToolContext(customer=customer, kb=kb)  # the agent only ever sees this customer
     drafted = run_agent(ticket, ctx, prompt_label=options.prompt_label)
@@ -61,12 +62,13 @@ def _route(ticket: Ticket, customers: dict[str, Customer], kb: KBIndex, options:
         ticket_text=f"{ticket.subject}\n{ticket.body}", promise_checker=jev_promise_check,
     )
     status = "ready" if guarded.status == "pass" else "escalated"
-    return TicketResult(ticket.id, status, classified, drafted, guarded, guarded.reasons)
+    return TicketResult(ticket.id, status, classified, drafted, guarded, guarded.reasons,
+                        review_category=review_category)
 
 
 @observe(name="process-ticket", capture_input=False, capture_output=False)
 def process_ticket(
-    ticket: Ticket, customers: dict[str, Customer], *, kb: KBIndex, options: RunOptions = RunOptions()
+    ticket: TicketIn, customers: dict[str, Customer], *, kb: KBIndex, options: RunOptions = RunOptions()
 ) -> TicketResult:
     langfuse = get_client()
     langfuse.update_current_span(input={"subject": ticket.subject, "body": ticket.body})
@@ -98,5 +100,6 @@ def summary(r: TicketResult) -> dict:
         "evidence": r.agent.evidence if r.agent else [],
         "tool_calls": r.agent.tool_calls if r.agent else [],
         "prompt_version": r.agent.prompt_version if r.agent else None,
+        "review_category": r.review_category,
         "cost_usd": round(r.cost_usd, 5),
     }
