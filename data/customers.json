@@ -1,0 +1,124 @@
+[
+  {
+    "id": "C-001", "name": "La Taberna del Puerto", "city": "Barcelona", "plan": "pro", "locations": 2,
+    "contact_name": "Marta Puig", "contact_email": "marta@tabernadelpuerto.es", "signup_date": "2025-03-12",
+    "billing": {"monthly_price_eur": 149.0, "payment_status": "ok", "next_billing_date": "2026-10-12"},
+    "integrations": [
+      {"kind": "bank", "provider": "BBVA", "status": "ok", "last_sync": "2026-10-03T06:00:00"},
+      {"kind": "pos", "provider": "Last.app", "status": "ok", "last_sync": "2026-10-03T06:10:00"}
+    ],
+    "invoices": [
+      {"id": "F-0101", "supplier": "Makro", "issue_date": "2026-09-26", "uploaded_at": "2026-09-28T10:02:00", "amount_eur": 842.30, "status": "processing"},
+      {"id": "F-0102", "supplier": "Makro", "issue_date": "2026-09-26", "uploaded_at": "2026-09-28T10:03:00", "amount_eur": 311.75, "status": "processing"},
+      {"id": "F-0103", "supplier": "Makro", "issue_date": "2026-09-27", "uploaded_at": "2026-09-28T10:04:00", "amount_eur": 128.90, "status": "processing"},
+      {"id": "F-0104", "supplier": "Estrella Damm", "issue_date": "2026-09-20", "uploaded_at": "2026-09-21T09:00:00", "amount_eur": 1204.00, "status": "processed"}
+    ]
+  },
+  {
+    "id": "C-002", "name": "Bar Manolo", "city": "Sevilla", "plan": "starter", "locations": 1,
+    "contact_name": "Manuel Ortega", "contact_email": "manolo@barmanolo.es", "signup_date": "2026-01-08",
+    "billing": {"monthly_price_eur": 59.0, "payment_status": "ok", "next_billing_date": "2026-10-08"},
+    "integrations": [
+      {"kind": "bank", "provider": "CaixaBank", "status": "error", "last_sync": "2026-09-29T06:00:00", "error": "PSD2 consent expired (180 days)"}
+    ],
+    "invoices": [
+      {"id": "F-0201", "supplier": "Cruzcampo", "issue_date": "2026-09-15", "uploaded_at": "2026-09-16T12:00:00", "amount_eur": 640.00, "status": "processed"},
+      {"id": "F-0202", "supplier": "Frutas Hermanos Ruiz", "issue_date": "2026-09-25", "uploaded_at": "2026-09-25T18:30:00", "amount_eur": 96.40, "status": "processed"}
+    ]
+  },
+  {
+    "id": "C-003", "name": "Grupo Brasa", "city": "Madrid", "plan": "enterprise", "locations": 6,
+    "contact_name": "Javier Molina", "contact_email": "javier.molina@grupobrasa.com", "signup_date": "2024-11-04",
+    "billing": {"monthly_price_eur": 690.0, "payment_status": "ok", "next_billing_date": "2026-11-04"},
+    "integrations": [
+      {"kind": "bank", "provider": "Santander", "status": "ok", "last_sync": "2026-10-03T05:45:00"},
+      {"kind": "pos", "provider": "Revo", "status": "error", "last_sync": "2026-09-30T23:00:00", "error": "Invalid API token (401)"}
+    ],
+    "invoices": [
+      {"id": "F-0301", "supplier": "Carnes Selectas Guadarrama", "issue_date": "2026-09-24", "uploaded_at": "2026-09-25T08:10:00", "amount_eur": 3480.00, "status": "failed", "error": "OCR: total not readable (blurry photo)"},
+      {"id": "F-0302", "supplier": "Mahou", "issue_date": "2026-09-22", "uploaded_at": "2026-09-23T09:00:00", "amount_eur": 2210.50, "status": "processed"},
+      {"id": "F-0303", "supplier": "Pescados del Cantábrico", "issue_date": "2026-09-29", "uploaded_at": "2026-09-30T07:40:00", "amount_eur": 1875.20, "status": "processed"}
+    ]
+  },
+  {
+    "id": "C-004", "name": "Sushi Nami", "city": "Valencia", "plan": "pro", "locations": 1,
+    "contact_name": "Laura Sanchis", "contact_email": "laura@sushinami.es", "signup_date": "2025-06-20",
+    "billing": {"monthly_price_eur": 149.0, "payment_status": "failed", "next_billing_date": "2026-10-20"},
+    "integrations": [
+      {"kind": "bank", "provider": "Sabadell", "status": "ok", "last_sync": "2026-10-03T06:05:00"},
+      {"kind": "pos", "provider": "Last.app", "status": "ok", "last_sync": "2026-10-03T06:12:00"}
+    ],
+    "invoices": [
+      {"id": "F-0401", "supplier": "Pescados Albufera", "issue_date": "2026-09-18", "uploaded_at": "2026-09-19T10:00:00", "amount_eur": 980.00, "status": "processed"},
+      {"id": "F-0402", "supplier": "Pescados Albufera", "issue_date": "2026-09-18", "uploaded_at": "2026-09-27T16:20:00", "amount_eur": 980.00, "status": "duplicate", "error": "Same supplier, date and total as F-0401"}
+    ]
+  },
+  {
+    "id": "C-005", "name": "Pizzeria Vesuvio", "city": "Bilbao", "plan": "starter", "locations": 1,
+    "contact_name": "Giulia Romano", "contact_email": "giulia@vesuviobilbao.com", "signup_date": "2026-09-22",
+    "billing": {"monthly_price_eur": 59.0, "payment_status": "ok", "next_billing_date": "2026-10-22"},
+    "integrations": [],
+    "invoices": []
+  },
+  {
+    "id": "C-006", "name": "Cal Ramon", "city": "Girona", "plan": "pro", "locations": 1,
+    "contact_name": "Jordi Vila", "contact_email": "jordi@calramon.cat", "signup_date": "2025-09-01",
+    "billing": {"monthly_price_eur": 149.0, "payment_status": "ok", "next_billing_date": "2026-11-01"},
+    "integrations": [
+      {"kind": "bank", "provider": "Sabadell", "status": "ok", "last_sync": "2026-10-03T06:02:00"},
+      {"kind": "pos", "provider": "Ágora", "status": "disconnected", "last_sync": "2026-09-14T23:00:00", "error": "Integration disabled by user"}
+    ],
+    "invoices": [
+      {"id": "F-0601", "supplier": "Cooperativa del Ter", "issue_date": "2026-09-23", "uploaded_at": "2026-09-24T09:30:00", "amount_eur": 412.60, "status": "processed"}
+    ]
+  },
+  {
+    "id": "C-007", "name": "The Green Bowl", "city": "Madrid", "plan": "pro", "locations": 2,
+    "contact_name": "Emily Carter", "contact_email": "emily@thegreenbowl.es", "signup_date": "2025-11-15",
+    "billing": {"monthly_price_eur": 149.0, "payment_status": "ok", "next_billing_date": "2026-10-15"},
+    "integrations": [
+      {"kind": "bank", "provider": "ING", "status": "ok", "last_sync": "2026-10-03T06:00:00"},
+      {"kind": "pos", "provider": "Revo", "status": "ok", "last_sync": "2026-10-03T06:20:00"}
+    ],
+    "invoices": [
+      {"id": "F-0701", "supplier": "Huerta de Aranjuez", "issue_date": "2026-09-28", "uploaded_at": "2026-09-29T11:00:00", "amount_eur": 356.80, "status": "processed"}
+    ]
+  },
+  {
+    "id": "C-008", "name": "Asador Txuleta", "city": "San Sebastián", "plan": "enterprise", "locations": 3,
+    "contact_name": "Iñaki Etxeberria", "contact_email": "inaki@asadortxuleta.eus", "signup_date": "2024-05-10",
+    "billing": {"monthly_price_eur": 420.0, "payment_status": "ok", "next_billing_date": "2026-10-10"},
+    "integrations": [
+      {"kind": "bank", "provider": "Kutxabank", "status": "ok", "last_sync": "2026-10-03T05:50:00"},
+      {"kind": "pos", "provider": "Last.app", "status": "ok", "last_sync": "2026-10-03T06:15:00"}
+    ],
+    "invoices": [
+      {"id": "F-0801", "supplier": "Carnicería Goñi", "issue_date": "2026-09-25", "uploaded_at": "2026-09-26T08:00:00", "amount_eur": 5120.00, "status": "processed"},
+      {"id": "F-0802", "supplier": "Txakoli Getaria", "issue_date": "2026-09-26", "uploaded_at": "2026-09-26T08:05:00", "amount_eur": 1340.00, "status": "processed"}
+    ]
+  },
+  {
+    "id": "C-009", "name": "Café Central Lab", "city": "Zaragoza", "plan": "starter", "locations": 1,
+    "contact_name": "Pilar Gascón", "contact_email": "pilar@cafecentrallab.es", "signup_date": "2026-04-02",
+    "billing": {"monthly_price_eur": 59.0, "payment_status": "ok", "next_billing_date": "2026-11-02"},
+    "integrations": [
+      {"kind": "bank", "provider": "Ibercaja", "status": "ok", "last_sync": "2026-10-03T06:00:00"}
+    ],
+    "invoices": [
+      {"id": "F-0901", "supplier": "Cafés Orús", "issue_date": "2026-09-20", "uploaded_at": "2026-09-21T10:00:00", "amount_eur": 288.00, "status": "processed"}
+    ]
+  },
+  {
+    "id": "C-010", "name": "Tacos La Güera", "city": "Málaga", "plan": "pro", "locations": 1,
+    "contact_name": "Daniela Reyes", "contact_email": "daniela@tacoslaguera.es", "signup_date": "2025-12-01",
+    "billing": {"monthly_price_eur": 149.0, "payment_status": "ok", "next_billing_date": "2026-11-01"},
+    "integrations": [
+      {"kind": "bank", "provider": "Bankinter", "status": "ok", "last_sync": "2026-10-03T06:00:00"},
+      {"kind": "pos", "provider": "Revo", "status": "ok", "last_sync": "2026-10-03T06:18:00"}
+    ],
+    "invoices": [
+      {"id": "F-1001", "supplier": "Distribuciones Andaluzas", "issue_date": "2026-09-26", "uploaded_at": "2026-09-27T09:00:00", "amount_eur": 715.40, "status": "processing"},
+      {"id": "F-1002", "supplier": "Tortillería El Maíz", "issue_date": "2026-09-22", "uploaded_at": "2026-09-23T10:00:00", "amount_eur": 190.00, "status": "failed", "error": "OCR: file is a password-protected PDF"}
+    ]
+  }
+]
