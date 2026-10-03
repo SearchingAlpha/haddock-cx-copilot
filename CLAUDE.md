@@ -11,7 +11,7 @@ Copilot de soporte CX: clasifica el ticket, investiga con tools, escribe un borr
 python -m uv sync                                   # instalar dependencias
 python -m uv run pytest                             # tests
 python -m uv run python scripts/hello_langfuse.py   # smoke test de Langfuse
-python -m uv run python scripts/hello_jev.py        # smoke test de Jev en español + traza
+python -m uv run python -m scripts.hello_jev        # smoke test de Jev en español, una traza por ticket
 python -m uv run python -m app.cli process data/tickets.jsonl --limit 5
 python -m uv run uvicorn app.main:app --reload      # UI en http://localhost:8000
 python -m uv run python evals/run_experiment.py     # experimento en Langfuse

@@ -1,18 +1,20 @@
-"""Smoke test: classify 3 Spanish tickets with Jev inside one Langfuse trace.
+"""Smoke test: classify 3 Spanish tickets with Jev, one Langfuse trace per ticket.
 
 Checks two open questions before Phase 2:
 1. Does Jev classify Spanish tickets correctly?
 2. Does the Jev call appear in the Langfuse trace (pydantic-ai OpenTelemetry spans)?
+
+Trace contract: docs/specs/observability.md.
 """
 
 from enum import Enum
 
-from dotenv import load_dotenv
-from langfuse import get_client, observe
+from langfuse import get_client, observe, propagate_attributes
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent
+from pydantic_ai.models import Model
 
-load_dotenv()
+from app.observability import init_tracing
 
 
 class Category(str, Enum):
@@ -38,40 +40,59 @@ class Classification(BaseModel):
 
 
 TICKETS = [
-    # (text, expected category)
-    ("Hola, subí tres facturas de Makro el lunes y siguen en 'procesando'. ¿Es normal?", Category.invoices),
-    ("¡Llevamos 4 días sin que se sincronice el banco y el cierre de mes es mañana! Esto es un desastre.", Category.bank_reconciliation),
-    ("Buenas, ¿cómo conecto el TPV de Last.app con haddock para ver las ventas?", Category.pos_integration),
+    # (ticket_id, text, expected category)
+    ("T-0001", "Hola, subí tres facturas de Makro el lunes y siguen en 'procesando'. ¿Es normal?", Category.invoices),
+    ("T-0002", "¡Llevamos 4 días sin que se sincronice el banco y el cierre de mes es mañana! Esto es un desastre.", Category.bank_reconciliation),
+    ("T-0003", "Buenas, ¿cómo conecto el TPV de Last.app con haddock para ver las ventas?", Category.pos_integration),
 ]
 
-classifier = Agent("typesafe:jev-latest", output_type=Classification)
+
+def build_classifier(model: str | Model = "typesafe:jev-latest") -> Agent[None, Classification]:
+    return Agent(model, output_type=Classification, name="ticket-classifier")
 
 
-@observe(name="hello-jev")
-def run() -> tuple[int, str]:
-    correct = 0
-    for text, expected in TICKETS:
-        result = classifier.run_sync(text)
-        out = result.output
-        confidence = result.response.provider_details.get("confidence") if result.response.provider_details else None
-        ok = out.category == expected
-        correct += ok
-        print(f"{'OK ' if ok else 'BAD'} {out.category.value:20} urgent={out.urgent!s:5} "
-              f"sentiment={out.sentiment.value:13} confidence={confidence}")
-    return correct, get_client().get_current_trace_id() or ""
+@observe(name="classify-ticket", capture_input=False, capture_output=False)
+def classify_ticket(
+    classifier: Agent[None, Classification], ticket_id: str, text: str, expected: Category | None = None
+) -> tuple[Classification, dict | None]:
+    langfuse = get_client()
+    langfuse.update_current_span(
+        input=text,
+        metadata={"expected_category": expected.value if expected else None},
+    )
+    with propagate_attributes(
+        session_id=ticket_id,
+        trace_name="classify-ticket",
+        metadata={"ticket_id": ticket_id, "source": "scripts/hello_jev.py"},
+    ):
+        result = classifier.run_sync(text, conversation_id=ticket_id)
+
+    out = result.output
+    details = result.response.provider_details or {}
+    confidence = details.get("confidence")
+    langfuse.update_current_span(output={"classification": out.model_dump(mode="json"), "confidence": confidence})
+    if expected is not None:
+        langfuse.score_current_trace(
+            name="category-correct", value=1 if out.category == expected else 0, data_type="BOOLEAN"
+        )
+    return out, confidence
 
 
 def main() -> None:
-    langfuse = get_client()
-    if not langfuse.auth_check():
-        raise SystemExit("Langfuse auth failed: check LANGFUSE_* in .env")
-    Agent.instrument_all()  # pydantic-ai -> OpenTelemetry -> Langfuse
+    langfuse = init_tracing()
+    classifier = build_classifier()
 
-    correct, trace_id = run()
+    correct = 0
+    for ticket_id, text, expected in TICKETS:
+        out, confidence = classify_ticket(classifier, ticket_id, text, expected)
+        ok = out.category == expected
+        correct += ok
+        print(f"{'OK ' if ok else 'BAD'} {ticket_id} {out.category.value:20} urgent={out.urgent!s:5} "
+              f"sentiment={out.sentiment.value:13} confidence={confidence}")
+
     langfuse.flush()
     print(f"\n{correct}/{len(TICKETS)} categories correct.")
-    if trace_id:
-        print(langfuse.get_trace_url(trace_id=trace_id))
+    print("Open Langfuse -> Tracing -> 'classify-ticket' (environment: development).")
 
 
 if __name__ == "__main__":
