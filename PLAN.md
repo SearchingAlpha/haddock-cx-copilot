@@ -188,7 +188,8 @@ flowchart LR
 
 **Objetivo:** explicar bien el qué, el porqué y el cómo.
 
-1. **Slides** en español, 15–20 min:
+0. **Hecho: las slides viven en la app.** `/presentacion` (15 escenas) y `/intro` (onboarding del agente CX, 9 escenas), con el motor de escenas del onboarding de airbenders. Spec: `docs/specs/story.md`. La presentación termina en «Ver la demo» → la cola.
+1. **Slides** en español, 15–20 min (contenido original, ahora en `app/story.py`):
    1. El día de un agente CX.
    2. Por qué este proceso.
    3. Cuándo un agente y cuándo 20 líneas de código: Jev ("System One") contra Sonnet ("System Two").

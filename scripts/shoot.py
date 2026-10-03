@@ -13,7 +13,7 @@ VIEWPORTS = {"desktop": (1440, 900), "mobile": (390, 844)}
 
 
 def slug(path: str) -> str:
-    return path.strip("/").replace("/", "-") or "inbox"
+    return path.strip("/").replace("/", "-").replace("?paso=", "-") or "inbox"
 
 
 def main() -> None:
@@ -22,6 +22,7 @@ def main() -> None:
     parser.add_argument("--pages", nargs="+", default=["/", "/tickets/T-001", "/metrics"])
     parser.add_argument("--out", default=".impeccable/review")
     parser.add_argument("--prefix", default="")
+    parser.add_argument("--fresh", action="store_true", help="First visit: do not mark the intro as seen")
     args = parser.parse_args()
 
     out = Path(args.out)
@@ -30,9 +31,11 @@ def main() -> None:
         browser = p.chromium.launch()
         for name, (w, h) in VIEWPORTS.items():
             page = browser.new_page(viewport={"width": w, "height": h}, device_scale_factor=1)
+            if not args.fresh:
+                page.add_init_script("try { localStorage.setItem('haddock-cx-intro', '1') } catch (e) {}")
             for path in args.pages:
                 page.goto(args.base + path, wait_until="networkidle")
-                page.wait_for_timeout(400)  # let fonts and HTMX settle
+                page.wait_for_timeout(1600)  # let fonts, HTMX and entrance motion settle
                 file = out / f"{args.prefix + '-' if args.prefix else ''}{slug(path)}-{name}.png"
                 page.screenshot(path=str(file), full_page=True)
                 print(file)

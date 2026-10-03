@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ story.title }} · haddock CX copilot</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/static/story.js" defer></script>
+</head>
+<body class="story" data-total="{{ story.scenes | length }}">
+  {% import "_scenes.html" as v %}
+  <header class="story-head">
+    <a href="/" class="story-brand"><span class="story-mark" aria-hidden="true">h</span><span>CX copilot</span></a>
+    <a href="/" class="btn quiet" data-finish id="skip">Saltar {{ "introducción" if story.slug == "intro" else "presentación" }}</a>
+  </header>
+
+  <main class="story-main">
+    {% for s in story.scenes %}
+    <section class="scene" data-step="{{ loop.index }}" aria-labelledby="scene-{{ loop.index }}" {% if not loop.first %}hidden{% endif %}>
+      <h1 id="scene-{{ loop.index }}" class="rise">{{ s.title }}</h1>
+      {% if s.visual %}{{ v[s.visual]() }}{% endif %}
+      {% if s.note %}<p class="scene-note rise" style="animation-delay: 900ms">{{ s.note }}</p>{% endif %}
+      {% if loop.last %}
+      <p class="rise" style="animation-delay: 300ms"><a href="/" class="btn primary big" data-finish>{{ story.cta }} <i data-lucide="arrow-right"></i></a></p>
+      {% endif %}
+    </section>
+    {% endfor %}
+  </main>
+
+  <footer class="story-foot">
+    <div><button type="button" class="btn" id="prev"><i data-lucide="arrow-left"></i>Atrás</button></div>
+    <ol class="dots" aria-label="Pasos">
+      {% for s in story.scenes %}
+      <li><button type="button" data-go="{{ loop.index }}" aria-label="Paso {{ loop.index }}: {{ s.kicker }}"></button></li>
+      {% endfor %}
+    </ol>
+    <div class="right"><span class="kicker-now muted" id="kicker"></span><button type="button" class="btn primary" id="next">Siguiente<i data-lucide="arrow-right"></i></button></div>
+  </footer>
+  <script type="application/json" id="kickers">{{ story.scenes | map(attribute="kicker") | list | tojson }}</script>
+</body>
+</html>

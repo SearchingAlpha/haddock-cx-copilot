@@ -2,6 +2,11 @@
 (function () {
   const $ = (s) => document.querySelector(s);
 
+  // First visit to the queue opens the intro once (docs/specs/story.md). Remembered in localStorage.
+  try {
+    if (location.pathname === "/" && !localStorage.getItem("haddock-cx-intro")) location.replace("/intro");
+  } catch (e) { /* storage blocked: stay on the queue */ }
+
   function icons() { if (window.lucide) window.lucide.createIcons({ attrs: { class: "icon" } }); }
   document.addEventListener("DOMContentLoaded", icons);
 

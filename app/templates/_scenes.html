@@ -1,0 +1,209 @@
+{# Scene visuals for app/story.py. One macro per Scene.visual. Spec: docs/specs/story.md #}
+
+{% macro mark() %}
+<div class="sv"><span class="story-mark big rise" aria-hidden="true">h</span></div>
+{% endmacro %}
+
+{# ---------- intro ---------- #}
+
+{% macro intro_sources() %}
+<div class="sv sv-row">
+  {% for icon, label, sub in [("store", "La cuenta", "plan, pagos, facturas"), ("landmark", "El banco", "sincronización, errores"), ("book-open", "El centro de ayuda", "15 artículos")] %}
+  <div class="sv-card rise" style="animation-delay: {{ 150 + loop.index0 * 150 }}ms">
+    <i data-lucide="{{ icon }}"></i><strong>{{ label }}</strong><span>{{ sub }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro intro_trail() %}
+<ol class="sv sv-trail">
+  {% for icon, text in [("scan-text", "Clasifica el ticket con Jev"), ("receipt", "Lee las facturas del cliente"), ("book-open", "Busca en el centro de ayuda"), ("check", "Deja el borrador listo")] %}
+  <li class="rise" style="animation-delay: {{ 200 + loop.index0 * 350 }}ms"><i data-lucide="{{ icon }}"></i>{{ text }}</li>
+  {% endfor %}
+</ol>
+{% endmacro %}
+
+{% macro intro_decide() %}
+<div class="sv sv-composer rise" style="animation-delay: 200ms">
+  <span class="btn primary">Enviar <kbd>A</kbd></span>
+  <span class="btn">Editar <kbd>E</kbd></span>
+  <span class="btn quiet">Rechazar <kbd>R</kbd></span>
+</div>
+{% endmacro %}
+
+{% macro intro_evidence() %}
+<div class="sv sv-split">
+  <div class="sv-draft rise" style="animation-delay: 150ms">
+    Hola Marta: las facturas <mark>F-0101</mark>, F-0102 y F-0103 de Makro siguen en «procesando».
+  </div>
+  <i data-lucide="arrow-right" class="sv-arrow rise" style="animation-delay: 450ms"></i>
+  <div class="sv-ev rise" style="animation-delay: 650ms">
+    <strong>Makro · 842,30&nbsp;€</strong><span class="ev-id">F-0101</span><span>Procesando desde el 28/09</span>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro intro_risk() %}
+<div class="sv sv-stack">
+  <div class="banner rise" style="animation-delay: 150ms"><i data-lucide="triangle-alert"></i>
+    <div><strong>Escalado a Finanzas.</strong><span>El cliente pide un reembolso.</span></div></div>
+  <div class="check-line rise" style="animation-delay: 450ms"><i data-lucide="tag"></i>Jev duda de la categoría. ¿Es correcta?</div>
+</div>
+{% endmacro %}
+
+{% macro intro_keys() %}
+<div class="sv sv-keys">
+  {% for k, label in [("A", "Enviar"), ("E", "Editar"), ("R", "Rechazar"), ("J", "Siguiente")] %}
+  <div class="rise" style="animation-delay: {{ 150 + loop.index0 * 120 }}ms"><kbd class="big">{{ k }}</kbd><span>{{ label }}</span></div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro intro_measure() %}
+<div class="sv sv-tickets" aria-label="Cinco tickets, uno en modo manual">
+  {% for i in range(5) %}
+  <div class="sv-ticket {{ 'manual' if i == 2 }} rise" style="animation-delay: {{ 150 + i * 110 }}ms">
+    <i data-lucide="{{ 'pencil-line' if i == 2 else 'sparkles' }}"></i><span>{{ "sin copilot" if i == 2 else "con copilot" }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{# ---------- presentation ---------- #}
+
+{% macro cover() %}
+<div class="sv">
+  <p class="sv-lede rise" style="animation-delay: 200ms">Un copilot de soporte para haddock: clasifica, investiga y redacta. Una persona decide.</p>
+  <p class="sv-byline rise" style="animation-delay: 400ms">Pablo · Entrevista técnica · Octubre 2026</p>
+</div>
+{% endmacro %}
+
+{% macro why_cx() %}
+<div class="sv sv-stack narrow">
+  {% for q in ["Subí tres facturas de Makro y siguen en «procesando».", "El banco no se sincroniza desde el lunes.", "¿Cómo conecto el TPV para ver las ventas?"] %}
+  <div class="sv-quote rise" style="animation-delay: {{ 150 + loop.index0 * 200 }}ms">{{ q }}</div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro system12() %}
+<div class="sv sv-row two">
+  <div class="sv-card tall rise" style="animation-delay: 150ms">
+    <span class="sv-tag">System One</span><strong>Jev · decide</strong>
+    <span>Categoría, prioridad, sentimiento e idioma</span><span>Tipado y con confianza calibrada</span><span>~$0,00003 por ticket</span>
+  </div>
+  <div class="sv-card tall rise" style="animation-delay: 350ms">
+    <span class="sv-tag">System Two</span><strong>Sonnet · investiga</strong>
+    <span>Bucle de tools escrito a mano</span><span>Lee la cuenta y el centro de ayuda</span><span>~$0,017 por ticket</span>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro pipeline() %}
+<div class="sv">
+  <ol class="sv-pipe">
+    {% for icon, label in [("webhook", "Webhook"), ("scan-text", "Jev"), ("sparkles", "Sonnet + tools"), ("shield-check", "Guardrails"), ("user-check", "Agente CX")] %}
+    <li class="rise" style="animation-delay: {{ 120 + loop.index0 * 180 }}ms"><i data-lucide="{{ icon }}"></i><span>{{ label }}</span></li>
+    {% endfor %}
+  </ol>
+  <p class="sv-band rise" style="animation-delay: 1100ms"><i data-lucide="activity"></i>Langfuse traza cada paso y recibe la decisión humana</p>
+</div>
+{% endmacro %}
+
+{% macro code_ctx() %}
+<pre class="sv sv-code rise" style="animation-delay: 200ms"><code><span class="c"># app/tools: el pipeline fija el cliente; el modelo no lo elige</span>
+@dataclass
+class ToolContext:
+    customer: Customer   <span class="c"># el cliente del ticket</span>
+    kb: KBIndex
+
+def get_invoices(ctx, status=None):
+    return ctx.customer.invoices   <span class="c"># nunca otro cliente</span></code></pre>
+{% endmacro %}
+
+{% macro guardrail() %}
+<div class="sv sv-stack narrow">
+  <div class="sv-draft rise" style="animation-delay: 150ms">Tranquila, <mark class="risk">te devolvemos el cobro</mark> esta misma semana.</div>
+  <div class="banner rise" style="animation-delay: 450ms"><i data-lucide="triangle-alert"></i>
+    <div><strong>Bloqueado: edita el borrador antes de enviar.</strong><span>Promete un reembolso</span></div></div>
+  <div class="sv-composer rise" style="animation-delay: 700ms"><span class="btn primary disabled">Enviar <kbd>A</kbd></span><span class="btn">Editar <kbd>E</kbd></span></div>
+</div>
+{% endmacro %}
+
+{% macro trace_tree() %}
+<ul class="sv sv-tree rise" style="animation-delay: 200ms">
+  <li><strong>process-ticket</strong> <span>session = id del ticket</span>
+    <ul>
+      <li>classify <span>Jev · jev-1.13.0</span></li>
+      <li>agent
+        <ul><li>agent-turn <span>Sonnet · tokens · coste · versión del prompt</span></li><li>get_invoices · search_kb <span>tools</span></li></ul>
+      </li>
+      <li>guardrails <span>regex · Jev sí/no · datos de otros clientes</span></li>
+      <li class="human">human_decision · edit_distance · review_seconds <span>scores del agente CX</span></li>
+    </ul>
+  </li>
+</ul>
+{% endmacro %}
+
+{% macro eval_scores() %}
+<div class="sv sv-chips">
+  {% for s in ["category", "priority", "sentiment", "language", "category_confidence", "escalation", "tool_recall", "key_points", "groundedness", "guardrail_blocked", "format", "cost_usd"] %}
+  <span class="rise" style="animation-delay: {{ 100 + loop.index0 * 60 }}ms">{{ s }}</span>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro judge() %}
+<div class="sv sv-row two">
+  <div class="sv-card rise" style="animation-delay: 150ms"><span class="sv-tag">Antes</span><strong class="sv-num">0,63</strong>
+    <span>Groundedness con juez Haiku</span><span>Evidencia como JSON doblemente escapado</span></div>
+  <div class="sv-card rise" style="animation-delay: 450ms"><span class="sv-tag">Después</span><strong class="sv-num">0,95</strong>
+    <span>Mismo agente, juez Sonnet</span><span>Evidencia legible y regla de búsqueda</span></div>
+</div>
+{% endmacro %}
+
+{% macro jev_table() %}
+<table class="sv sv-table rise" style="animation-delay: 200ms">
+  <thead><tr><th></th><th>Jev</th><th>Haiku</th></tr></thead>
+  <tbody>
+    <tr><td>Categoría</td><td>88–90 %</td><td><strong>95 %</strong></td></tr>
+    <tr><td>Prioridad</td><td><strong>80–85 %</strong></td><td>72,5 %</td></tr>
+    <tr><td>Confianza calibrada</td><td><strong>Sí</strong></td><td>No</td></tr>
+    <tr><td>Coste por ticket</td><td><strong>~30× menos</strong></td><td>~$0,001</td></tr>
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro threshold() %}
+<div class="sv sv-row two">
+  <div class="sv-card rise" style="animation-delay: 150ms"><span class="sv-tag">Regla inicial</span><strong>Escalar si la confianza &lt; 0,6</strong>
+    <span>1–2 escalados incorrectos por ejecución</span><span>La categoría no cambia el trabajo del agente</span></div>
+  <div class="sv-card rise" style="animation-delay: 450ms"><span class="sv-tag">Ahora</span><strong>Marcar «revisar categoría» si &lt; 0,9</strong>
+    <span>Nunca escala</span><span>La corrección vuelve a Langfuse como score</span></div>
+</div>
+{% endmacro %}
+
+{% macro impact() %}
+<div class="sv sv-row">
+  {% for big, text in [("$0,017", "coste del copilot por ticket"), ("1 de 5", "tickets en modo manual: la línea base"), ("4", "scores humanos por decisión en Langfuse")] %}
+  <div class="sv-card rise" style="animation-delay: {{ 150 + loop.index0 * 180 }}ms"><strong class="sv-num">{{ big }}</strong><span>{{ text }}</span></div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro build() %}
+<div class="sv sv-chips wide">
+  {% for s in ["Claude Code + CLAUDE.md", "Un spec con Mermaid por módulo", "Más de 100 tests sin red", "Prompts versionados en Langfuse", "Skills: tdd, langfuse, impeccable", "Revisión final por un subagente"] %}
+  <span class="rise" style="animation-delay: {{ 100 + loop.index0 * 100 }}ms">{{ s }}</span>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro next() %}
+<div class="sv sv-stack narrow">
+  {% for icon, text in [("inbox", "Zendesk real: webhook de entrada y respuesta por API"), ("plug", "MCP interno: las tools del copilot para todo el equipo"), ("message-square", "Slack: aviso de escalados urgentes"), ("flask-conical", "3 ejecuciones de v1 contra v3 antes de promocionar el prompt")] %}
+  <div class="sv-line rise" style="animation-delay: {{ 150 + loop.index0 * 150 }}ms"><i data-lucide="{{ icon }}"></i>{{ text }}</div>
+  {% endfor %}
+</div>
+{% endmacro %}

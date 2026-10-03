@@ -14,7 +14,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langfuse import get_client
 
-from app import db, views
+from app import db, story, views
 from app.data import load_customers, load_kb, load_tickets
 from app.domain import Category, TicketIn
 from app.observability import init_tracing
@@ -114,6 +114,16 @@ def _shell(selected: str | None = None) -> dict:
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse(request, "home.html", _shell())
+
+
+@app.get("/intro", response_class=HTMLResponse)
+def intro(request: Request):
+    return templates.TemplateResponse(request, "story.html", {"story": story.INTRO})
+
+
+@app.get("/presentacion", response_class=HTMLResponse)
+def presentation(request: Request):
+    return templates.TemplateResponse(request, "story.html", {"story": story.PRESENTATION})
 
 
 @app.get("/queue", response_class=HTMLResponse)
