@@ -34,6 +34,9 @@ flowchart LR
         tools["tools/"]
         prompts["prompts.py"]
         db["db.py — SQLite"]
+        domain["domain.py + data.py"]
+        obs["observability.py"]
+        cli["cli.py"]
     end
     subgraph data["data/"]
         kb["kb/*.md"]
@@ -42,6 +45,10 @@ flowchart LR
     end
     LF[("Langfuse Cloud")]
     main --> pipeline
+    cli --> pipeline
+    cli --> obs
+    domain --> data
+    guardrails -->|"pregunta sí/no"| JEV
     pipeline --> classify
     pipeline --> agent
     pipeline --> guardrails
