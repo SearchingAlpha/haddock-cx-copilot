@@ -14,7 +14,10 @@ python -m uv run python scripts/hello_langfuse.py   # smoke test de Langfuse
 python -m uv run python -m scripts.hello_jev        # smoke test de Jev en español, una traza por ticket
 python -m uv run python -m app.cli process data/tickets.jsonl --limit 5
 python -m uv run uvicorn app.main:app --reload      # UI en http://localhost:8000
-python -m uv run python evals/run_experiment.py     # experimento en Langfuse
+python -m uv run python -m scripts.push_prompts     # prompts/ -> Langfuse (versión nueva solo si cambian)
+python -m uv run python -m evals.upload_dataset     # data/tickets.jsonl -> dataset cx-tickets
+python -m uv run python -m evals.run_experiment --run-name X [--prompt-label staging] [--classify-only --classifier haiku]
+python -m uv run python -m evals.rejudge evals/results/X.json --model claude-sonnet-5-5
 ```
 
 ## Reglas

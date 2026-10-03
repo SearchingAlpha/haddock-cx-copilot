@@ -31,9 +31,9 @@ def stubbed(monkeypatch):
     calls = {"agent": 0}
     state = {"confidence": 0.9, "draft": drafted()}
 
-    monkeypatch.setattr(pipeline, "classify", lambda subject, body: classified(state["confidence"]))
+    monkeypatch.setattr(pipeline, "classify", lambda subject, body, **kw: classified(state["confidence"]))
 
-    def fake_agent(ticket, ctx):
+    def fake_agent(ticket, ctx, **kw):
         calls["agent"] += 1
         return state["draft"]
 
@@ -72,6 +72,16 @@ def test_fallback_without_confidence_still_runs_the_agent(stubbed, world):
 
     pipeline.process_ticket(ticket, customers, kb=kb)
     assert calls["agent"] == 1
+
+
+def test_classify_only_never_calls_the_agent(stubbed, world):
+    calls, _ = stubbed
+    customers, kb, ticket = world
+
+    result = pipeline.process_ticket(ticket, customers, kb=kb, options=pipeline.RunOptions(classify_only=True))
+
+    assert calls["agent"] == 0
+    assert result.reasons == ["classify_only"]
 
 
 def test_blocked_draft_is_escalated(stubbed, world):

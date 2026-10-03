@@ -1,0 +1,1182 @@
+{
+ "run_name": "haiku-classify",
+ "options": {
+  "run_name": "haiku-classify",
+  "classifier": "haiku",
+  "prompt_label": "production",
+  "classify_only": true,
+  "threshold": null,
+  "limit": null,
+  "concurrency": 4
+ },
+ "run": {
+  "avg_category_correct": 0.95,
+  "avg_escalation_correct": 0.825,
+  "avg_language_correct": 1.0,
+  "avg_priority_correct": 0.725,
+  "avg_sentiment_correct": 0.725
+ },
+ "calibration": [],
+ "items": [
+  {
+   "ticket": "T-040",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "bank",
+     "priority": "normal",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": false,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-039",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "pos",
+     "priority": "normal",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-038",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": false
+   }
+  },
+  {
+   "ticket": "T-037",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "bank",
+     "priority": "urgent",
+     "sentiment": "very_negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-036",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "inventory",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-035",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "other",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-034",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "inventory",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-033",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "bank",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-032",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-031",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "high",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": false
+   }
+  },
+  {
+   "ticket": "T-030",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "reports",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-029",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "en"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-028",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": false
+   }
+  },
+  {
+   "ticket": "T-027",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": false
+   }
+  },
+  {
+   "ticket": "T-026",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "reports",
+     "priority": "urgent",
+     "sentiment": "very_negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-025",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "pos",
+     "priority": "urgent",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-024",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "bank",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-023",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "pos",
+     "priority": "high",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-022",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "inventory",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "ca"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-021",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "urgent",
+     "sentiment": "very_negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": false
+   }
+  },
+  {
+   "ticket": "T-020",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": false
+   }
+  },
+  {
+   "ticket": "T-019",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "bank",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-018",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-017",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-016",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "other",
+     "priority": "low",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-015",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "reports",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "en"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-014",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "high",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-013",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "pos",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "ca"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-012",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-011",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "urgent",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": false
+   }
+  },
+  {
+   "ticket": "T-010",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "reports",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-009",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-008",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "other",
+     "priority": "low",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-007",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-006",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "other",
+     "priority": "low",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-005",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "urgent",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-004",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "inventory",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-003",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-002",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  },
+  {
+   "ticket": "T-001",
+   "output": {
+    "status": "ready",
+    "reasons": [
+     "classify_only"
+    ],
+    "classification": {
+     "category": "other",
+     "priority": "normal",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": null,
+    "classifier": "anthropic:claude-haiku-4-5",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": false,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "escalation_correct": true
+   }
+  }
+ ]
+}

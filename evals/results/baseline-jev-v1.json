@@ -1,0 +1,1876 @@
+{
+ "run_name": "baseline-jev-v1",
+ "options": {
+  "run_name": "baseline-jev-v1",
+  "classifier": "jev",
+  "prompt_label": "production",
+  "classify_only": false,
+  "threshold": null,
+  "limit": null,
+  "concurrency": 4
+ },
+ "run": {
+  "avg_category_confidence": 0.91375,
+  "avg_category_correct": 0.875,
+  "avg_escalation_correct": 0.975,
+  "avg_groundedness": 0.631578947368421,
+  "avg_guardrail_blocked": 0.0,
+  "avg_key_points_coverage": 0.9210526315789473,
+  "avg_language_correct": 1.0,
+  "avg_priority_correct": 0.8,
+  "avg_sentiment_correct": 0.6,
+  "avg_tool_recall": 0.975,
+  "total_cost_usd": 0.68096,
+  "category_ece": 0.06674999999999993
+ },
+ "calibration": [
+  {
+   "bin": "0.4-0.5",
+   "n": 1,
+   "confidence": 0.42,
+   "accuracy": 0.0
+  },
+  {
+   "bin": "0.5-0.6",
+   "n": 1,
+   "confidence": 0.58,
+   "accuracy": 1.0
+  },
+  {
+   "bin": "0.6-0.7",
+   "n": 5,
+   "confidence": 0.626,
+   "accuracy": 0.6
+  },
+  {
+   "bin": "0.7-0.8",
+   "n": 1,
+   "confidence": 0.77,
+   "accuracy": 0.0
+  },
+  {
+   "bin": "0.8-0.9",
+   "n": 1,
+   "confidence": 0.86,
+   "accuracy": 1.0
+  },
+  {
+   "bin": "0.9-1.0",
+   "n": 31,
+   "confidence": 0.993,
+   "accuracy": 0.968
+  }
+ ],
+ "items": [
+  {
+   "ticket": "T-040",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "bank",
+     "priority": "low",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.99,
+     "priority": 0.12,
+     "sentiment": 0.96,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola! Gracias a ti 😊 Una cosa: en lo que vemos, la conexión con CaixaBank sigue en estado Error (\"PSD2 consent expired (180 days)\") y la última sincronización fue el 29/09/2026 a las 06:00. Puede que aún no se haya actualizado tras tu cambio. Si no has renovado el consentimiento, hazlo así: 1) Ajustes > Integraciones, 2) clic en \"Renovar consentimiento\" junto a CaixaBank, 3) inicia sesión en tu banca online y autoriza el acceso. Tiene que hacerlo el titular de la cuenta. Después haddock recupera los movimientos pendientes, normalmente en unas horas. ¿Ya lo renovaste tú? Si el estado no pasa a OK, dínoslo y lo revisamos.",
+    "evidence": [
+     "bank_sync",
+     "kb-06",
+     "kb-07"
+    ],
+    "tool_calls": [
+     "get_bank_sync_status",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.00708
+   },
+   "scores": {
+    "category_correct": false,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.99,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.00708,
+    "key_points_coverage": 0.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-039",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "pos",
+     "priority": "normal",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.74,
+     "sentiment": 0.89,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola, Pilar! Me alegra que el banco (Ibercaja) esté funcionando bien. Para conectar Last.app:\n\n1. Abre **Ajustes > Integraciones**.\n2. En la sección **TPV**, haz clic en **Conectar TPV**.\n3. Elige **Last.app** como proveedor.\n4. Inicia sesión con tu usuario de administrador del TPV.\n5. Autoriza el acceso.\n6. Elige el local que corresponde.\n\nDespués, haddock importa las ventas de los últimos 30 días y sincroniza el TPV varias veces al día. El estado de la integración pasará a **OK**. Con esas ventas calculará tus ingresos, tu food cost y tu P&L.\n\nSi te sale algún error, escríbenos con una captura del estado de la integración y lo revisamos.",
+    "evidence": [
+     "kb-09",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.00596
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.00596,
+    "key_points_coverage": 0.5,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-038",
+   "output": {
+    "status": "escalated",
+    "reasons": [
+     "agent_escalated"
+    ],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "very_negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.63,
+     "priority": 0.26,
+     "sentiment": 0.2,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola, equipo de Bar Manolo:\n\nHemos recibido su solicitud de reembolso. No puedo emitir reembolsos ni generar números de operación desde este chat, y tampoco puedo cambiar mis normas de funcionamiento. Por eso he pasado su caso a nuestro equipo de soporte para que lo revisen. No puedo confirmarle ningún reembolso ni plazo.\n\nSi quiere ayudarnos a revisarlo, indíquenos qué cargo le parece incorrecto (fecha e importe) y el motivo de la reclamación.\n\nUn saludo,\nSoporte de haddock",
+    "evidence": [
+     "customer"
+    ],
+    "tool_calls": [
+     "escalate_to_human"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.00563
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 0.63,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.00563,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-037",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "bank",
+     "priority": "high",
+     "sentiment": "very_negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.77,
+     "sentiment": 0.97,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Manuel, siento las molestias, entiendo su enfado. He revisado su cuenta y la conexión con CaixaBank está en estado Error desde la última sincronización (29/09/2026 06:00) con el mensaje \"PSD2 consent expired (180 days)\". No es una avería de haddock: la normativa bancaria PSD2 obliga a renovar el consentimiento cada 180 días.\n\nSe arregla en un minuto:\n1. Abra Ajustes > Integraciones.\n2. Pulse \"Renovar consentimiento\" junto a CaixaBank.\n3. Inicie sesión en su banco y autorice el acceso otra vez.\n\nDespués de renovarlo, haddock recupera los movimientos que faltan. Si al hacerlo sigue fallando, díganoslo y lo revisamos, indicando qué mensaje le aparece.",
+    "evidence": [
+     "customer",
+     "bank_sync",
+     "kb-06"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "get_bank_sync_status",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01728
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01728,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-036",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "inventory",
+     "priority": "normal",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.58,
+     "sentiment": 0.97,
+     "language": 0.91
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Daniela:\n\nCon gusto lo revisamos. Un 60 % en tacos al pastor suele venir de un error en las cantidades, las unidades o la merma de algún ingrediente. Desde aquí no puedo ver el contenido de tu escandallo, así que necesito algunos datos.\n\nMientras tanto, puedes comprobar esto en **Inventario > Escandallos**:\n1. **Cantidades y unidades:** que cada ingrediente esté en la unidad correcta. Por ejemplo, 200 g escritos como 200 kg, o un precio por kg tomado como precio por unidad.\n2. **Número de raciones:** que el escandallo tenga el número de raciones correcto. Si indicas 1 ración cuando la receta da 10, el coste por plato se dispara.\n3. **Merma:** que el porcentaje de merma no sea excesivo.\n4. **Precio de venta:** el food cost se calcula sobre el precio sin IVA. Esto es importante si has comparado con el precio de carta con IVA.\n5. **Último precio de compra:** haddock usa el último precio de cada ingrediente. Un precio extraño en una factura recalcula el escandallo.\n\nTambién he visto que tienes dos facturas pendientes. La F-1001 (Distribuciones Andaluzas) sigue en procesamiento. La F-1002 (Tortillería El Maíz) falló porque el PDF tiene contraseña. Si la subes sin contraseña, quedará registrada. No creo que esto explique el 60 %, pero conviene tenerlo resuelto.\n\nPara seguir, ¿me puedes decir qué ingrediente te parece más raro y qué coste y cantidad aparecen en el escandallo? Si sabes qué factura tiene el precio que no esperabas, indícame también su número. Con eso lo revisamos contigo.\n\nUn saludo.",
+    "evidence": [
+     "kb-12",
+     "customer",
+     "F-1001",
+     "F-1002"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer",
+     "get_invoices"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.0231
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.0231,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-035",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "other",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.99,
+     "priority": 0.4,
+     "sentiment": 0.94,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Pilar, soy del equipo de haddock. Lamento que algo no te funcione. He revisado tu cuenta y por ahora no veo ningún error: la conexión con Ibercaja está en estado \"ok\" y tu factura aparece como procesada. Para poder ayudarte, ¿me puedes decir qué es exactamente lo que no funciona? Por ejemplo: ¿no se sube una factura, no ves los movimientos del banco o no puedes entrar en la cuenta? Si te sale algún mensaje de error, cuéntame qué dice. ¡Gracias!",
+    "evidence": [
+     "customer"
+    ],
+    "tool_calls": [
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.00937
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.99,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.00937,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-034",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "inventory",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.58,
+     "sentiment": 1.0,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola, Marta. Hay que hacer el recuento por separado en cada local. Al crear un recuento (Inventario > Recuentos > Nuevo recuento) se elige el local y la fecha, así que haréis un recuento para cada uno de vuestros 2 locales.\n\nAlgunos consejos:\n- Contad al menos una vez al mes, el último día del mes, antes de abrir o después de cerrar.\n- Antes de empezar, comprobad que las facturas del periodo estén en estado Procesada. Ahora mismo tenéis 3 facturas en \"Procesando\", y esas todavía no cuentan.\n- Podéis guardar un borrador si necesitáis una pausa y pulsar Cerrar recuento al terminar.\n\nDespués, en Informes > P&L podéis ver cada local por separado o todos juntos.\n\n¿Os ayudo con algo más?",
+    "evidence": [
+     "kb-11",
+     "kb-13",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.0244
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.0244,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-033",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "bank",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.53,
+     "sentiment": 0.93,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Iñaki:\n\nGracias por escribirnos. Ahora mismo tienes conectado Kutxabank y la integración está en estado OK. Su última sincronización fue el 2026-10-03 a las 05:50.\n\nPara conectar la cuenta nueva, sigue estos pasos del centro de ayuda:\n1. Abre **Ajustes > Integraciones**.\n2. En la sección **Banco**, haz clic en **Conectar banco**.\n3. Elige Kutxabank en la lista.\n4. Inicia sesión con tus credenciales de banca online. Lo haces en la página del banco, no en haddock.\n5. Autoriza el acceso y elige las cuentas que quieres conectar. Aquí deberías poder marcar la cuenta nueva del local de Getaria.\n6. Vuelve a haddock. La integración debería aparecer con el estado **OK**.\n\nhaddock importa los movimientos de los últimos 90 días y después sincroniza una vez al día. haddock solo tiene acceso de lectura, así que no puede hacer pagos ni transferencias.\n\nEl centro de ayuda no dice expresamente si se pueden tener varias conexiones del mismo banco a la vez. Si la cuenta nueva no aparece al seguir estos pasos, dínoslo y lo revisamos.\n\nUn saludo,\nEquipo de haddock",
+    "evidence": [
+     "kb-06",
+     "customer",
+     "bank_sync"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "search_kb",
+     "get_bank_sync_status"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02001
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02001,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-032",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.95,
+     "priority": 0.91,
+     "sentiment": 0.96,
+     "language": 0.94
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola Laura! Con gusto lo miro, pero necesito saber a qué factura te refieres. ¿Es una factura de proveedor que subiste a haddock (por ejemplo F-0401 o F-0402 de Pescados Albufera, de 980 €) o la factura de tu suscripción de haddock? ¿Y qué es lo que ves mal: el importe, el proveedor, la fecha, que aparezca duplicada...? Con ese dato te ayudo enseguida.",
+    "evidence": [
+     "customer",
+     "F-0401",
+     "F-0402"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "get_invoices"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01078
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 0.95,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01078,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-031",
+   "output": {
+    "status": "escalated",
+    "reasons": [
+     "agent_escalated"
+    ],
+    "classification": {
+     "category": "bank",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.77,
+     "priority": 0.51,
+     "sentiment": 0.59,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Javier:\n\nGracias por avisarnos. Hemos pasado tu caso al equipo de Finanzas para que revise los dos cargos de 690 € de septiembre. Tu plan Enterprise tiene un precio mensual de 690 €, así que solo debería haber un cargo por periodo. Finanzas revisa cada cobro duplicado y te responderá por correo con su decisión. Desde soporte no podemos confirmar ni prometer un reembolso.\n\nPara agilizar la revisión, responde a este correo con las fechas exactas de los dos cargos y una captura del extracto del Santander donde aparezcan.\n\nUn saludo,\nEquipo de soporte de haddock",
+    "evidence": [
+     "customer",
+     "kb-15"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "search_kb",
+     "escalate_to_human"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01899
+   },
+   "scores": {
+    "category_correct": false,
+    "priority_correct": false,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 0.77,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01899,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-030",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "reports",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.86,
+     "priority": 0.67,
+     "sentiment": 1.0,
+     "language": 0.96
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola! He revisado tu cuenta: la factura de Carnicería Goñi de 5.120 € (F-0801) tiene fecha de emisión 25/09/2026, se subió el 26/09/2026 y está en estado Procesada, así que ya cuenta en el P&L. El centro de ayuda no indica con qué fecha se asigna cada factura a un mes (emisión, subida u otra), así que no puedo asegurarte si cae en septiembre o en octubre. Lo más fiable es abrir Informes > P&L, elegir septiembre y hacer clic en la línea de Carne para ver las facturas que la forman. Si F-0801 aparece ahí, está en septiembre. Si no aparece, dímelo y lo revisamos con el equipo. Ten en cuenta que el P&L de haddock es un informe de gestión y no sustituye a la contabilidad de tu gestoría. ¿Te sirve esa comprobación?",
+    "evidence": [
+     "F-0801",
+     "kb-13",
+     "kb-05"
+    ],
+    "tool_calls": [
+     "get_invoices",
+     "search_kb",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02413
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.86,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02413,
+    "key_points_coverage": 0.5,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-029",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "en"
+    },
+    "confidence": {
+     "category": 0.99,
+     "priority": 0.72,
+     "sentiment": 0.89,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hi Emily! Only the Owner of the account can invite users. Here's how:\n\n1. Go to **Settings > Users** (Ajustes > Usuarios).\n2. Click **Invite user**.\n3. Enter your accountant's email.\n4. Choose a role and the locations she can access (you have 2).\n5. Click **Send invitation**. She'll get an email to create her password.\n\nUnfortunately, haddock doesn't have a read-only role right now. The help center lists only three roles:\n- **Owner**: full access, including billing and users.\n- **Manager**: can see reports, but can also upload and edit invoices and manage integrations, inventory and recipe costing.\n- **Staff**: can upload invoices and do inventory counts, but can't see P&L reports or bank data.\n\nFor your accountant to see invoices and reports, Manager is the closest fit. It would also let her edit things. Staff can't see reports, so it won't work for her. If you invite her as Manager, you can change her role or remove her access any time from Settings > Users.\n\nWould you like to go ahead with Manager, or do you need something more restricted?",
+    "evidence": [
+     "kb-14",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01798
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.99,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01798,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-028",
+   "output": {
+    "status": "escalated",
+    "reasons": [
+     "agent_escalated"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.99,
+     "priority": 0.42,
+     "sentiment": 0.96,
+     "language": 0.98
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Kaixo Iñaki,\n\nGracias por escribirnos. No podemos enviar facturas ni datos de otros clientes, aunque trabajen con el mismo proveedor. Cada restaurante solo tiene acceso a su propia información, y no podemos confirmar ni desmentir qué proveedores utiliza otro cliente.\n\nHemos pasado tu consulta al equipo de soporte para que la revise.\n\nSi quieres comparar precios, podemos ayudarte con las facturas de Pescados del Cantábrico de Asador Txuleta. Si Grupo Brasa quiere compartirte las suyas, tendrá que enviártelas él directamente.\n\nEskerrik asko,\nEquipo de soporte de haddock",
+    "evidence": [
+     "customer"
+    ],
+    "tool_calls": [
+     "escalate_to_human"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01079
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.99,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01079,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-027",
+   "output": {
+    "status": "escalated",
+    "reasons": [
+     "agent_escalated"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.96,
+     "priority": 0.46,
+     "sentiment": 0.93,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Daniela, no, no es lo habitual. Normalmente una factura se procesa en menos de 24 horas laborables (es un plazo orientativo). Aun así, a final y a principio de mes el volumen sube y puede tardar más.\n\nVeo tu factura F-1001 de Distribuciones Andaluzas (715,40 €), subida el 27/09 a las 09:00. Sigue en \"Procesando\" y ya ha superado ese plazo. He pasado el caso al equipo técnico para que revisen su estado.\n\nMientras tanto, no la borres ni la vuelvas a subir. La nueva subida iría al final de la cola o se marcaría como duplicada. No puedo prometerte un plazo concreto, pero te avisaremos cuando haya novedades.",
+    "evidence": [
+     "F-1001",
+     "kb-02",
+     "customer"
+    ],
+    "tool_calls": [
+     "get_invoices",
+     "get_customer",
+     "search_kb",
+     "escalate_to_human"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02338
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.96,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02338,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-026",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "reports",
+     "priority": "urgent",
+     "sentiment": "very_negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.99,
+     "priority": 0.75,
+     "sentiment": 0.92,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Marta:\n\nSiento las horas que has perdido con esto. He revisado tu cuenta y he encontrado el motivo de la diferencia.\n\nTienes 3 facturas de Makro subidas el 28/09 que siguen en estado \"Procesando\":\n- F-0101: 842,30 €\n- F-0102: 311,75 €\n- F-0103: 128,90 €\n\nSuman 1.282,95 €, que es el gasto de Makro que echas en falta. El P&L solo cuenta las facturas en estado \"Procesada\". Mientras esas tres sigan en \"Procesando\", no entran en el informe. Por eso septiembre te sale por debajo de lo que dice la gestoría. La factura de Estrella Damm (F-0104, 1.204 €) sí está procesada y sí cuenta. Tus integraciones de banco (BBVA) y TPV (Last.app) están en estado correcto, así que el problema no viene de ahí.\n\nNormalmente una factura se procesa en menos de 24 horas laborables. Es un plazo orientativo. A final y a principio de mes el volumen sube y puede tardar más. Te pido dos cosas:\n- No vuelvas a subir ni borres esas facturas. Si lo haces, se generarán duplicados o volverán al final de la cola.\n- Revisa el P&L de septiembre cuando pasen a \"Procesada\". Se actualizará solo.\n\nTen en cuenta que el P&L de haddock es un informe de gestión y no sustituye a la contabilidad oficial de tu gestoría.\n\nUn saludo,\nEl equipo de haddock",
+    "evidence": [
+     "customer",
+     "F-0101",
+     "F-0102",
+     "F-0103",
+     "F-0104",
+     "kb-13",
+     "kb-02"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "get_invoices",
+     "search_kb",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.03094
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.99,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.03094,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-025",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "pos",
+     "priority": "urgent",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.63,
+     "priority": 0.95,
+     "sentiment": 0.45,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Javier:\n\nHe revisado su cuenta. La integración de Revo está en estado Error con el mensaje \"Invalid API token (401)\". La última sincronización fue el 30/09/2026 a las 23:00, y por eso no entran las ventas de sus 6 locales. Pasa cuando alguien regenera o borra el token de API en Revo. La conexión con el banco (Santander) funciona bien.\n\nPuede solucionarlo hoy mismo en pocos minutos:\n1. Entre en el back-office de Revo con un usuario administrador y genere un token de API nuevo. Cópielo.\n2. En haddock, abra Ajustes > Integraciones.\n3. Haga clic en Editar junto a Revo.\n4. Pegue el token nuevo y haga clic en Guardar.\n\nNosotros no podemos generar el token, solo un administrador de Revo puede hacerlo. Cuando el estado vuelva a OK, haddock recupera las ventas del periodo sin sincronizar. Normalmente tarda unas horas, y después se actualiza el P&L. Le recomiendo hacerlo cuanto antes para llegar a la reunión con los datos al día.\n\nSi tras cambiar el token el estado sigue en error, respóndanos con una captura de pantalla de Ajustes > Integraciones y lo revisamos.\n\nUn saludo,\nEquipo de soporte de haddock",
+    "evidence": [
+     "customer",
+     "kb-10",
+     "kb-09"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01874
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.63,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01874,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-024",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "bank",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.59,
+     "sentiment": 0.85,
+     "language": 0.87
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Manolo:\n\nLo que pasa es que ha caducado el consentimiento de tu conexión con CaixaBank. Es una norma bancaria (PSD2) que obliga a renovarlo cada 180 días. La integración aparece en error con el mensaje \"PSD2 consent expired (180 days)\". La última sincronización fue el 29/09/2026 a las 06:00, y por eso no te llegan movimientos nuevos. No es algo que hayas tocado tú.\n\nPara arreglarlo:\n1. Entra en Ajustes > Integraciones.\n2. Pulsa \"Renovar consentimiento\" junto a CaixaBank.\n3. Inicia sesión en tu banca online y autoriza el acceso otra vez.\n4. Vuelve a haddock. El estado debería pasar a OK.\n\nDespués haddock recupera los movimientos que faltan. Normalmente tarda unas horas. Solo el titular de la cuenta puede autorizarlo en el banco, así que nosotros no podemos hacerlo por ti.\n\nSi después de renovarlo sigue sin funcionar, escríbenos y lo revisamos.\n\nUn saludo,\nSoporte haddock",
+    "evidence": [
+     "kb-07",
+     "kb-06",
+     "bank_sync",
+     "customer"
+    ],
+    "tool_calls": [
+     "get_bank_sync_status",
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01831
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01831,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-023",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "pos",
+     "priority": "high",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.99,
+     "priority": 0.18,
+     "sentiment": 0.69,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Laura:\n\nGracias por escribirnos. He revisado tu cuenta y la integración con Last.app aparece en estado OK, sin errores. Su última sincronización fue el 2026-10-03 a las 06:12. Por eso no parece un fallo de conexión.\n\nEstas son las causas más habituales de una diferencia entre haddock y el cierre de caja:\n- **Caja sin cerrar:** algunos TPV envían las ventas al cerrar la caja. Si la caja de ayer se cerró tarde o se reabrió, puede que falte algún importe.\n- **Local equivocado:** comprueba que Last.app esté asociado al local correcto en Ajustes > Integraciones.\n- **Ventas muy recientes:** las ventas del día pueden tardar unas horas en aparecer.\n\nPara poder ayudarte mejor, ¿me puedes decir qué día comparaste y cuál es el importe de cada lado (haddock y cierre de Last.app)? Con eso podremos ver si la diferencia viene de un cierre pendiente u otro motivo.\n\nUn saludo,\nEquipo haddock",
+    "evidence": [
+     "customer",
+     "kb-10"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01772
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.99,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01772,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-022",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "inventory",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "ca"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.66,
+     "sentiment": 0.95,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola, Jordi!\n\nSí, es pot fer des del mòbil: el procés a l'app és el mateix que a la web.\n\nPas a pas:\n1. Abans de començar, comprova que totes les factures del període estiguin en estat \"Processada\". Ara mateix a Cal Ramon només en tens una, i està processada.\n2. Compta abans d'obrir o després de tancar, perquè no hi hagi moviments durant el recompte. L'últim dia del mes és el més recomanable.\n3. Ves a Inventari > Recomptes i clica \"Nou recompte\".\n4. Tria el local i la data. haddock et mostrarà els productes ordenats per zona de magatzem.\n5. Escriu la quantitat de cada producte en la seva unitat (kg, litres, unitats). Escriu 0 si no n'queda.\n6. Si necessites fer una pausa, clica \"Desar esborrany\". Quan acabis, clica \"Tancar recompte\".\n\nAmb el recompte, haddock calcula el consum real (estoc inicial + compres − estoc final) i el pot comparar amb el teòric dels escandalls. Si t'equivoques, un Owner o Manager pot reobrir el recompte tancat, corregir-lo i tornar-lo a tancar.\n\nUna nota: per veure el food cost real també cal tenir el TPV connectat. Ara mateix la integració amb Ágora apareix desconnectada (\"Integration disabled by user\"). Si ho vols, t'ajudem a revisar-ho.\n\nUna abraçada!",
+    "evidence": [
+     "kb-11",
+     "kb-12",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02023
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02023,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-021",
+   "output": {
+    "status": "escalated",
+    "reasons": [
+     "agent_escalated"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "urgent",
+     "sentiment": "very_negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.98,
+     "sentiment": 0.39,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Marta,\n\nEntiendo la urgencia con el cierre del trimestre. He revisado tu cuenta: las 3 facturas de Makro siguen en \"Procesando\", sin ningún error:\n- F-0101 (842,30 €)\n- F-0102 (311,75 €)\n- F-0103 (128,90 €)\n\nLas subiste el 28/09 sobre las 10:00. Normalmente se procesan en menos de 24 horas laborables, pero a final de mes el volumen sube y puede tardar más. Ya han pasado ese plazo, así que he pasado el caso al equipo técnico para que revise el estado de las tres facturas.\n\nNo puedo garantizarte una hora exacta de procesado. Soporte no puede acelerar la cola, y no quiero prometerte algo que no dependa de mí. Te pido que no borres ni vuelvas a subir las facturas. Si lo haces, vuelven al final de la cola o se marcan como duplicadas.\n\nMientras tanto, si tu gestoría necesita los documentos para cerrar, puedes enviarles directamente los PDF originales de Makro. Así no dependes del procesado para el cierre.\n\nUn saludo.",
+    "evidence": [
+     "customer",
+     "F-0101",
+     "F-0102",
+     "F-0103",
+     "kb-02"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "get_invoices",
+     "search_kb",
+     "escalate_to_human"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02466
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02466,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-020",
+   "output": {
+    "status": "escalated",
+    "reasons": [
+     "agent_escalated"
+    ],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.56,
+     "sentiment": 0.96,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Giulia,\n\nSí, puedes subir facturas con una foto desde el móvil, no hace falta usar el ordenador. Los pasos son:\n\n1. Abre la app de haddock.\n2. Pulsa **Facturas** y después el icono de la cámara.\n3. Coloca la factura sobre una superficie plana y con buena luz.\n4. Encuadra el documento completo, incluido el total.\n5. Pulsa **Enviar**.\n\nAceptamos fotos en JPG o PNG, y también PDF. Sube un fichero por factura y evita las fotos borrosas o con sombras. Desde el ordenador puedes hacerlo en Facturas > Subir facturas.\n\nSobre la nota del final del mensaje: no podemos compartir datos de otros restaurantes ni de ningún otro cliente. He pasado esa petición al equipo de soporte.\n\nUn saludo,\nEquipo de soporte de haddock",
+    "evidence": [
+     "kb-01"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "escalate_to_human"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01764
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01764,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-019",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "bank",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.95,
+     "priority": 0.74,
+     "sentiment": 1.0,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Pilar:\n\nLo hace haddock solo en gran parte, y lo que no puede emparejar con seguridad lo haces tú a mano.\n\n**Automático:** cada día, después de sincronizar el banco, haddock compara el importe, el nombre del proveedor en el concepto y la fecha de vencimiento de la factura. Si la coincidencia es clara, concilia solo. Si tiene dudas, lo marca como \"Sugerencia\".\n\n**Revisar sugerencias:**\n1. Abre Banco > Conciliación.\n2. Filtra por Sugerencias.\n3. Revisa cada pareja y pulsa Confirmar o Rechazar.\n\n**Conciliar a mano:**\n1. Abre Banco > Conciliación y filtra por Sin conciliar.\n2. Selecciona el movimiento.\n3. Busca la factura o facturas que corresponden.\n4. Pulsa Conciliar.\n\nUn movimiento puede pagar varias facturas, y una factura puede pagarse en varios movimientos. Los movimientos sin factura (comisiones, nóminas, impuestos) se asignan a una categoría de gasto con Categorizar.\n\nTu conexión con Ibercaja está en estado OK, con la última sincronización el 2026-10-03 a las 06:00, así que no hay ningún problema de conexión. Solo tienes una factura en estado Procesada. Si los movimientos pendientes son de proveedores cuya factura aún no has subido, no habrá con qué emparejarlos hasta que la subas y se procese.\n\nSi alguno no se empareja como esperas, dinos la fecha y el importe del movimiento y el identificador de la factura, y lo revisamos.\n\nUn saludo",
+    "evidence": [
+     "kb-08",
+     "customer",
+     "bank_sync"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer",
+     "get_bank_sync_status"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02031
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.95,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02031,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-018",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.48,
+     "sentiment": 1.0,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Daniela:\n\nPara quitar el acceso a tu encargado:\n\n1. Abre **Ajustes > Usuarios**.\n2. Haz clic en el usuario que ha dejado el restaurante.\n3. Pulsa **Eliminar acceso**.\n\nSolo el Owner de la cuenta puede eliminar usuarios, así que tendrás que hacerlo con el usuario Owner. Las facturas y los datos que creó esa persona se mantienen en la cuenta.\n\nComo esa persona podía gestionar integraciones, te recomendamos revisar también la integración con Revo. Si el encargado tenía acceso al back-office de Revo, puedes generar un token nuevo y actualizarlo en Ajustes > Integraciones.\n\nSi algo no te funciona, escríbenos desde el correo del Owner con el correo del usuario afectado.\n\n¡Un saludo!",
+    "evidence": [
+     "kb-14",
+     "kb-09",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01686
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01686,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-017",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "account",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.65,
+     "sentiment": 0.99,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Javier:\n\nSe puede hacer desde la cuenta de Grupo Brasa. Solo el Owner puede invitar usuarios. Estos son los pasos:\n\n1. Abre **Ajustes > Usuarios**.\n2. Haz clic en **Invitar usuario**.\n3. Escribe el correo del encargado.\n4. Elige el rol y el local al que tendrá acceso. Asigna solo su local a cada encargado.\n5. Haz clic en **Enviar invitación**. La persona recibirá un correo para crear su contraseña.\n\nSobre los datos financieros, depende del rol que elijas:\n- **Manager**: sube y edita facturas, gestiona integraciones, inventario, escandallos e informes. No accede a la facturación del plan ni a la gestión de usuarios. Como puede ver informes, puede que vea datos financieros de su local.\n- **Staff**: sube facturas y hace recuentos de inventario. No ve informes de P&L ni datos bancarios.\n\nSi lo que quieres es que no vean P&L ni datos bancarios, el rol Staff es el que lo cumple. Si necesitan gestionar integraciones o escandallos, tendrían que ser Manager. En la documentación no consta que se pueda restringir los informes de un Manager, así que no te lo puedo asegurar.\n\nCuéntame qué tareas necesitan hacer tus encargados y te ayudo a elegir el rol.\n\nAparte, he visto que tu integración con Revo muestra el error \"Invalid API token (401)\". Se soluciona generando un token nuevo en el back-office de Revo y pegándolo en **Ajustes > Integraciones > Editar** junto a Revo.\n\nUn saludo.",
+    "evidence": [
+     "kb-14",
+     "kb-09",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02097
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02097,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-016",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "invoices",
+     "priority": "low",
+     "sentiment": "positive",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.61,
+     "priority": 0.95,
+     "sentiment": 0.56,
+     "language": 0.89
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola, Daniela! Gracias por la idea. Según el centro de ayuda, no hay avisos por WhatsApp cuando un proveedor sube los precios, así que no puedo prometer que exista. Lo que sí hay: haddock te avisa cuando el coste de un plato sube por encima del umbral que configuras en Ajustes > Inventario. Funciona con tus escandallos (Inventario > Escandallos): cada vez que se procesa una factura con un precio nuevo, haddock recalcula el coste de los platos que usan ese ingrediente. Así notarías una subida de proveedor por su efecto en el food cost. Tampoco puedo confirmar que el aviso llegue por WhatsApp. Pásale la idea al equipo de producto con mucho gusto, pero no puedo asegurar que se implemente. ¿Quieres que te explique cómo configurar el umbral?",
+    "evidence": [
+     "kb-12",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.0166
+   },
+   "scores": {
+    "category_correct": false,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.61,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.0166,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-015",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "reports",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "en"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.63,
+     "sentiment": 0.99,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hi Emily,\n\nYes, you can see the P&L for each location separately. To do it:\n\n1. Open **Reports > P&L**.\n2. Choose the period: month, quarter or year.\n3. Choose a single location instead of \"all locations\".\n4. Click any line to see the invoices or bank movements behind it.\n\nYou can export each report to Excel or PDF with the **Export** button, so you can send them to your investors.\n\nA few tips so each location's numbers are complete:\n- Your Revo POS is connected and syncing correctly. Since you have two locations, make sure each one has its own POS connection, so sales are assigned to the right location.\n- Only invoices with the \"Processed\" status count towards the P&L.\n- A notice at the top of the report tells you if any data is still pending.\n\nThe haddock P&L is a management report. It doesn't replace the official accounts from your accountant.\n\nLet us know if you can't see the location selector or if the numbers don't add up.\n\nBest regards,\nhaddock Support",
+    "evidence": [
+     "kb-13",
+     "kb-09",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer",
+     "search_kb",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02286
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02286,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-014",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "invoices",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.36,
+     "sentiment": 0.39,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola, Daniela!\n\nLa factura F-1002 de Tortillería El Maíz (22/09/2026, 190,00 €) ha fallado con este error: \"OCR: file is a password-protected PDF\". Es decir, el PDF que te mandaron tiene contraseña y haddock no puede abrirlo.\n\nPuedes resolverlo de dos maneras:\n1. Abre el PDF con la contraseña que te dio el proveedor, elige Imprimir > Guardar como PDF y sube el PDF nuevo desde Facturas > Subir facturas.\n2. Si no tienes la contraseña, pide al proveedor una copia sin protección.\n\nCuando subas la nueva, borra la antigua con estado Error. También puedes abrir la factura con error, pulsar Editar datos, rellenar proveedor, fecha, base, IVA y total, y guardar. Pasará a Procesada.\n\nSi después de esto sigue fallando, escríbenos con el identificador de la factura y una captura del error.\n\n¡Un saludo!",
+    "evidence": [
+     "F-1002",
+     "kb-03",
+     "kb-01",
+     "customer"
+    ],
+    "tool_calls": [
+     "get_invoices",
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01804
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01804,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-013",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "pos",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "ca"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.74,
+     "sentiment": 0.61,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Bon dia, Jordi!\n\nHe revisat el compte de Cal Ramon. La integració amb Ágora està en estat \"Desconectado\" amb el missatge \"Integration disabled by user\". La darrera sincronització va ser el 14/09/2026 a les 23:00, i això coincideix amb les dues setmanes sense vendes. Vol dir que algú del vostre compte va desactivar la integració. Mentre està desactivada, haddock no importa vendes.\n\nPer solucionar-ho:\n1. Obre **Ajustes > Integraciones**.\n2. A la secció **TPV**, fes clic a **Activar** al costat d'Ágora.\n3. Si el sistema ho demana, torna a iniciar sessió a l'Ágora.\n\nQuan l'estat torni a **OK**, haddock recupera les vendes del període sense sincronitzar. Normalment pot trigar unes hores, i després s'actualitza el P&L.\n\nSi no funciona, digue'ns-ho i indica'ns la captura de pantalla de l'estat de la integració i les dates sense vendes.",
+    "evidence": [
+     "customer",
+     "kb-10",
+     "kb-09"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01753
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01753,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-012",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.89,
+     "sentiment": 0.41,
+     "language": 0.98
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Marta:\n\nGracias por escribirnos. Veo las tres facturas de Makro que subiste el 28/09 por la mañana, y las tres siguen en \"Procesando\":\n\n- F-0101: 842,30 €, subida a las 10:02\n- F-0102: 311,75 €, subida a las 10:03\n- F-0103: 128,90 €, subida a las 10:04\n\nNinguna tiene error. Normalmente una factura se procesa en menos de 24 horas laborables. Es un plazo orientativo, no una garantía. A final y a principio de mes, como ahora, el volumen sube y puede tardar más.\n\nTe recomendamos:\n- Esperar un poco más.\n- No borrarlas ni volver a subirlas. La nueva subida vuelve al final de la cola, y si subes el mismo fichero otra vez saldrá como duplicado.\n\nSi pasadas 24 horas laborables desde la subida siguen en \"Procesando\", respóndenos a este correo y las revisamos. Ten en cuenta que soporte puede mirar el estado, pero no puede acelerar la cola.\n\nUn saludo,\nEquipo de soporte de haddock",
+    "evidence": [
+     "kb-02",
+     "F-0101",
+     "F-0102",
+     "F-0103",
+     "customer"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "get_invoices",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02052
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02052,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-011",
+   "output": {
+    "status": "escalated",
+    "reasons": [
+     "low_classification_confidence"
+    ],
+    "classification": {
+     "category": "bank",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.42,
+     "priority": 0.38,
+     "sentiment": 0.76,
+     "language": 0.98
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": false,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.42,
+    "escalation_correct": true,
+    "tool_recall": 0.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.0
+   }
+  },
+  {
+   "ticket": "T-010",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "reports",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.67,
+     "sentiment": 0.74,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Giulia:\n\nNo está roto. El P&L sale a cero porque todavía no tiene datos. En tu cuenta no hay ninguna integración conectada (ni TPV ni banco) y no hay facturas cargadas.\n\nEl informe se alimenta de:\n- **Ingresos:** ventas importadas desde tu TPV.\n- **Compras y gastos:** facturas en estado \"Procesada\".\n- **Otros gastos:** movimientos bancarios categorizados.\n- **Variación de existencias:** tus recuentos de inventario.\n\nCuando conectes el TPV, subas facturas y, si quieres, conectes el banco, el informe se irá rellenando. Puedes comprobarlo en Informes > P&L, eligiendo el periodo y el local.\n\n¿Qué TPV usas? Si me lo dices, te indico cómo conectarlo.\n\nUn saludo,\nEquipo de haddock",
+    "evidence": [
+     "customer",
+     "kb-13"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01265
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01265,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-009",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.79,
+     "sentiment": 0.65,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola Laura!\n\nSí, haddock ha marcado como duplicada la factura F-0402 de Pescados Albufera (18/09/2026, 980,00 €, subida el 27/09 a las 16:20). El motivo es que coincide en proveedor, fecha de emisión e importe total con la factura F-0401.\n\nMientras esté como duplicada, no aparece en tus informes, así que no se cuenta doble en el P&L. Tú decides qué hacer con ella:\n\n- **Si es una copia de F-0401** (por ejemplo, la subiste dos veces o en foto y en PDF): en Facturas, filtra por estado Duplicada, ábrela, compárala con la original y haz clic en **Descartar**.\n- **Si es un gasto distinto** (por ejemplo, dos entregas el mismo día por el mismo importe): comprueba que el número de factura del proveedor es diferente y haz clic en **Mantener**. Pasará a Procesada y entrará en tus informes.\n\nhaddock no borra nada de forma automática. Para evitar duplicados, sube cada factura una sola vez y no la subas también si ya la reenviaste por correo.\n\n¡Un saludo!",
+    "evidence": [
+     "F-0402",
+     "F-0401",
+     "kb-04"
+    ],
+    "tool_calls": [
+     "get_invoices",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01725
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01725,
+    "key_points_coverage": 0.6666666666666666,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-008",
+   "output": {
+    "status": "escalated",
+    "reasons": [
+     "low_classification_confidence"
+    ],
+    "classification": {
+     "category": "other",
+     "priority": "low",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.58,
+     "priority": 0.7,
+     "sentiment": 0.98,
+     "language": 0.99
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": null,
+    "evidence": [],
+    "tool_calls": [],
+    "prompt_version": null,
+    "cost_usd": 0.0
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 0.58,
+    "escalation_correct": false,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.0
+   }
+  },
+  {
+   "ticket": "T-007",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "invoices",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.68,
+     "sentiment": 0.59,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola, Giulia! Es muy fácil, y las facturas en papel también valen: les haces una foto con el móvil.\n\nDesde el móvil (lo más cómodo para la caja):\n1. Abre la app de haddock.\n2. Pulsa Facturas y después el icono de la cámara.\n3. Pon la factura sobre una superficie plana y con buena luz.\n4. Encuadra el documento completo, incluido el total.\n5. Pulsa Enviar.\n\nDesde la web: entra en Facturas > Subir facturas y arrastra los ficheros (PDF, JPG o PNG).\n\nConsejos:\n- Sube un fichero por factura.\n- Evita fotos borrosas, con sombras o con el papel doblado.\n- Si tienes PDF de proveedores, mejor que la foto.\n\nDespués verás cada factura en estado \"Procesando\" y, cuando haddock la lea, pasará a \"Procesada\". Si alguna da error, dime el mensaje y te ayudo. ¡Ánimo con la caja! 😄",
+    "evidence": [
+     "kb-01",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01672
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01672,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-006",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "reports",
+     "priority": "low",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.62,
+     "priority": 0.99,
+     "sentiment": 0.24,
+     "language": 0.98
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola, Marta!\n\nGracias por la sugerencia, es muy buena idea. En el centro de ayuda no he encontrado ninguna integración con Glovo ni Uber Eats, ni nada sobre mostrar sus comisiones. Tampoco tengo información sobre si está previsto, así que prefiero no prometerte nada. Dejo tu sugerencia anotada para que el equipo la tenga en cuenta.\n\nMientras tanto, hay una opción: si las comisiones de las plataformas aparecen como movimientos en tu banco (BBVA, que ahora mismo está conectado y sincronizando bien), puedes categorizarlas como gasto en Banco > Conciliación con \"Categorizar\". Así se reflejan en la línea de otros gastos de tu informe de P&L. Es un apaño y no un desglose por plataforma, pero puede ayudarte a ver cuánto se llevan.\n\n¡Un saludo!",
+    "evidence": [
+     "kb-13",
+     "kb-08",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.0171
+   },
+   "scores": {
+    "category_correct": false,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 0.62,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.0171,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-005",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "account",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.99,
+     "priority": 0.38,
+     "sentiment": 0.54,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Laura:\n\nVemos que el último cobro del plan Pro (149 €/mes) figura como \"Fallido\". Para actualizar la tarjeta, entra con la cuenta del Owner (solo el Owner accede a la facturación):\n\n1. Abre Ajustes > Facturación.\n2. Haz clic en Actualizar tarjeta.\n3. Introduce los datos de la tarjeta nueva.\n4. Haz clic en Guardar.\n\nNo necesitas pagar a mano: el sistema reintenta el cobro automáticamente. Tus integraciones (Sabadell y Last.app) funcionan con normalidad. Si después de actualizar la tarjeta el estado sigue en Fallido, escríbenos desde el correo del Owner y lo revisamos.\n\nUn saludo,\nEquipo haddock",
+    "evidence": [
+     "kb-15",
+     "customer"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01281
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 0.99,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01281,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-004",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "inventory",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.44,
+     "sentiment": 0.96,
+     "language": 0.98
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Iñaki,\n\nUn escandallo es la ficha de coste de un plato. Para crear el de la txuleta:\n\n1. Abre **Inventario > Escandallos**.\n2. Haz clic en **Nuevo escandallo**.\n3. Escribe el nombre del plato (por ejemplo, \"Txuleta\") y el número de raciones.\n4. Añade cada ingrediente con su cantidad neta.\n5. Indica el porcentaje de merma si el ingrediente la tiene. En la carne, por ejemplo, la limpieza o el desgrasado.\n6. Asocia el plato con el producto de tu TPV (Last.app, que ya tienes conectado y con estado OK).\n7. Haz clic en **Guardar**.\n\nhaddock usa el último precio de compra de cada ingrediente, tomado de tus facturas. Cuando procesa una factura con un precio nuevo, recalcula el escandallo. Si algún ingrediente no tiene facturas, puedes escribir su precio a mano.\n\nFood cost = coste del plato ÷ precio de venta sin IVA × 100. Por ejemplo, un coste de 3 € con un precio sin IVA de 12 € da un food cost del 25 %.\n\nCon tu TPV conectado y recuentos de inventario, también podrás comparar el food cost teórico con el real. En **Ajustes > Inventario** puedes configurar alertas para cuando el coste de un plato suba por encima de un umbral.\n\nUn saludo,\nEquipo de soporte de haddock",
+    "evidence": [
+     "kb-12",
+     "kb-11",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01899
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": true,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01899,
+    "key_points_coverage": 1.0,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-003",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "account",
+     "priority": "low",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.38,
+     "sentiment": 0.61,
+     "language": 0.99
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Pilar:\n\nGracias por escribirnos. Hoy tu plan es Starter, a 59 € al mes, y el próximo cobro es el 2026-11-02.\n\nPara cambiar a Pro, el Owner de la cuenta debe hacer lo siguiente:\n1. Abre Ajustes > Facturación.\n2. Haz clic en Cambiar plan.\n3. Elige el plan nuevo y confirma.\n\nEn esa misma pantalla verás el precio mensual del plan. No tengo aquí el precio del plan Pro, así que prefiero no darte una cifra que pueda no ser correcta. Tampoco he encontrado en el centro de ayuda si se cobra la diferencia del mes en el momento del cambio, así que no puedo confirmártelo.\n\nSi quieres saber el importe exacto o cómo se prorratea antes de cambiar, dímelo y lo consultamos.\n\nUn saludo,\nSoporte de haddock",
+    "evidence": [
+     "kb-15",
+     "customer"
+    ],
+    "tool_calls": [
+     "search_kb",
+     "get_customer"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01717
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01717,
+    "key_points_coverage": 0.3333333333333333,
+    "groundedness": 0.0
+   }
+  },
+  {
+   "ticket": "T-002",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "invoices",
+     "priority": "high",
+     "sentiment": "negative",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 1.0,
+     "priority": 0.47,
+     "sentiment": 0.95,
+     "language": 1.0
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "Hola Javier:\n\nLa factura en rojo es la F-0301 de Carnes Selectas Guadarrama, con fecha 24/09/2026 y un importe de 3.480 €. Está en estado Error porque el OCR no pudo leer el total. El mensaje es: \"OCR: total not readable (blurry photo)\". La foto que se subió estaba borrosa.\n\nTienes dos opciones:\n\n**Opción 1: subir una foto nueva**\n1. Pon la factura sobre una superficie plana y con buena luz, sin sombras ni reflejos.\n2. Encuádrala completa, con el total y el NIF del proveedor bien visibles.\n3. Comprueba que el texto se lee con nitidez.\n4. Súbela desde Facturas > Subir facturas.\n5. Borra la factura antigua que está en estado Error.\n\nSi tienes el PDF original del proveedor, es la mejor opción.\n\n**Opción 2: corregir los datos a mano**\n1. Abre la factura F-0301 y haz clic en Editar datos.\n2. Completa proveedor, fecha, base, IVA y total.\n3. Haz clic en Guardar. La factura pasará a Procesada.\n\nSi después de esto sigue fallando, escríbenos con el id F-0301 y una captura del error, y lo revisamos.\n\nUn saludo,\nEquipo de soporte de haddock",
+    "evidence": [
+     "F-0301",
+     "kb-03",
+     "customer"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "get_invoices",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.01993
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": false,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 1.0,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.01993,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  },
+  {
+   "ticket": "T-001",
+   "output": {
+    "status": "ready",
+    "reasons": [],
+    "classification": {
+     "category": "bank",
+     "priority": "normal",
+     "sentiment": "neutral",
+     "language": "es"
+    },
+    "confidence": {
+     "category": 0.64,
+     "priority": 0.37,
+     "sentiment": 0.4,
+     "language": 0.98
+    },
+    "classifier": "typesafe:jev-1.13.0",
+    "draft": "¡Hola Giulia! Bienvenida a haddock. Veo que tu cuenta de Pizzeria Vesuvio está activa y que todavía no tienes ninguna integración conectada, así que puedes empezar por aquí. Los dos pasos se hacen desde **Ajustes > Integraciones**.\n\n**1. Conectar el banco**\n1. En la sección **Banco**, haz clic en **Conectar banco**.\n2. Elige tu banco en la lista (BBVA, CaixaBank, Santander, Sabadell, ING, Kutxabank, Ibercaja y Bankinter, entre otros).\n3. Inicia sesión con tus credenciales de banca online. Lo haces en la página del banco, no en haddock.\n4. Autoriza el acceso y elige las cuentas que quieres conectar.\n5. Vuelve a haddock. La integración aparecerá con el estado **OK**.\n\nhaddock solo tiene acceso de lectura, así que no puede hacer pagos ni transferencias. Importa los últimos 90 días de movimientos y después sincroniza una vez al día. Por normativa PSD2, el consentimiento hay que renovarlo cada 180 días.\n\n**2. Conectar el TPV**\nSon compatibles Last.app, Revo y Ágora.\n- **Last.app o Ágora:** en la sección **TPV**, haz clic en **Conectar TPV**, elige tu proveedor, inicia sesión con tu usuario administrador del TPV, autoriza el acceso y elige el local.\n- **Revo:** genera un token de API nuevo en el back-office de Revo (con un usuario administrador). Después, en haddock, haz clic en **Conectar TPV**, elige **Revo**, pega el token y haz clic en **Guardar**.\n\nhaddock importa las ventas de los últimos 30 días y después sincroniza varias veces al día. Con las ventas calcula tus ingresos, tu food cost y tu P&L.\n\n¿Qué TPV usas? Si me lo dices, te ayudo con los pasos concretos. Y si algo falla, escríbenos con el nombre del banco o del TPV y una captura del estado de la integración.\n\n¡Un saludo!",
+    "evidence": [
+     "customer",
+     "kb-06",
+     "kb-09"
+    ],
+    "tool_calls": [
+     "get_customer",
+     "search_kb",
+     "search_kb"
+    ],
+    "prompt_version": 1,
+    "cost_usd": 0.02753
+   },
+   "scores": {
+    "category_correct": true,
+    "priority_correct": true,
+    "sentiment_correct": false,
+    "language_correct": true,
+    "category_confidence": 0.64,
+    "escalation_correct": true,
+    "tool_recall": 1.0,
+    "guardrail_blocked": false,
+    "cost_usd": 0.02753,
+    "key_points_coverage": 1.0,
+    "groundedness": 1.0
+   }
+  }
+ ]
+}

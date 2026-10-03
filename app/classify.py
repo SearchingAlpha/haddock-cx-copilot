@@ -1,7 +1,6 @@
 """Ticket classifier: Jev decision model, Haiku fallback. Spec: docs/specs/classify.md."""
 
 from dataclasses import dataclass
-from functools import cache
 
 from langfuse import get_client, observe
 from pydantic import BaseModel, Field
@@ -39,14 +38,9 @@ class ClassifyResult:
 
 
 def _agent(model: str | Model) -> Agent[None, TicketClassification]:
-    return _cached_agent(model) if isinstance(model, str) else _build_agent(model)
-
-
-def _build_agent(model: str | Model) -> Agent[None, TicketClassification]:
+    # Built per call on purpose: a cached Agent keeps an async HTTP client bound to the first event loop,
+    # and run_sync from another thread (evals use asyncio.to_thread) then hangs forever.
     return Agent(model, output_type=TicketClassification, name="ticket-classifier")
-
-
-_cached_agent = cache(_build_agent)
 
 
 @observe(name="classify")
@@ -54,10 +48,11 @@ def classify(
     subject: str, body: str, *, model: str | Model | None = None, fallback_model: str | Model | None = None
 ) -> ClassifyResult:
     text = f"{subject}\n\n{body}"
+    model = model or JEV_MODEL
     try:
-        result = _agent(model or JEV_MODEL).run_sync(text)
+        result = _agent(model).run_sync(text)
         details = result.response.provider_details or {}
-        return ClassifyResult(result.output, details.get("confidence"), "jev")
+        return ClassifyResult(result.output, details.get("confidence"), str(model))
     except Exception as error:  # Jev down, timeout, quota: fall back, but leave a mark in the trace
         get_client().update_current_span(level="WARNING", status_message=f"Jev failed, fallback: {error!r}")
         result = _agent(fallback_model or FALLBACK_CLASSIFIER_MODEL).run_sync(text)

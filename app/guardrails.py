@@ -3,7 +3,6 @@
 import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from functools import cache
 from typing import Literal
 
 from langfuse import get_client, observe
@@ -50,8 +49,8 @@ class _PromiseQuestions(BaseModel):
     )
 
 
-@cache
 def _promise_agent() -> Agent[None, _PromiseQuestions]:
+    # Not cached: see app/classify.py::_agent (async client bound to one event loop).
     return Agent(JEV_MODEL, output_type=_PromiseQuestions, name="promise-check")
 
 

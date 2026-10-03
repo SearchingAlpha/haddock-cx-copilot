@@ -86,9 +86,31 @@ Traza de un ticket, con los números del sequenceDiagram:
 - **Spans de HTTP o de base de datos:** el filtro por defecto del SDK v4 los descarta. Solo exporta spans de LLM y de Langfuse.
 - **Datos personales:** los tickets de `data/` son sintéticos. Antes de usar tickets reales, añade una función `mask` al cliente.
 
+## Prompt management
+
+```mermaid
+flowchart TD
+    n1["1. scripts/push_prompts.py"] -->|"texto distinto: versión nueva"| n2[("Langfuse: cx-agent-system, eval-key-points-judge")]
+    n2 --> n3["3. app/prompts.py: get_prompt(name, label)"]
+    n3 -->|"Langfuse responde"| n4["4. prompt de Langfuse + config"]
+    n3 -->|"error"| n5["5. fallback: texto local de app/prompts.py"]
+    n4 --> n6["6. update_current_generation(prompt=...)"]
+    n6 --> n7["7. la generation muestra la versión del prompt"]
+```
+
+1. `scripts/push_prompts.py` sube los prompts locales. Langfuse crea una versión nueva solo si el texto cambia.
+2. Langfuse guarda las versiones y los labels: `production` y `staging`.
+3. `app/prompts.py` lee el prompt por label. La caché del SDK dura 60 segundos.
+4. La `config` del prompt contiene `effort`. Un cambio de effort no necesita un deploy.
+5. Si Langfuse no responde, el código usa el texto local. Este texto es también la semilla de `push_prompts.py`.
+6. `agent.py` enlaza el prompt a cada generation `agent-turn`.
+7. En Langfuse, cada generation muestra la versión que la produjo. Un prompt de fallback no se enlaza.
+
+**Promoción.** Una versión nueva entra con el label `staging`. El experimento compara `staging` con `production`. Si gana, Pablo mueve el label `production` en la UI de Langfuse.
+
 ## Open decisions
 
-- Fase 2: `agent.py` usa el SDK de Anthropic. Instrumenta con `opentelemetry-instrumentation-anthropic` en `init_tracing()`, según la integración oficial de Langfuse.
+- `agent.py` traza las llamadas a Anthropic a mano con `@observe(as_type="generation")`: modelo, tokens con caché, coste y prompt. No usa `opentelemetry-instrumentation-anthropic`: el código manual se lee mejor en la revisión de código.
 - Los nombres `chat jev-…` y `decide jev-…` vienen de `pydantic-ai`. Contienen el modelo. Los aceptamos porque los crea la integración.
 
 ## Done when
