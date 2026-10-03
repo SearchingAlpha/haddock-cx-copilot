@@ -25,7 +25,8 @@ python -m uv run python evals/run_experiment.py     # experimento en Langfuse
 4. **Los prompts viven en Langfuse.** Lee los prompts con `app/prompts.py`. La copia local es solo un fallback.
 5. **Sin frameworks de agentes.** El bucle de tool use está escrito a mano en `app/agent.py`, para que se lea en la revisión de código.
 6. **Modelos:** Jev (TypeSafe, vía `pydantic-ai`) para las decisiones tipadas: clasificar y las preguntas sí/no de los guardrails. Haiku como fallback de Jev y para LLM-as-judge. Sonnet para el agente. Los ids de los modelos están en un solo sitio. Fija la versión de Jev; no uses `jev-latest` fuera de `scripts/`.
-7. **Un término = un significado.** Usa los términos de la tabla de `docs/specs/overview.md` en el código, los specs y los commits.
+7. **Langfuse v4 (organización nueva):** los endpoints legacy (`api.trace.get`, `/api/public/traces`) devuelven 410. Para leer trazas usa `langfuse.api.observations.get_many(trace_id=..., from_start_time=..., to_start_time=...)`. Comprueba la documentación actual antes de usar otra API de lectura.
+8. **Un término = un significado.** Usa los términos de la tabla de `docs/specs/overview.md` en el código, los specs y los commits.
 
 ## Estructura
 
