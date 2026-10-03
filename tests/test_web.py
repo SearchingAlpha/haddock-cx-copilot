@@ -51,6 +51,31 @@ def test_review_sends_scores_and_moves_on(client):
     assert review["decision"] == "approve"
 
 
+def test_empty_reply_is_refused(client):
+    client.post("/webhooks/ticket", json=PAYLOAD)
+    r = client.post("/tickets/Z-1/review", data={"decision": "send", "final_text": "  ", "opened_at": "0"})
+    assert r.status_code == 422
+    assert client.scores == []
+
+
+def test_blocked_draft_cannot_be_sent_unedited(client, monkeypatch):
+    def blocked(ticket, customers, kb):
+        r = result(ticket.id, status="escalated")
+        r.reasons = ["refund_promise"]
+        return r
+
+    monkeypatch.setattr(main, "process_ticket", blocked)
+    client.post("/webhooks/ticket", json=PAYLOAD)
+    unedited = "Hola, F-0101 está en procesando."
+    assert client.post("/tickets/Z-1/review", data={
+        "decision": "send", "final_text": unedited, "opened_at": "0"}).status_code == 409
+    edited = client.post("/tickets/Z-1/review", data={
+        "decision": "send", "final_text": unedited + " Finanzas revisará tu caso.", "opened_at": "0"},
+        follow_redirects=False)
+    assert edited.status_code == 303
+    assert client.scores[0][1]["decision"] == "edit"
+
+
 def test_inbox_and_metrics_render(client):
     client.post("/webhooks/ticket", json=PAYLOAD)
     assert "Z-1" in client.get("/").text

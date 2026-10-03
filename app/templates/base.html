@@ -3,35 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}haddock CX copilot{% endblock %}</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.4/dist/htmx.min.js"></script>
-  <style>
-    :root { --pico-font-size: 15px; }
-    main.container { max-width: 1280px; }
-    .badge { display: inline-block; padding: .1rem .5rem; border-radius: 1rem; font-size: .8rem;
-             background: var(--pico-secondary-background); color: var(--pico-secondary-inverse); }
-    .badge.ready { background: #2e7d32; } .badge.escalated { background: #c62828; }
-    .badge.processing { background: #6d6d6d; } .badge.sent { background: #1565c0; }
-    .badge.rejected { background: #4e342e; } .badge.warn { background: #ef6c00; }
-    .reason { color: #c62828; font-weight: 600; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1.3fr; gap: 1.5rem; }
-    .stat { font-size: 2rem; font-weight: 700; margin: 0; }
-    pre.ticket { white-space: pre-wrap; font-family: inherit; }
-    textarea[name=final_text] { min-height: 22rem; }
-    small.muted { color: var(--pico-muted-color); }
-  </style>
+  <title>{% block title %}Cola · haddock CX copilot{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.4/dist/htmx.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/static/app.js" defer></script>
 </head>
-<body>
-  <header class="container">
-    <nav>
-      <ul><li><strong>haddock</strong> · CX copilot</li></ul>
-      <ul>
-        <li><a href="/">Bandeja</a></li>
-        <li><a href="/metrics">Impacto</a></li>
-      </ul>
+<body data-next="{{ next_id or '' }}" data-prev="{{ prev_id or '' }}">
+  <div class="shell {% block shell_class %}{% endblock %}">
+    <nav class="rail" aria-label="Principal">
+      <span class="mark" aria-hidden="true">h</span>
+      <a href="/" {% if active == "queue" or not active %}aria-current="page"{% endif %} title="Cola">
+        <i data-lucide="inbox"></i><span class="sr-only">Cola</span>
+        {% if pending %}<span class="count">{{ pending }}</span>{% endif %}
+      </a>
+      <a href="/metrics" {% if active == "metrics" %}aria-current="page"{% endif %} title="Impacto">
+        <i data-lucide="chart-no-axes-column"></i><span class="sr-only">Impacto</span>
+      </a>
     </nav>
-  </header>
-  <main class="container">{% block content %}{% endblock %}</main>
+    {% block queue %}{% include "_queue.html" %}{% endblock %}
+    {% block main %}{% endblock %}
+  </div>
 </body>
 </html>

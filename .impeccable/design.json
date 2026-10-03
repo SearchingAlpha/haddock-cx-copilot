@@ -1,0 +1,635 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-03T00:00:00Z",
+  "title": "Design System: haddock CX copilot",
+  "extensions": {
+    "colorMeta": {
+      "rail": {
+        "role": "primary",
+        "displayName": "Deep Helpdesk Teal",
+        "canonical": "oklch(30.6% 0.051 209)",
+        "tonalRamp": [
+          "#001017",
+          "#002a31",
+          "#19474e",
+          "#39666d",
+          "#58868e",
+          "#79a8b0",
+          "#9eced6",
+          "#dcf4f8"
+        ]
+      },
+      "rail-ink": {
+        "role": "primary",
+        "displayName": "Rail Mist",
+        "canonical": "oklch(83.8% 0.025 203)",
+        "tonalRamp": [
+          "#000e10",
+          "#152829",
+          "#304446",
+          "#4d6264",
+          "#6d8284",
+          "#8da3a5",
+          "#b2c9cb",
+          "#e5f1f2"
+        ]
+      },
+      "rail-ink-strong": {
+        "role": "primary",
+        "displayName": "Rail White",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "rail-active": {
+        "role": "primary",
+        "displayName": "Rail Teal Active",
+        "canonical": "oklch(37.6% 0.060 208)",
+        "tonalRamp": [
+          "#001118",
+          "#002b33",
+          "#084850",
+          "#2f676f",
+          "#508890",
+          "#71a9b2",
+          "#96d0d9",
+          "#d8f5f9"
+        ]
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "Cool Gray Ground",
+        "canonical": "oklch(95.6% 0.003 220)",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#222425",
+          "#3e4041",
+          "#5b5e5f",
+          "#7b7e7f",
+          "#9c9fa0",
+          "#c2c5c5",
+          "#edefef"
+        ]
+      },
+      "pane": {
+        "role": "neutral",
+        "displayName": "Pane White",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "wash": {
+        "role": "neutral",
+        "displayName": "Hover Wash",
+        "canonical": "oklch(97.8% 0.003 229)",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#232425",
+          "#3e4041",
+          "#5c5e5f",
+          "#7c7d7e",
+          "#9d9fa0",
+          "#c2c4c5",
+          "#eeeeef"
+        ]
+      },
+      "wash-header": {
+        "role": "neutral",
+        "displayName": "Header Wash",
+        "canonical": "oklch(98.1% 0.001 197)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#232424",
+          "#3f4040",
+          "#5d5e5e",
+          "#7c7d7d",
+          "#9e9e9e",
+          "#c3c4c4",
+          "#eeeeee"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(89.2% 0.005 229)",
+        "tonalRamp": [
+          "#090c0d",
+          "#222526",
+          "#3d4042",
+          "#5b5e60",
+          "#7a7e80",
+          "#9b9fa1",
+          "#c1c5c7",
+          "#edeff0"
+        ]
+      },
+      "line-soft": {
+        "role": "neutral",
+        "displayName": "Soft Hairline",
+        "canonical": "oklch(93.9% 0.003 248)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232426",
+          "#3e4041",
+          "#5c5e5f",
+          "#7c7d7f",
+          "#9d9fa0",
+          "#c2c4c6",
+          "#edeeef"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "oklch(77.6% 0.013 229)",
+        "tonalRamp": [
+          "#060c10",
+          "#1e2529",
+          "#394145",
+          "#565f64",
+          "#767f84",
+          "#96a0a5",
+          "#bcc6cb",
+          "#eaeff2"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Slate Ink",
+        "canonical": "oklch(33.9% 0.019 242)",
+        "tonalRamp": [
+          "#050c13",
+          "#1c252d",
+          "#374149",
+          "#545f68",
+          "#747f88",
+          "#94a0aa",
+          "#bac6d0",
+          "#e9eff5"
+        ]
+      },
+      "ink-strong": {
+        "role": "neutral",
+        "displayName": "Near-Black Ink",
+        "canonical": "oklch(24.0% 0.023 251)",
+        "tonalRamp": [
+          "#050c15",
+          "#1c252f",
+          "#37414c",
+          "#545f6b",
+          "#737f8b",
+          "#94a0ad",
+          "#b9c6d3",
+          "#e9eff6"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Slate",
+        "canonical": "oklch(51.2% 0.019 231)",
+        "tonalRamp": [
+          "#040d12",
+          "#1a262c",
+          "#364248",
+          "#536067",
+          "#728087",
+          "#93a1a8",
+          "#b8c7cf",
+          "#e8f0f4"
+        ]
+      },
+      "agent-gray": {
+        "role": "neutral",
+        "displayName": "Agent Gray",
+        "canonical": "oklch(92.5% 0.005 229)",
+        "tonalRamp": [
+          "#090c0d",
+          "#222526",
+          "#3d4042",
+          "#5b5e60",
+          "#7a7e80",
+          "#9b9fa1",
+          "#c1c5c7",
+          "#edeff0"
+        ]
+      },
+      "blue": {
+        "role": "primary",
+        "displayName": "Action Blue",
+        "canonical": "oklch(54.2% 0.131 248)",
+        "tonalRamp": [
+          "#00003e",
+          "#00215f",
+          "#004080",
+          "#0061a3",
+          "#3182c7",
+          "#55a4ec",
+          "#7ccbff",
+          "#cdf3ff"
+        ]
+      },
+      "blue-hover": {
+        "role": "primary",
+        "displayName": "Action Blue Deep",
+        "canonical": "oklch(39.7% 0.091 247)",
+        "tonalRamp": [
+          "#00082e",
+          "#00254d",
+          "#09426d",
+          "#2e618e",
+          "#4e82b1",
+          "#6fa4d4",
+          "#94cafd",
+          "#d7f2ff"
+        ]
+      },
+      "blue-select": {
+        "role": "primary",
+        "displayName": "Selection Blue Wash",
+        "canonical": "oklch(94.0% 0.020 246)",
+        "tonalRamp": [
+          "#050c13",
+          "#1c252d",
+          "#37414a",
+          "#555f68",
+          "#747f89",
+          "#95a0aa",
+          "#bac6d0",
+          "#e9eff5"
+        ]
+      },
+      "red": {
+        "role": "secondary",
+        "displayName": "Risk Red",
+        "canonical": "oklch(51.3% 0.182 19)",
+        "tonalRamp": [
+          "#3b0000",
+          "#600000",
+          "#860013",
+          "#ad1431",
+          "#d34150",
+          "#fb6670",
+          "#ff8d94",
+          "#ffd7d6"
+        ]
+      },
+      "red-tint": {
+        "role": "secondary",
+        "displayName": "Risk Wash",
+        "canonical": "oklch(96.7% 0.016 13)",
+        "tonalRamp": [
+          "#110809",
+          "#2b2122",
+          "#483c3d",
+          "#665a5b",
+          "#87797a",
+          "#a89a9b",
+          "#cec0c1",
+          "#f4eced"
+        ]
+      },
+      "red-line": {
+        "role": "secondary",
+        "displayName": "Risk Hairline",
+        "canonical": "oklch(83.5% 0.075 9)",
+        "tonalRamp": [
+          "#220005",
+          "#41101c",
+          "#612d37",
+          "#824b54",
+          "#a46a73",
+          "#c88b94",
+          "#f0b0b9",
+          "#ffe5e9"
+        ]
+      },
+      "red-ink-deep": {
+        "role": "secondary",
+        "displayName": "Risk Ink",
+        "canonical": "oklch(38.8% 0.135 19)",
+        "tonalRamp": [
+          "#310000",
+          "#540006",
+          "#771021",
+          "#9b363e",
+          "#c0575d",
+          "#e6797d",
+          "#ff9fa1",
+          "#ffdddd"
+        ]
+      },
+      "amber-ink": {
+        "role": "tertiary",
+        "displayName": "Check Amber Ink",
+        "canonical": "oklch(46.7% 0.113 51)",
+        "tonalRamp": [
+          "#290000",
+          "#4a0600",
+          "#6c2800",
+          "#8e4815",
+          "#b16839",
+          "#d6895b",
+          "#ffaf7f",
+          "#ffe5cd"
+        ]
+      },
+      "amber-tint": {
+        "role": "tertiary",
+        "displayName": "Check Wash",
+        "canonical": "oklch(98.0% 0.016 74)",
+        "tonalRamp": [
+          "#0f0a05",
+          "#29231c",
+          "#453f37",
+          "#635c54",
+          "#837c73",
+          "#a49d94",
+          "#cac3b9",
+          "#f2eee9"
+        ]
+      },
+      "amber-line": {
+        "role": "tertiary",
+        "displayName": "Check Hairline",
+        "canonical": "oklch(88.0% 0.084 72)",
+        "tonalRamp": [
+          "#1f0100",
+          "#3c1a00",
+          "#5b3700",
+          "#7b5521",
+          "#9d7542",
+          "#bf9663",
+          "#e7bc87",
+          "#ffebd0"
+        ]
+      },
+      "amber-meter": {
+        "role": "tertiary",
+        "displayName": "Meter Amber",
+        "canonical": "oklch(69.8% 0.158 60)",
+        "tonalRamp": [
+          "#310000",
+          "#530000",
+          "#761b00",
+          "#9a3f00",
+          "#be6100",
+          "#e48316",
+          "#ffa94c",
+          "#ffe3b9"
+        ]
+      },
+      "meter-neutral": {
+        "role": "neutral",
+        "displayName": "Steel Meter",
+        "canonical": "oklch(70.9% 0.038 231)",
+        "tonalRamp": [
+          "#000d18",
+          "#0e2733",
+          "#2a4450",
+          "#48626f",
+          "#678290",
+          "#87a3b2",
+          "#acc9d9",
+          "#e2f1f9"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page title on full-width pages (Impacto)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Ticket subject, empty-state headings, ledger values."
+      },
+      "title-sm": {
+        "displayName": "Title Small",
+        "purpose": "Queue heading."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Context-panel section headings with a leading icon."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All readable text; messages cap at 70ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Group headers, tags, table headers, metadata; sentence case."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "IDs, keycaps, tool names, step numbers only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "focus",
+        "value": "0 0 0 3px rgba(31, 115, 183, 0.35)",
+        "purpose": "Focus ring on every :focus-visible element (--focus)."
+      },
+      {
+        "name": "editor-focus",
+        "value": "inset 0 0 0 2px rgba(31, 115, 183, .45)",
+        "purpose": "Draft textarea while focused."
+      },
+      {
+        "name": "pressed",
+        "value": "inset 0 1px 2px rgba(23, 32, 42, .12)",
+        "purpose": "Toggle button with aria-pressed=true."
+      }
+    ],
+    "motion": [
+      {
+        "name": "chevron",
+        "value": "transform .15s",
+        "purpose": "Queue group chevron rotates 90deg when open."
+      },
+      {
+        "name": "spinner",
+        "value": "spin .8s linear infinite; 3s under prefers-reduced-motion",
+        "purpose": "Copilot working state."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "1280px"
+      },
+      {
+        "name": "no-context",
+        "value": "1080px"
+      },
+      {
+        "name": "mobile",
+        "value": "760px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one primary action per decision (Enviar), with its key.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"/><path d=\"m21.854 2.147-10.94 10.939\"/></svg>Enviar <kbd class=\"ds-kbd\">A</kbd></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 8px; font: 600 14px/1 var(--font); cursor: pointer; padding: 9px 14px; border-radius: var(--radius); border: 1px solid var(--line); background: #fff; color: var(--ink); } .ds-btn:hover { background: #f6f8f9; } .ds-btn:focus-visible { outline: none; box-shadow: var(--focus); } .ds-btn:disabled { opacity: .5; cursor: not-allowed; } .ds-icon { flex: none; } .ds-btn-primary { background: var(--blue); border-color: var(--blue); color: #fff; } .ds-btn-primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); } .ds-kbd { font: 600 11px/1 var(--mono); padding: 2px 5px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; background: #f8f9f9; color: var(--muted); } .ds-btn-primary .ds-kbd { border-color: rgba(255,255,255,.45); background: transparent; color: inherit; opacity: .85; }"
+    },
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Secondary actions and toggles; pressed state for Editar while editing.",
+      "html": "<button class=\"ds-btn\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/></svg>Editar <kbd class=\"ds-kbd\">E</kbd></button> <button class=\"ds-btn\" aria-pressed=\"true\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/></svg>Editar <kbd class=\"ds-kbd\">E</kbd></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 8px; font: 600 14px/1 var(--font); cursor: pointer; padding: 9px 14px; border-radius: var(--radius); border: 1px solid var(--line); background: #fff; color: var(--ink); } .ds-btn:hover { background: #f6f8f9; } .ds-btn:focus-visible { outline: none; box-shadow: var(--focus); } .ds-btn:disabled { opacity: .5; cursor: not-allowed; } .ds-icon { flex: none; } .ds-btn[aria-pressed=\"true\"] { background: #e9ecee; border-color: #aeb8bd; box-shadow: inset 0 1px 2px rgba(23,32,42,.12); } .ds-kbd { font: 600 11px/1 var(--mono); padding: 2px 5px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; background: #f8f9f9; color: var(--muted); }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Reject the draft. Red text, never a red fill.",
+      "html": "<button class=\"ds-btn ds-btn-danger\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg>Rechazar <kbd class=\"ds-kbd\">R</kbd></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 8px; font: 600 14px/1 var(--font); cursor: pointer; padding: 9px 14px; border-radius: var(--radius); border: 1px solid var(--line); background: #fff; color: var(--ink); } .ds-btn:hover { background: #f6f8f9; } .ds-btn:focus-visible { outline: none; box-shadow: var(--focus); } .ds-btn:disabled { opacity: .5; cursor: not-allowed; } .ds-icon { flex: none; } .ds-btn-danger { color: var(--red); border-color: var(--red-line); } .ds-btn-danger:hover { background: var(--red-tint); } .ds-kbd { font: 600 11px/1 var(--mono); padding: 2px 5px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; background: #f8f9f9; color: var(--muted); }"
+    },
+    {
+      "name": "Tags",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Icon plus text pills: neutral process state, risk, check, info. Never color alone, never blue, never green.",
+      "html": "<span class=\"ds-tag risk\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/></svg>Escalado</span> <span class=\"ds-tag check\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/></svg>Revisar categoría</span> <span class=\"ds-tag info\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/></svg>Manual</span> <span class=\"ds-tag\">En proceso</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 10px; font: 12px/18px var(--font); border: 1px solid var(--line); color: var(--muted); background: #fff; } .ds-tag .ds-icon { width: 12px; height: 12px; } .ds-tag.risk { color: var(--red); border-color: var(--red-line); background: var(--red-tint); } .ds-tag.check { color: var(--amber-ink); border-color: var(--amber-line); background: var(--amber-tint); } .ds-tag.info { color: var(--ink); background: #f6f8f9; }"
+    },
+    {
+      "name": "Guardrail Banner",
+      "kind": "custom",
+      "refersTo": "banner-risk",
+      "description": "Risk notice above the draft: icon, bold lead, reasons. Amber variant for check-this.",
+      "html": "<div class=\"ds-banner\" role=\"alert\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/></svg><div><strong>Bloqueado por los guardrails: edítalo antes de enviar.</strong><ul><li>Promete un reembolso</li></ul></div></div><div class=\"ds-banner check\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/></svg><div><strong>Revisa la categoría.</strong>Jev no está seguro de «invoices».</div></div>",
+      "css": ".ds-banner { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--red-line); background: var(--red-tint); color: #7d1726; border-radius: var(--radius); font: 14px/1.5 var(--font); } .ds-banner.check { border-color: var(--amber-line); background: var(--amber-tint); color: var(--amber-ink); } .ds-banner strong { display: block; margin-bottom: 2px; } .ds-banner ul { margin: 4px 0 0; padding-left: 18px; } .ds-banner .ds-icon { margin-top: 2px; flex: none; }"
+    },
+    {
+      "name": "Queue Row",
+      "kind": "custom",
+      "refersTo": "queue-row",
+      "description": "Priority dot, customer, age, subject, tags; the open ticket in selection blue.",
+      "html": "<a class=\"ds-row\" href=\"#\"><span class=\"ds-prio urgent\"></span><span class=\"ds-who\">Sushi Nami</span><span class=\"ds-age\">4 d</span><span class=\"ds-subject\">me habeis cobrado 2 veces</span><span class=\"ds-tags\"><span class=\"ds-tag risk\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/></svg>Escalado</span><span class=\"ds-ref\">T-011 · chat</span></span></a><a class=\"ds-row\" href=\"#\" aria-current=\"true\"><span class=\"ds-prio\"></span><span class=\"ds-who\">Grupo Brasa</span><span class=\"ds-age\">7 d</span><span class=\"ds-subject\">Factura Carnes Selectas con error</span><span class=\"ds-tags\"><span class=\"ds-ref\">T-002 · email</span></span></a>",
+      "css": ".ds-row { display: grid; grid-template-columns: 10px minmax(0,1fr) auto; gap: 2px 10px; padding: 10px 16px; border-bottom: 1px solid var(--line-soft); color: var(--ink); text-decoration: none; background: var(--pane); font: 14px/1.5 var(--font); width: 340px; } .ds-row:hover { background: #f6f8f9; } .ds-row[aria-current=\"true\"] { background: var(--blue-select); } .ds-row:focus-visible { outline: none; box-shadow: var(--focus); } .ds-prio { width: 8px; height: 8px; border-radius: 50%; margin-top: 7px; background: #c2c8cc; } .ds-prio.urgent { background: var(--red); } .ds-who { font-weight: 600; color: var(--ink-strong); } .ds-age { color: var(--muted); font-size: 12px; } .ds-subject, .ds-tags { grid-column: 2 / 4; } .ds-subject { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ds-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; } .ds-ref { font-size: 12px; color: var(--muted); align-self: center; } .ds-tag { display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 10px; font: 12px/18px var(--font); border: 1px solid var(--line); color: var(--muted); background: #fff; } .ds-tag .ds-icon { width: 12px; height: 12px; } .ds-tag.risk { color: var(--red); border-color: var(--red-line); background: var(--red-tint); } .ds-tag.check { color: var(--amber-ink); border-color: var(--amber-line); background: var(--amber-tint); } .ds-tag.info { color: var(--ink); background: #f6f8f9; }"
+    },
+    {
+      "name": "Product Rail",
+      "kind": "nav",
+      "refersTo": "rail-link",
+      "description": "Teal icon rail with mark, current page and pending count.",
+      "html": "<nav class=\"ds-rail\"><span class=\"ds-mark\">h</span><a href=\"#\" aria-current=\"page\" title=\"Cola\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"22 12 16 12 14 15 10 15 8 12 2 12\"/><path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/></svg><span class=\"ds-count\">7</span></a><a href=\"#\" title=\"Impacto\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 21V10\"/><path d=\"M12 21V3\"/><path d=\"M6 21v-6\"/></svg></a></nav>",
+      "css": ".ds-rail { background: var(--rail); display: inline-flex; flex-direction: column; align-items: center; padding: 12px 8px; gap: 4px; } .ds-mark { width: 32px; height: 32px; border-radius: 6px; background: #0e5b63; color: #fff; display: grid; place-items: center; font: 700 14px var(--font); margin-bottom: 12px; } .ds-rail a { position: relative; width: 40px; height: 40px; display: grid; place-items: center; color: var(--rail-ink); border-radius: 6px; } .ds-rail a:hover, .ds-rail a[aria-current=\"page\"] { color: var(--rail-ink-strong); background: var(--rail-active); } .ds-rail a:focus-visible { outline: none; box-shadow: var(--focus); } .ds-count { position: absolute; top: 2px; right: 1px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: #e3eef0; color: var(--rail); font: 700 11px/17px var(--font); text-align: center; }"
+    },
+    {
+      "name": "Draft Message",
+      "kind": "card",
+      "refersTo": "message-card",
+      "description": "Copilot draft rendered as the customer reads it; teal copilot avatar.",
+      "html": "<article class=\"ds-msg\"><header><span class=\"ds-avatar copilot\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z\"/></svg></span><div><strong>Borrador del copilot</strong> <span class=\"ds-muted\">· así lo verá Javier</span></div><span class=\"ds-meta\">email</span></header><div class=\"ds-body\"><p>Hola Javier:</p><p>La factura en rojo es la F-0301 de Carnes Selectas Guadarrama.</p></div></article>",
+      "css": ".ds-msg { background: var(--pane); border: 1px solid var(--line); border-radius: var(--radius); font: 14px/1.5 var(--font); color: var(--ink); max-width: 560px; } .ds-msg header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line-soft); } .ds-msg strong { color: var(--ink-strong); } .ds-muted { color: var(--muted); } .ds-meta { color: var(--muted); font-size: 12px; margin-left: auto; } .ds-body { padding: 14px 16px; } .ds-body p { margin: 0 0 10px; max-width: 70ch; } .ds-body p:last-child { margin-bottom: 0; } .ds-avatar { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; flex: none; color: #fff; background: #5c6970; } .ds-avatar.copilot { background: var(--rail); } .ds-avatar.agent { background: #e3e7e9; color: var(--ink); }"
+    },
+    {
+      "name": "Confidence Meter",
+      "kind": "custom",
+      "description": "Classification confidence: steel at or above 60%, amber below.",
+      "html": "<div class=\"ds-conf\"><span class=\"l\">Categoría</span><span class=\"v\">invoices</span><span class=\"p\">100%</span><span></span><span class=\"m\"><span style=\"width:100%\"></span></span><span></span><span class=\"l\">Prioridad</span><span class=\"v\">Alta</span><span class=\"p\">45%</span><span></span><span class=\"m low\"><span style=\"width:45%\"></span></span><span></span></div>",
+      "css": ".ds-conf { display: grid; grid-template-columns: 72px 1fr 34px; gap: 6px 8px; align-items: center; font: 13px/1.5 var(--font); width: 320px; } .ds-conf .l { color: var(--muted); } .ds-conf .v { color: var(--ink-strong); font-weight: 600; } .ds-conf .p { text-align: right; color: var(--muted); font-size: 12px; } .ds-conf .m { height: 4px; background: var(--line-soft); border-radius: 2px; overflow: hidden; } .ds-conf .m span { display: block; height: 100%; background: #8aa6b5; } .ds-conf .m.low span { background: #e38215; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Agent Workspace, Played Straight",
+    "overview": "This is the helpdesk category standard on purpose, held to the craft bar of Zendesk Agent Workspace. One screen carries the whole decision: a dark teal product rail, a queue column, the ticket workspace, and a customer context panel. The conventions are embraced, not parodied; an agent who has worked in any modern helpdesk should be productive in the first minute.\n\nThe world is light, dense and quiet, built for eight hours of daytime reading in an office. White working panes sit on a cool gray ground, separated by 1px hairlines, never by shadows. Color is a signal vocabulary, not decoration: one blue means \"act or selected\", red means risk, amber means \"check this\", and everything routine stays in plain gray text. The copilot shares the product's teal; the human agent is neutral gray.\n\nThe interface refuses the card-and-badge admin template and any decorative AI theatre: no gradients, glows, sparkle washes or chat-bubble playfulness. The draft is shown exactly as the customer will read it.",
+    "keyCharacteristics": [
+      "Four-column shell: 56px rail, 340px queue, fluid workspace, 360px context panel.",
+      "One system UI face at 14px, tabular numerals everywhere; monospace only for IDs, keys and tool names.",
+      "Flat panes, 1px dividers, 4px radii.",
+      "Color carries meaning only: blue action, red risk, amber check; routine is muted text.",
+      "Keyboard-first: every primary action shows its key (A, E, R, J, K, Esc)."
+    ],
+    "rules": [
+      {
+        "name": "The One Blue Rule",
+        "body": "Blue means action, selection or focus, and nothing else. Informational tags and banners are neutral gray, never blue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Red Means Risk Rule",
+        "body": "Red appears only where something can hurt the customer or the business: escalation, urgent priority, failed payment or integration, blocking guardrails, the reject action.",
+        "section": "colors"
+      },
+      {
+        "name": "The Amber Means Check Rule",
+        "body": "Amber appears only for \"check this\": a category to review and a low-confidence meter. It is never a softer red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Quiet Routine Rule",
+        "body": "Routine and OK states are plain muted text (\"Al día\", \"conectado\", \"Listo para revisar\"). Never a green pill, never a success badge.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never Color Alone Rule",
+        "body": "Risk is always an icon plus a text label, never color alone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Teal Is the Product Rule",
+        "body": "Teal belongs to the rail and the copilot avatar. The human agent mark is neutral gray, so who wrote a message reads at a glance.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Face Rule",
+        "body": "One system UI family for all text. No display face, no uppercase tracking, no italics for emphasis.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Numbers Rule",
+        "body": "`tabular-nums` is set on the body; every number in the product aligns.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Panes Rule",
+        "body": "Depth comes from hairlines and the ground-to-pane step. Shadows only answer focus or a pressed state.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep the four-column shell (56 / 340 / fluid / 360px) and let each column scroll on its own.",
+      "**Do** use Action Blue only for the one primary action, links, selection and focus.",
+      "**Do** pair every risk color with an icon and a text label.",
+      "**Do** write routine and OK states as muted text.",
+      "**Do** separate surfaces with 1px hairlines and the gray-to-white step, at 4px radius.",
+      "**Do** show the keyboard key on every action that has one.",
+      "**Do** use monospace only for IDs, keys, tool names and step numbers."
+    ],
+    "donts": [
+      "**Don't** use blue for information or status; neutral gray carries info.",
+      "**Don't** use green pills or success badges for routine states.",
+      "**Don't** use red for anything that is not risk, or amber for anything that is not \"check this\".",
+      "**Don't** put shadows on panes, cards or messages.",
+      "**Don't** give the human agent the teal; teal belongs to the product and the copilot.",
+      "**Don't** add a second typeface, uppercase labels, gradients or decorative AI effects."
+    ]
+  }
+}

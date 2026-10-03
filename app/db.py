@@ -20,20 +20,25 @@ CREATE TABLE IF NOT EXISTS tickets (
 CREATE TABLE IF NOT EXISTS results (
     ticket_id TEXT PRIMARY KEY REFERENCES tickets(id), status TEXT, reasons TEXT, classification TEXT,
     confidence TEXT, review_category INTEGER, draft TEXT, evidence TEXT, tool_calls TEXT, trace_id TEXT,
-    cost_usd REAL, prompt_version INTEGER
+    cost_usd REAL, prompt_version INTEGER, tool_outputs TEXT, escalation TEXT
 );
 CREATE TABLE IF NOT EXISTS reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT, ticket_id TEXT REFERENCES tickets(id), decision TEXT,
     final_text TEXT, edit_distance REAL, review_seconds REAL, category_final TEXT, created_at TEXT
 );
 """
-JSON_COLUMNS = ("reasons", "classification", "confidence", "evidence", "tool_calls")
+JSON_COLUMNS = ("reasons", "classification", "confidence", "evidence", "tool_calls", "tool_outputs", "escalation")
+LATE_COLUMNS = ("tool_outputs", "escalation")  # added after the first schema; migrated in connect()
 
 
 def connect(path: str | None = None) -> sqlite3.Connection:
     conn = sqlite3.connect(path or os.environ.get("HADDOCK_DB", "haddock.db"), check_same_thread=False)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    columns = {r["name"] for r in conn.execute("PRAGMA table_info(results)")}
+    for column in LATE_COLUMNS:
+        if column not in columns:
+            conn.execute(f"ALTER TABLE results ADD COLUMN {column} TEXT")
     return conn
 
 
@@ -60,13 +65,15 @@ def save_result(conn, result) -> None:
     c, a = result.classification, result.agent
     with conn:
         conn.execute(
-            "INSERT OR REPLACE INTO results VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT OR REPLACE INTO results VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (result.ticket_id, result.status, json.dumps(result.reasons),
              json.dumps(c.classification.model_dump(mode="json")) if c else None,
              json.dumps(c.confidence) if c else None, int(result.review_category),
              a.draft if a else None, json.dumps(a.evidence if a else []),
              json.dumps(a.tool_calls if a else []), result.trace_id,
-             a.cost_usd if a else 0.0, a.prompt_version if a else None),
+             a.cost_usd if a else 0.0, a.prompt_version if a else None,
+             json.dumps(getattr(a, "tool_outputs", []) if a else []),
+             json.dumps(vars(a.escalation)) if a and getattr(a, "escalation", None) else None),
         )
         conn.execute("UPDATE tickets SET state = ? WHERE id = ?", (result.status, result.ticket_id))
 

@@ -1,76 +1,162 @@
 {% extends "base.html" %}
-{% block title %}{{ t.id }} · haddock CX copilot{% endblock %}
-{% block content %}
-{% set manual = t.mode == "manual" or not t.draft %}
-<hgroup>
-  <h2>{{ t.id }} · {{ t.subject }}</h2>
-  <p><span class="badge {{ t.state }}">{{ t.state }}</span>
-    {% for r in t.reasons or [] %}<span class="reason"> · {{ r }}</span>{% endfor %}
-    {% if trace_url %} · <a href="{{ trace_url }}" target="_blank">ver traza en Langfuse ↗</a>{% endif %}</p>
-</hgroup>
+{% block title %}{{ t.id }} · {{ t.subject }}{% endblock %}
+{% block shell_class %}has-ticket{% endblock %}
 
-<div class="grid-2">
-  <section>
-    <article>
-      <header><strong>{{ customer.name }}</strong> · {{ customer.city }} · plan {{ customer.plan }} · {{ t.channel }}</header>
-      <pre class="ticket">{{ t.body }}</pre>
-      <footer>
+{% macro context_panel() %}
+  {% set c = t.classification or {} %}
+  <section class="ctx-section">
+    <h3><i data-lucide="store"></i>{{ customer.name }}</h3>
+    <dl class="kv">
+      <dt>Plan</dt><dd>{{ customer.plan | capitalize }} · {{ customer.locations }} {{ "local" if customer.locations == 1 else "locales" }}</dd>
+      <dt>Contacto</dt><dd>{{ customer.contact_name }}</dd>
+      <dt>Pago</dt><dd>{% if customer.billing.payment_status == "ok" %}Al día{% else %}<span class="tag risk"><i data-lucide="circle-alert"></i>Fallido</span>{% endif %}</dd>
+      <dt>Integraciones</dt>
+      <dd class="stack">
         {% for i in customer.integrations %}
-          <span class="badge {{ 'ready' if i.status == 'ok' else 'escalated' }}">{{ i.provider }}: {{ i.status }}</span>
-        {% endfor %}
-        <span class="badge {{ 'ready' if customer.billing.payment_status == 'ok' else 'escalated' }}">pago: {{ customer.billing.payment_status }}</span>
-      </footer>
-    </article>
+          {% if i.status == 'ok' %}<span>{{ i.provider }} <span class="muted">· {{ labels.status.get(i.status) }}</span></span>
+          {% else %}<span><span class="tag risk"><i data-lucide="circle-alert"></i>{{ i.provider }} · {{ labels.status.get(i.status, i.status) }}</span></span>{% endif %}
+        {% else %}<span class="muted">Ninguna</span>{% endfor %}
+      </dd>
+    </dl>
+  </section>
 
-    {% if t.classification %}
-    <article>
-      <header>Clasificación (Jev)</header>
-      {% for field in ["category", "priority", "sentiment", "language"] %}
-        <div>{{ field }}: <strong>{{ t.classification[field] }}</strong>
-          {% if t.confidence and t.confidence.get(field) is not none %}<small class="muted">confianza {{ "%.2f" | format(t.confidence.get(field)) }}</small>{% endif %}</div>
+  {% if t.classification %}
+  <section class="ctx-section">
+    <h3><i data-lucide="scan-text"></i>Clasificación <span class="muted">Jev</span></h3>
+    <div class="conf">
+      {% for field, label in [("category", "Categoría"), ("priority", "Prioridad"), ("sentiment", "Sentimiento"), ("language", "Idioma")] %}
+        {% set p = (t.confidence or {}).get(field) %}
+        <span class="label">{{ label }}</span><span class="value">{{ labels.value.get(field, {}).get(c[field], c[field]) }}</span>
+        <span class="pct">{{ "%d%%" | format(p * 100) if p is not none else "—" }}</span>
+        <span></span><span class="meter {{ 'low' if p is not none and p < 0.6 }}"><span style="width: {{ (p or 0) * 100 }}%"></span></span><span></span>
       {% endfor %}
-    </article>
-    {% endif %}
-
-    {% if not manual %}
-    <article>
-      <header>Evidencia que usó el agente</header>
-      <p>{% for e in t.evidence or [] %}<span class="badge">{{ e }}</span> {% endfor %}</p>
-      <small class="muted">tools: {{ (t.tool_calls or []) | join(" → ") }} · coste ${{ "%.4f" | format(t.cost_usd or 0) }}
-        · prompt v{{ t.prompt_version or "local" }}</small>
-    </article>
-    {% endif %}
+    </div>
   </section>
+  {% endif %}
 
-  <section>
+  {% if not manual %}
+  <section class="ctx-section">
+    <h3><i data-lucide="file-check"></i>Evidencia <span class="muted">{{ evidence | selectattr("cited") | list | length }} citada{{ "s" if (evidence | selectattr("cited") | list | length) != 1 }}</span></h3>
+    <div class="evidence">
+      {% for e in evidence %}
+      <details class="ev {{ 'cited' if e.cited }} {{ 'risk' if e.risk }}" {% if e.cited and e.kind != "Ayuda" %}open{% endif %}>
+        <summary>
+          <span class="kind">{{ e.kind }}</span><span>{% if e.cited %}<span class="tag"><i data-lucide="check"></i>Citada</span>{% endif %}</span><span class="ev-id">{{ e.id }}</span>
+          <span class="ev-title">{% if e.risk %}<i data-lucide="circle-alert"></i> {% endif %}{{ e.title }}</span>
+        </summary>
+        <div class="ev-detail">{{ e.detail }}</div>
+      </details>
+      {% else %}
+      <p class="muted">El agente no consultó datos para este borrador.</p>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="ctx-section">
+    <h3><i data-lucide="route"></i>Pasos del agente <span class="muted">${{ "%.3f" | format(t.cost_usd or 0) }} · prompt v{{ t.prompt_version or "local" }}</span></h3>
+    <ol class="trail">
+      <li>Clasificó con <code>Jev</code></li>
+      {% for tool in t.tool_calls or [] %}<li><code>{{ tool }}</code></li>{% endfor %}
+      <li>Escribió el borrador · guardrails: {{ "pasan" if t.status == "ready" else "piden revisión" }}</li>
+    </ol>
+    {% if trace_url %}<p><a href="{{ trace_url }}" target="_blank" rel="noopener">Abrir la traza en Langfuse <i data-lucide="external-link"></i></a></p>{% endif %}
+  </section>
+  {% endif %}
+{% endmacro %}
+
+{% block main %}
+<main class="workspace" id="workspace"
+  {% if t.state == "processing" %}hx-get="/tickets/{{ t.id }}" hx-trigger="every 3s" hx-select="#workspace" hx-target="#workspace" hx-swap="outerHTML"{% endif %}>
+  <header class="ws-head">
+    <a class="back" href="/" aria-label="Volver a la cola"><i data-lucide="arrow-left"></i></a>
+    <h2>{{ t.subject }}</h2>
+    <span class="id">{{ t.id }}</span>
+    {% if t.state == "escalated" %}<span class="tag risk"><i data-lucide="triangle-alert"></i>Escalado</span>
+    {% elif t.state == "ready" %}<span class="muted">Listo para revisar</span>
+    {% elif t.state == "processing" %}<span class="tag">En proceso</span>
+    {% else %}<span class="tag">{{ labels.state.get(t.state, t.state) }}</span>{% endif %}
+  </header>
+
+  <div class="ws-body">
+    <article class="message customer-msg">
+      <header>
+        <span class="avatar" aria-hidden="true">{{ customer.contact_name[:1] }}</span>
+        <div><strong>{{ customer.contact_name }}</strong> <span class="muted">· {{ customer.name }}</span></div>
+        <span class="meta">{{ t.channel }} · hace {{ ticket_age }}</span>
+      </header>
+      <div class="body">{{ t.body }}</div>
+    </article>
+
     {% if t.state == "processing" %}
-      <article aria-busy="true">El copilot está trabajando en este ticket…</article>
-      <script>setTimeout(() => location.reload(), 3000)</script>
-    {% else %}
-    <form method="post" action="/tickets/{{ t.id }}/review">
-      <input type="hidden" name="opened_at" value="{{ opened_at }}">
-      {% if manual %}
-        <p><span class="badge">modo manual</span> <small class="muted">Este ticket mide la línea base: escribe la respuesta sin copilot.</small></p>
-      {% elif t.state == "escalated" %}
-        <p class="reason">Escalado: revisa con atención antes de enviar.</p>
-      {% endif %}
-      <label>Respuesta al cliente
-        <textarea name="final_text">{% if not manual %}{{ t.draft }}{% endif %}</textarea>
-      </label>
-      <label>Categoría
-        {% if t.review_category %}<span class="badge warn">confianza baja: revísala</span>{% endif %}
-        <select name="category_final">
-          {% for c in categories %}
-            <option value="{{ c }}" {% if t.classification and t.classification.category == c %}selected{% endif %}>{{ c }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <div class="grid">
-        <button type="submit" name="decision" value="send">{{ "Enviar" if manual else "Enviar (aprobar o con tus cambios)" }}</button>
-        {% if not manual %}<button type="submit" name="decision" value="reject" class="secondary">Rechazar borrador</button>{% endif %}
+      <div class="working" role="status"><span class="spinner" aria-hidden="true"></span>
+        <div><strong>El copilot está investigando.</strong><br><span class="muted">Clasifica, consulta los datos del cliente y redacta. Suele tardar entre 15 y 30 segundos.</span></div>
       </div>
-    </form>
+    {% else %}
+      {% if reasons %}
+      {% set blocking = reasons | selectattr("blocking") | list %}
+      {% set others = reasons | rejectattr("code", "equalto", "agent_escalated") | list if t.escalation else reasons %}
+      <div class="banner" role="alert">
+        <i data-lucide="triangle-alert"></i>
+        <div>
+          {% if blocking %}<strong>Bloqueado por los guardrails: edítalo antes de enviar.</strong>
+          {% elif t.escalation %}<strong>Escalado a {{ labels.team.get(t.escalation.team, t.escalation.team) }}: revísalo con atención.</strong>
+          {% else %}<strong>Escalado: revísalo con atención.</strong>{% endif %}
+          {% if t.escalation %}<span>Motivo del agente: {{ t.escalation.reason }}</span>{% endif %}
+          {% if others %}<ul>{% for r in others %}<li>{{ r.label }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+      </div>
+      {% endif %}
+      {% if manual %}
+      <div class="banner info"><i data-lucide="pencil-line"></i>
+        <div><strong>Modo manual: escribe la respuesta sin copilot.</strong>Este ticket mide la línea base de tiempo. El borrador no se muestra.</div></div>
+      {% endif %}
+      {% if t.review_category %}
+      <div class="banner check"><i data-lucide="tag"></i>
+        <div><strong>Revisa la categoría.</strong>Jev no está seguro de «{{ (t.classification or {}).category }}». Corrígela abajo si hace falta.</div></div>
+      {% endif %}
+
+      {% if t.state in ("sent", "rejected") %}
+      <div class="banner info"><i data-lucide="circle-check"></i><div><strong>{{ "Enviado" if t.state == "sent" else "Borrador rechazado" }}.</strong>Este ticket ya tiene una decisión.</div></div>
+      {% endif %}
+
+      <form id="review-form" method="post" action="/tickets/{{ t.id }}/review"
+            data-blocking="{{ 'true' if blocking }}" data-manual="{{ 'true' if manual }}">
+        <input type="hidden" name="opened_at" value="{{ opened_at }}">
+        <article class="message draft {{ 'editing' if manual }}">
+          <header>
+            {% if manual %}<span class="avatar agent" aria-hidden="true"><i data-lucide="user-pen"></i></span>
+            {% else %}<span class="avatar copilot" aria-hidden="true"><i data-lucide="sparkles"></i></span>{% endif %}
+            <div><strong>{{ "Tu respuesta" if manual else "Borrador del copilot" }}</strong> <span class="muted">· así lo verá {{ customer.contact_name.split(" ")[0] }}</span></div>
+            <span class="meta">{{ t.channel }}</span>
+          </header>
+          <div class="body rendered">{{ reply_html }}</div>
+          <div class="editor">
+            <label class="sr-only" for="final_text">Respuesta al cliente</label>
+            <textarea id="final_text" name="final_text" placeholder="Escribe la respuesta a {{ customer.contact_name.split(' ')[0] }}…">{% if not manual %}{{ t.draft }}{% endif %}</textarea>
+          </div>
+        </article>
+        <div class="ctx-inline">{{ context_panel() }}</div>
+      </form>
     {% endif %}
-  </section>
-</div>
+  </div>
+
+  {% if t.state in ("ready", "escalated") %}
+  <footer class="composer">
+    <button form="review-form" type="submit" name="decision" value="send" class="btn primary" id="send-btn"
+      {% if blocking or manual %}disabled{% endif %}
+      title="{{ 'Edita el borrador: los guardrails lo bloquean' if blocking else ('Escribe la respuesta para enviar' if manual else 'Enviar al cliente') }}">
+      <i data-lucide="send"></i>Enviar <kbd>A</kbd></button>
+    {% if not manual %}
+    <button type="button" id="edit-btn" class="btn" aria-pressed="false" onclick="toggleEdit()"><i data-lucide="pencil"></i>Editar <kbd>E</kbd></button>
+    <button form="review-form" type="submit" name="decision" value="reject" class="btn danger"><i data-lucide="x"></i>Rechazar <kbd>R</kbd></button>
+    {% endif %}
+    <label class="sr-only" for="category_final">Categoría</label>
+    <select id="category_final" name="category_final" form="review-form" class="{{ 'check' if t.review_category }}" title="Categoría final">
+      {% for c in categories %}<option value="{{ c }}" {% if (t.classification or {}).category == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
+    </select>
+    <span class="spacer"></span>
+    <span class="hints"><span><kbd>J</kbd> siguiente</span><span><kbd>K</kbd> anterior</span><span><kbd>Esc</kbd> salir del editor</span></span>
+  </footer>
+  {% endif %}
+</main>
+<aside class="context" aria-label="Contexto del ticket">{{ context_panel() }}</aside>
 {% endblock %}

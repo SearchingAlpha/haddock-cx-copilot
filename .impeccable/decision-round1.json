@@ -1,0 +1,151 @@
+{
+  "title": "Elige el mundo visual del CX copilot",
+  "question": "La tirada asignó «Tiras de progreso». Quédatela, elige una alternativa o vuelve a tirar.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Tiras de progreso",
+      "kicker": "THE ROLL",
+      "lineage": "Tiras de progreso de vuelo en un puesto de control aéreo",
+      "thesis": "Cada ticket es una tira impresa en un rack: el agente CX la saca, la trabaja y la despacha.",
+      "palette": ["#2B2F33", "#EFE6C8", "#CFE0EC", "#C8321E", "#F2A900", "#14171A"],
+      "materials": ["tiras de cartulina impresa", "portatiras de aluminio en un rack grafito"],
+      "viewport": "A la izquierda, el rack con tres bahías (ESCALADOS, LISTOS, EN PROCESO). A la derecha, la posición de trabajo: el borrador tal como lo verá el cliente, con la evidencia en el margen.",
+      "risk": "Densidad alta: en un proyector hay que fijar bien la escala y el contraste, o se lee apretado.",
+      "raised": [
+        {"from": "challenger-feed", "raise": "La siguiente tira ya está cargada: J la trae al instante, sin pantalla de espera."},
+        {"from": "challenger-annual", "raise": "Una sola tipografía en todo el sistema y una retícula de 1 px como única estructura."},
+        {"from": "challenger-exposure", "raise": "Una tira escalada lleva rayado además de rojo: el riesgo se lee sin color."},
+        {"from": "challenger-folio", "raise": "Todas las tiras comparten la misma pista de etapas (recibido, clasificado, investigado, revisado, decidido) en una línea base."},
+        {"from": "challenger-cassette", "raise": "Cada tira muestra su tiempo de revisión alineado a la derecha, con números tabulares."}
+      ],
+      "comp": ".impeccable/mocks/decision/assigned.webp",
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "rack: escalados", "x": 0, "y": 0, "w": 4, "h": 3, "accent": true},
+        {"label": "rack: listos", "x": 0, "y": 3, "w": 4, "h": 5},
+        {"label": "rack: en proceso", "x": 0, "y": 8, "w": 4, "h": 2},
+        {"label": "tira activa + etapas", "x": 4, "y": 0, "w": 8, "h": 1, "accent": true},
+        {"label": "borrador como lo ve el cliente", "x": 4, "y": 1, "w": 5, "h": 8},
+        {"label": "margen de evidencia", "x": 9, "y": 1, "w": 3, "h": 8},
+        {"label": "barra de decisión A·E·R·J", "x": 4, "y": 9, "w": 8, "h": 1, "accent": true}
+      ]}
+    },
+    {
+      "id": "model-pick",
+      "label": "Libro conciliado",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Libro de cuentas y extracto bancario punteado",
+      "thesis": "Cada respuesta se puntea contra su evidencia, como una línea de extracto conciliada.",
+      "palette": ["#E9EFE6", "#1E2B24", "#2F6B4F", "#B23A2E", "#C9D3CB"],
+      "materials": ["papel pautado de libro mayor", "tinta roja y verde, marcas de punteo"],
+      "viewport": "Una hoja pautada: cada frase del borrador es una línea con su ✓ de evidencia en la columna derecha, como una conciliación.",
+      "risk": "Es la dirección más cercana a lo esperable aquí, y se parece al producto de haddock más que a una herramienta de CX.",
+      "comp": ".impeccable/mocks/decision/model-pick.webp",
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "cola como columnas de libro", "x": 0, "y": 0, "w": 3, "h": 10},
+        {"label": "borrador en líneas pautadas", "x": 3, "y": 0, "w": 6, "h": 9},
+        {"label": "columna de punteo ✓", "x": 9, "y": 0, "w": 3, "h": 9, "accent": true},
+        {"label": "saldo: decisión", "x": 3, "y": 9, "w": 9, "h": 1, "accent": true}
+      ]}
+    },
+    {
+      "id": "challenger-wayfinding",
+      "label": "Señalética de terminal",
+      "verdict": "competitive",
+      "lineage": "Señalética amarilla de aeropuerto internacional",
+      "thesis": "Cada ticket es un cruce de terminal: la banda amarilla muestra solo las decisiones que quedan por delante.",
+      "palette": ["#FFD200", "#111111", "#FFFFFF", "#5A5A5A"],
+      "materials": ["paneles esmaltados amarillos", "pictogramas blancos sobre negro"],
+      "viewport": "Una banda amarilla fija arriba (Enviar · Editar · Rechazar → siguiente T-007) sobre el borrador y la evidencia en negro sobre blanco.",
+      "case": "Se fusiona bien: el flujo de decisión se convierte en señalética. Gana en claridad, pierde en identificación: un agente de CX no se ve en un aeropuerto.",
+      "risk": "Un amarillo saturado ocho horas al día cansa. Solo funciona si el amarillo se reserva para las decisiones.",
+      "comp": ".impeccable/mocks/decision/challenger-wayfinding.webp",
+      "hero": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-terminal-yellow-wayfinding-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-terminal-yellow-wayfinding.webp",
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "banda de decisión amarilla", "x": 0, "y": 0, "w": 12, "h": 2, "accent": true},
+        {"label": "borrador", "x": 0, "y": 2, "w": 7, "h": 8},
+        {"label": "evidencia", "x": 7, "y": 2, "w": 5, "h": 8}
+      ]}
+    },
+    {
+      "id": "challenger-feed",
+      "label": "Feed vertical",
+      "verdict": "declined",
+      "lineage": "Feed de vídeo vertical a pantalla completa",
+      "thesis": "Un ticket ocupa toda la pantalla y el siguiente está a un gesto.",
+      "palette": ["#000000", "#FFFFFF", "#FE2C55"],
+      "materials": ["media a sangre", "glifos blancos"],
+      "viewport": "Un ticket a pantalla completa con acciones apiladas a la derecha.",
+      "risk": "Parece de consumo y juguete, justo lo que hay que evitar.",
+      "case": "Se fusiona mal: un agente CX en una herramienta de operaciones no se identifica con un feed.",
+      "kept": "El siguiente ítem siempre cargado, a un solo gesto.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-vertical-video-feed-surface-hero.webp"
+    },
+    {
+      "id": "challenger-annual",
+      "label": "Láminas de anuario",
+      "verdict": "declined",
+      "lineage": "Sección de láminas de un anuario de diseño",
+      "thesis": "Cada ticket como una lámina registrada en un pliego.",
+      "palette": ["#F5F4F6", "#16181A", "#DCDDF3", "#C9C7C4"],
+      "materials": ["papel estucado mate", "cruces de registro"],
+      "viewport": "Un pliego continuo con láminas registradas y una barra de tokens en monoespaciada.",
+      "risk": "Es de exhibición, no de operación.",
+      "case": "Se fusiona mal: es una vitrina, no un puesto de trabajo.",
+      "kept": "Una sola tipografía y una retícula de líneas de 1 px como única estructura."
+    },
+    {
+      "id": "challenger-exposure",
+      "label": "Hoja de exposición",
+      "verdict": "declined",
+      "lineage": "Registro de exposición de un laboratorio de positivado",
+      "thesis": "Zonas tonales y rayados que cuantifican cada región.",
+      "palette": ["#0E0E0E", "#8A8A8A", "#F0F0F0", "#C2187A"],
+      "materials": ["papel vegetal", "cuña de zonas retroiluminada"],
+      "viewport": "Hojas translúcidas superpuestas sobre una rampa tonal.",
+      "risk": "Es abstracto: el agente no reconoce su tarea.",
+      "case": "Se fusiona mal en los dos ejes.",
+      "kept": "El conflicto se ve sin color: el rayado marca el riesgo."
+    },
+    {
+      "id": "challenger-folio",
+      "label": "Folio botánico",
+      "verdict": "declined",
+      "lineage": "Folio botánico de las estaciones de una planta",
+      "thesis": "Etapas comparables, todas a la misma escala.",
+      "palette": ["#F3EAD8", "#5B4636", "#3E7A3A", "#B3261E"],
+      "materials": ["láminas grabadas", "filetes sepia"],
+      "viewport": "Cinco láminas sobre una línea base común.",
+      "risk": "Crema y serif: el tópico de lo generado por IA.",
+      "case": "Se fusiona mal: no tiene nada que ver con CX.",
+      "kept": "Las etapas del ciclo de vida sobre una línea base compartida."
+    },
+    {
+      "id": "challenger-cassette",
+      "label": "Carátula de casete",
+      "verdict": "declined",
+      "lineage": "Carátula manuscrita de una cinta de casete",
+      "thesis": "Cada cara cronometrada para que quepa exacta.",
+      "palette": ["#FFFFFF", "#1F3FA6", "#9A9A9A", "#D0021B"],
+      "materials": ["bolígrafo azul", "cartulina pautada"],
+      "viewport": "Una carátula desplegada con las caras A y B.",
+      "risk": "Nostálgico y de juguete.",
+      "case": "Se fusiona mal en los dos ejes.",
+      "kept": "Los tiempos alineados a la derecha, con presupuesto visible."
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code", "toggle": true},
+  "canon": true,
+  "canonCard": {
+    "label": "El estándar de helpdesk",
+    "thesis": "Tres paneles a lo Zendesk o Front, ejecutados con todo el oficio.",
+    "palette": ["#FFFFFF", "#111827", "#2563EB", "#F3F4F6"],
+    "materials": ["retícula limpia", "componentes de sistema"],
+    "viewport": "Lista de tickets, conversación y panel de contexto del cliente.",
+    "risk": "Igual que cualquier otro helpdesk, por diseño.",
+    "comp": ".impeccable/mocks/decision/canon.webp"
+  },
+  "steer": true
+}

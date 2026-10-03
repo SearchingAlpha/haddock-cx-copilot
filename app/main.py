@@ -10,10 +10,11 @@ from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langfuse import get_client
 
-from app import db
+from app import db, views
 from app.data import load_customers, load_kb, load_tickets
 from app.domain import Category, TicketIn
 from app.observability import init_tracing
@@ -24,7 +25,6 @@ log = logging.getLogger(__name__)
 templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
 CUSTOMERS = load_customers()
 KB = KBIndex(load_kb())
-PENDING = ("ready", "escalated")
 
 
 @asynccontextmanager
@@ -38,6 +38,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="haddock CX copilot", lifespan=lifespan)
+app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 
 # --- pipeline in the background --------------------------------------------------------------
@@ -84,24 +85,41 @@ def demo_load(background: BackgroundTasks, n: int = 5) -> RedirectResponse:
 
 # --- pages -----------------------------------------------------------------------------------
 
-@app.get("/", response_class=HTMLResponse)
-def inbox(request: Request):
-    return templates.TemplateResponse(request, "inbox.html", _inbox_context())
-
-
-@app.get("/rows", response_class=HTMLResponse)
-def rows(request: Request):
-    """HTMX partial: the inbox polls it while tickets are processing."""
-    return templates.TemplateResponse(request, "_rows.html", _inbox_context())
-
-
-def _inbox_context() -> dict:
+def _shell(selected: str | None = None) -> dict:
+    """Context shared by every page: the queue column and the J/K neighbours of the selected ticket."""
     conn = db.connect()
     tickets = db.list_tickets(conn)
     conn.close()
     for t in tickets:
         t["customer"] = CUSTOMERS[t["customer_id"]].name
-    return {"tickets": tickets, "processing": any(t["state"] == "processing" for t in tickets)}
+        t["age"] = views.age(t["created_at"])
+    order = views.queue_order(tickets)
+    pos = order.index(selected) if selected in order else -1
+    if pos >= 0:
+        next_id = order[pos + 1] if pos < len(order) - 1 else None
+    else:
+        next_id = order[0] if order else None
+    return {
+        "groups": views.queue_groups(tickets),
+        "selected": selected,
+        "processing": any(t["state"] == "processing" for t in tickets),
+        "pending": len(order),
+        "prev_id": order[pos - 1] if pos > 0 else None,
+        "next_id": next_id,
+        "labels": {"state": views.STATE_LABELS, "priority": views.PRIORITY_LABELS,
+                   "value": views.VALUE_LABELS, "team": views.TEAM_LABELS, "status": views.STATUS_LABELS},
+    }
+
+
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    return templates.TemplateResponse(request, "home.html", _shell())
+
+
+@app.get("/queue", response_class=HTMLResponse)
+def queue(request: Request, selected: str | None = None):
+    """HTMX partial: the queue column polls it while tickets are processing."""
+    return templates.TemplateResponse(request, "_queue.html", _shell(selected))
 
 
 @app.get("/tickets/{ticket_id}", response_class=HTMLResponse)
@@ -112,11 +130,18 @@ def ticket_page(request: Request, ticket_id: str):
     if ticket is None:
         raise HTTPException(404)
     return templates.TemplateResponse(request, "ticket.html", {
+        **_shell(ticket_id),
         "t": ticket,
         "customer": CUSTOMERS[ticket["customer_id"]],
         "categories": [c.value for c in Category],
         "trace_url": _trace_url(ticket.get("trace_id")),
         "opened_at": time.time(),
+        "ticket_age": views.age(ticket["created_at"]),
+        "reply_html": views.render_reply(ticket.get("draft")),
+        "evidence": views.evidence_items(ticket),
+        "reasons": views.reason_view(ticket.get("reasons")),
+        "manual": ticket["mode"] == "manual" or not ticket.get("draft"),
+        "blocking": bool(views.BLOCKING & set(ticket.get("reasons") or [])),
     })
 
 
@@ -129,16 +154,20 @@ def review(ticket_id: str, decision: str = Form(...), final_text: str = Form("")
         if ticket is None:
             raise HTTPException(404)
         if decision != "reject":  # the server decides approve vs edit: did the text change?
+            if not final_text.strip():
+                raise HTTPException(422, "Empty reply: write the answer before sending.")
             if ticket["mode"] == "manual" or not ticket.get("draft"):
                 decision = "manual"
             else:
                 decision = "approve" if final_text.strip() == ticket["draft"].strip() else "edit"
+            if decision == "approve" and views.BLOCKING & set(ticket.get("reasons") or []):
+                raise HTTPException(409, "Blocked by guardrails: edit the draft before sending.")
         seconds = max(0.0, time.time() - opened_at)
         saved = db.record_review(conn, ticket_id, decision, final_text, seconds, category_final)
-        next_id = next((t["id"] for t in reversed(db.list_tickets(conn)) if t["state"] in PENDING), None)
     finally:
         conn.close()
     send_scores(ticket.get("trace_id"), saved)
+    next_id = _shell()["next_id"]  # first pending ticket in queue order
     return RedirectResponse(f"/tickets/{next_id}" if next_id else "/", status_code=303)
 
 
@@ -147,7 +176,7 @@ def metrics_page(request: Request):
     conn = db.connect()
     m = db.metrics(conn)
     conn.close()
-    return templates.TemplateResponse(request, "metrics.html", {"m": m})
+    return templates.TemplateResponse(request, "metrics.html", {**_shell(), "m": m})
 
 
 # --- Langfuse --------------------------------------------------------------------------------

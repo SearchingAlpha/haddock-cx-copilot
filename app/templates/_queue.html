@@ -1,0 +1,41 @@
+<aside class="queue" id="queue" aria-label="Cola de tickets"
+  {% if processing %}hx-get="/queue{% if selected %}?selected={{ selected }}{% endif %}" hx-trigger="every 4s" hx-swap="outerHTML" hx-select="#queue"{% endif %}>
+  <div class="queue-head">
+    <h1>Cola <span class="muted">· {{ pending }} por revisar</span></h1>
+    <form method="post" action="/demo/load?n=5">
+      <button type="submit" class="btn" title="Carga 5 tickets de data/tickets.jsonl por el webhook">
+        <i data-lucide="plus"></i>Demo
+      </button>
+    </form>
+  </div>
+  <div class="queue-scroll">
+    {% for g in groups %}
+    <details class="group" {% if not g.collapsed %}open{% endif %}>
+      <summary><i data-lucide="chevron-right" class="chev"></i>{{ g.label }} <span class="n">{{ g.tickets | length }}</span></summary>
+      {% for t in g.tickets %}
+      {% set c = t.classification or {} %}
+      <a class="row" href="/tickets/{{ t.id }}" {% if t.id == selected %}aria-current="true"{% endif %}>
+        <span class="prio {{ c.priority or '' }}" title="Prioridad {{ labels.priority.get(c.priority, '—') }}"></span>
+        <span class="who">{{ t.customer }}</span>
+        <span class="age">{{ t.age }}</span>
+        <span class="subject">{{ t.subject }}</span>
+        <span class="tags">
+          {% if t.state == "escalated" %}<span class="tag risk"><i data-lucide="triangle-alert"></i>Escalado</span>{% endif %}
+          {% if t.state == "processing" %}<span class="tag"><i data-lucide="loader"></i>Investigando</span>{% endif %}
+          {% if c.priority == "urgent" %}<span class="tag risk"><i data-lucide="flame"></i>Urgente</span>{% endif %}
+          {% if t.review_category %}<span class="tag check"><i data-lucide="tag"></i>Revisar categoría</span>{% endif %}
+          {% if t.mode == "manual" and t.state not in ("sent", "rejected") %}<span class="tag info"><i data-lucide="pencil-line"></i>Manual</span>{% endif %}
+          <span class="ref">{{ t.id }} · {{ t.channel }}</span>
+        </span>
+      </a>
+      {% endfor %}
+    </details>
+    {% else %}
+    <div class="empty">
+      <i data-lucide="inbox"></i>
+      <h2>Cola vacía</h2>
+      <p>Los tickets llegan por <code>POST /webhooks/ticket</code>. Para la demo, pulsa «Demo».</p>
+    </div>
+    {% endfor %}
+  </div>
+</aside>

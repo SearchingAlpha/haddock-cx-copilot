@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block shell_class %}no-context{% endblock %}
+{% block main %}
+<main class="workspace">
+  <div class="empty">
+    {% if next_id %}
+      <i data-lucide="mouse-pointer-click"></i>
+      <h2>{{ pending }} {{ "ticket espera" if pending == 1 else "tickets esperan" }} tu decisión</h2>
+      <p>Empieza por el primero de la cola. Los escalados van arriba.</p>
+      <p><a class="btn primary" href="/tickets/{{ next_id }}">Abrir el primero <kbd>J</kbd></a></p>
+    {% else %}
+      <i data-lucide="circle-check"></i>
+      <h2>Cola al día</h2>
+      <p>No hay tickets pendientes de revisión.</p>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}
