@@ -10,6 +10,10 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY app ./app
 COPY data ./data
 COPY prompts ./prompts
+# /codigo reads the specs, the evals and CLAUDE.md from disk (docs/specs/tour.md).
+COPY docs/specs ./docs/specs
+COPY evals ./evals
+COPY CLAUDE.md ./
 # The demo always starts from the known-good state: precomputed tickets, no reviews.
 COPY haddock.golden.db ./haddock.db
 

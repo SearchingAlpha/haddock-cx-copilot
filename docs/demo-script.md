@@ -83,7 +83,7 @@ No hay conductor y narrador separados. Las reglas cambian así:
 - Las tres transiciones que debes ensayar:
   1. Slides → demo: «Vamos a verlo funcionando.» (clic en «Ver la demo»).
   2. App → Langfuse: «Ahora miremos qué pasó por dentro.»
-  3. Demo → revisión de código: «Ahora os enseño cómo está construido, empezando por el diagrama.» (abre `docs/specs/overview.md`).
+  3. Demo → revisión de código: «Ahora os enseño cómo está construido, empezando por el diagrama.» (icono `</>` del rail: `/codigo`).
 
 ## Checklist de ensayo
 

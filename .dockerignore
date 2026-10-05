@@ -5,9 +5,10 @@
 .impeccable
 .pytest_cache
 **/__pycache__
-evals
+evals/results
+evals/*.log
 tests
-docs
+docs/demo
 scripts
 deploy
 haddock.db

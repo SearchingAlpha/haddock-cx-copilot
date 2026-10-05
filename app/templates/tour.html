@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% set active = "codigo" %}
+{% block title %}Código · haddock CX copilot{% endblock %}
+{% block shell_class %}story-shell{% endblock %}
+{% block queue %}{% endblock %}
+{% block scripts %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+<script src="/static/story.js" defer></script>
+<script type="module" src="/static/tour.js"></script>
+{% endblock %}
+
+{% block main %}
+<main class="workspace story tour" data-total="{{ stops | length }}">
+  <header class="ws-head">
+    <h2>Código <span class="muted" id="kicker"></span></h2>
+    <a href="/" class="btn quiet" data-finish id="skip">Salir del recorrido</a>
+  </header>
+
+  <div class="story-main">
+    {% for stop, shown in stops %}
+    <section class="scene tour-stop" data-step="{{ loop.index }}" aria-labelledby="stop-{{ loop.index }}" {% if not loop.first %}hidden{% endif %}>
+      <div class="tour-text">
+        <p class="tour-n">{{ loop.index }} / {{ stops | length }} · {{ stop.kicker }}</p>
+        <h1 id="stop-{{ loop.index }}">{{ stop.title }}</h1>
+        <ul class="tour-points">
+          {% for point in stop.points %}<li>{{ point }}</li>{% endfor %}
+        </ul>
+      </div>
+      <div class="tour-excerpts">
+        {% for s in shown %}
+        <figure class="excerpt">
+          <figcaption><i data-lucide="{{ 'workflow' if s.kind == 'mermaid' else 'file-code' }}"></i><code>{{ s.location }}</code></figcaption>
+          {% if s.kind == "mermaid" %}
+          <div class="mermaid-src" hidden>{{ s.text }}</div>
+          <div class="mermaid-out"></div>
+          {% else %}
+          <pre><code class="language-{{ s.language }}">{{ s.text }}</code></pre>
+          {% endif %}
+        </figure>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+  </div>
+
+  <footer class="composer story-foot">
+    <button type="button" class="btn" id="prev"><i data-lucide="arrow-left"></i>Atrás <kbd>←</kbd></button>
+    <ol class="dots" aria-label="Paradas">
+      {% for stop, shown in stops %}
+      <li><button type="button" data-go="{{ loop.index }}" aria-label="Parada {{ loop.index }}: {{ stop.kicker }}"></button></li>
+      {% endfor %}
+    </ol>
+    <button type="button" class="btn primary" id="next">Siguiente <kbd>→</kbd></button>
+  </footer>
+  <script type="application/json" id="kickers">{{ stops | map(attribute=0) | map(attribute="kicker") | list | tojson }}</script>
+</main>
+{% endblock %}

@@ -103,6 +103,8 @@ flowchart LR
 | `evals/` | `evals.md` | 3 |
 | UI y `db.py` | `ui.md`, `db.md` | 4 |
 | `/intro` y `/presentacion` | `story.md` | 5 |
+| `/codigo` | `tour.md` | 5 |
+| Demo pública | `deploy.md` | 5 |
 
 ## Done when
 - [ ] Cada módulo de la tabla tiene su spec antes de su código.

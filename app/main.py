@@ -17,7 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langfuse import get_client
 
-from app import db, story, views
+from app import db, story, tour, views
 from app.data import load_customers, load_kb, load_tickets
 from app.domain import Category, TicketIn
 from app.observability import init_tracing
@@ -158,6 +158,12 @@ def intro(request: Request):
 @app.get("/presentacion", response_class=HTMLResponse)
 def presentation(request: Request):
     return templates.TemplateResponse(request, "story.html", {"story": story.PRESENTATION})
+
+
+@app.get("/codigo", response_class=HTMLResponse)
+def code_tour(request: Request):
+    stops = [(stop, [tour.resolve(e) for e in stop.excerpts]) for stop in tour.TOUR]
+    return templates.TemplateResponse(request, "tour.html", {"stops": stops})
 
 
 @app.get("/queue", response_class=HTMLResponse)
