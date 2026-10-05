@@ -41,7 +41,7 @@ An internal CX triage copilot. For each incoming support ticket it classifies (J
 ## Brand Commitments
 
 - The workstation deliberately follows the helpdesk category standard (chosen over novel directions on 2026-10-03). Craft bar: Zendesk Agent Workspace. Conventions are embraced, not parodied: three panes, queue, ticket workspace, customer context.
-- No haddock logo or official brand assets; "haddock" appears only as product context.
+- No haddock logo or official brand assets; "haddock" appears only as product context. Exception: the favicon is haddock.app's own (`app/static/favicon.png`), so the tab reads as an internal haddock tool.
 
 ## Evidence on Hand
 
