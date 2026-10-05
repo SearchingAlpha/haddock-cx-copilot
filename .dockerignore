@@ -1,0 +1,13 @@
+.venv
+.git
+.env
+.claude
+.impeccable
+.pytest_cache
+**/__pycache__
+evals
+tests
+docs
+scripts
+deploy
+haddock.db

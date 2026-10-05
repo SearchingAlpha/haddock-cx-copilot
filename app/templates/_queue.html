@@ -2,9 +2,11 @@
   {% if processing %}hx-get="/queue{% if selected %}?selected={{ selected }}{% endif %}" hx-trigger="every 4s" hx-swap="outerHTML" hx-select="#queue"{% endif %}>
   <div class="queue-head">
     <h1>Cola <span class="muted">· {{ pending }}</span></h1>
+    {% if not public %}
     <form method="post" action="/demo/load?n=5">
       <button type="submit" class="btn quiet" title="Carga 5 tickets de demo por el webhook"><i data-lucide="plus"></i>Demo</button>
     </form>
+    {% endif %}
   </div>
   <div class="queue-scroll">
     {% for g in groups %}

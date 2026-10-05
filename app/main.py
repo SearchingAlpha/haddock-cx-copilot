@@ -3,13 +3,16 @@
     python -m uv run uvicorn app.main:app --reload   ->  http://localhost:8000
 """
 
+import base64
 import logging
+import os
+import secrets
 import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, Form, HTTPException, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langfuse import get_client
@@ -41,6 +44,32 @@ app = FastAPI(title="haddock CX copilot", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 
+# --- public demo: docs/specs/deploy.md --------------------------------------------------------
+
+def is_public() -> bool:
+    """HADDOCK_PUBLIC=1: no pipeline, so nobody spends tokens on the public URL."""
+    return os.environ.get("HADDOCK_PUBLIC") == "1"
+
+
+def _authorized(header: str | None, password: str) -> bool:
+    if not header or not header.startswith("Basic "):
+        return False
+    try:
+        _, _, given = base64.b64decode(header[6:]).decode().partition(":")
+    except ValueError:
+        return False
+    return secrets.compare_digest(given.encode(), password.encode())
+
+
+@app.middleware("http")
+async def basic_auth(request: Request, call_next):
+    """DEMO_PASSWORD set: every page asks for it. Any user name works."""
+    password = os.environ.get("DEMO_PASSWORD")
+    if password and not request.url.path.startswith("/static/")             and not _authorized(request.headers.get("Authorization"), password):
+        return Response(status_code=401, headers={"WWW-Authenticate": 'Basic realm="haddock demo"'})
+    return await call_next(request)
+
+
 # --- pipeline in the background --------------------------------------------------------------
 
 def run_pipeline(ticket: TicketIn) -> None:
@@ -53,6 +82,8 @@ def run_pipeline(ticket: TicketIn) -> None:
 
 
 def accept(ticket: TicketIn, background: BackgroundTasks) -> str:
+    if is_public():
+        raise HTTPException(403, "Public demo: the pipeline is off.")
     if ticket.customer_id not in CUSTOMERS:
         raise HTTPException(404, f"unknown customer {ticket.customer_id}")
     conn = db.connect()
@@ -75,6 +106,8 @@ def webhook(ticket: TicketIn, background: BackgroundTasks) -> dict:
 @app.post("/demo/load")
 def demo_load(background: BackgroundTasks, n: int = 5) -> RedirectResponse:
     """Feed n tickets from data/tickets.jsonl through the same path as the webhook."""
+    if is_public():
+        raise HTTPException(403, "Public demo: the pipeline is off.")
     conn = db.connect()
     known = {t["id"] for t in db.list_tickets(conn)}
     conn.close()
@@ -104,6 +137,7 @@ def _shell(selected: str | None = None) -> dict:
         "selected": selected,
         "processing": any(t["state"] == "processing" for t in tickets),
         "pending": len(order),
+        "public": is_public(),
         "prev_id": order[pos - 1] if pos > 0 else None,
         "next_id": next_id,
         "labels": {"state": views.STATE_LABELS, "priority": views.PRIORITY_LABELS,

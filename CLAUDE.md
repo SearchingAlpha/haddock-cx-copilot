@@ -18,7 +18,10 @@ python -m uv run python -m scripts.push_prompts     # prompts/ -> Langfuse (vers
 python -m uv run python -m evals.upload_dataset     # data/tickets.jsonl -> dataset cx-tickets
 python -m uv run python -m evals.run_experiment --run-name X [--prompt-label staging] [--classify-only --classifier haiku]
 python -m uv run python -m evals.rejudge evals/results/X.json --model claude-sonnet-5-5
+cd deploy && npx wrangler deploy                    # demo pública en Cloudflare Containers (Docker en marcha)
 ```
+
+Demo pública: https://haddock-demo.morvegpablo.workers.dev (basic auth, sin pipeline). Spec: `docs/specs/deploy.md`.
 
 ## Reglas
 

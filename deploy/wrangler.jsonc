@@ -1,0 +1,20 @@
+// Public demo. Spec: docs/specs/deploy.md
+{
+  "name": "haddock-demo",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "containers": [
+    {
+      "class_name": "HaddockApp",
+      "image": "../Dockerfile",
+      "image_build_context": "..",
+      "instance_type": "basic",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "HADDOCK", "class_name": "HaddockApp" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["HaddockApp"] }],
+  "observability": { "enabled": true }
+}
