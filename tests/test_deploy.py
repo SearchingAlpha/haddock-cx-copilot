@@ -1,12 +1,15 @@
 """Public demo guards: docs/specs/deploy.md. Pipeline and Langfuse are stubbed."""
 
 import base64
+import secrets
 
 import pytest
 from fastapi.testclient import TestClient
 
 from app import main
 from tests.test_web import PAYLOAD
+
+PASSWORD = secrets.token_hex(8)  # generated per run: no literal password in the repo
 
 
 def auth(password: str) -> dict:
@@ -34,16 +37,16 @@ def test_no_password_means_no_auth(make_client):
 
 
 def test_password_required_when_set(make_client):
-    client = make_client(DEMO_PASSWORD="s3cret")
+    client = make_client(DEMO_PASSWORD=PASSWORD)
     r = client.get("/")
     assert r.status_code == 401
     assert r.headers["WWW-Authenticate"].startswith("Basic")
     assert client.get("/", headers=auth("wrong")).status_code == 401
-    assert client.get("/", headers=auth("s3cret")).status_code == 200
+    assert client.get("/", headers=auth(PASSWORD)).status_code == 200
 
 
 def test_static_needs_no_auth(make_client):
-    assert make_client(DEMO_PASSWORD="s3cret").get("/static/favicon.png").status_code == 200
+    assert make_client(DEMO_PASSWORD=PASSWORD).get("/static/favicon.png").status_code == 200
 
 
 def test_public_mode_blocks_pipeline_entry_points(make_client):
