@@ -4,6 +4,7 @@
 """
 
 import base64
+import json
 import logging
 import os
 import secrets
@@ -17,7 +18,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langfuse import get_client
 
-from app import db, github, problems, product_request, radar, story, tour, views
+from app import db, github, notify, problems, product_request, radar, story, tour, views
 from app.data import load_customers, load_kb, load_tickets
 from app.domain import Category, TicketIn
 from app.entities import Gazetteer
@@ -67,7 +68,8 @@ def _authorized(header: str | None, password: str) -> bool:
 async def basic_auth(request: Request, call_next):
     """DEMO_PASSWORD set: every page asks for it. Any user name works."""
     password = os.environ.get("DEMO_PASSWORD")
-    if password and not request.url.path.startswith("/static/")             and not _authorized(request.headers.get("Authorization"), password):
+    exempt = request.url.path.startswith("/static/") or request.url.path == "/webhooks/github"  # signed by GitHub
+    if password and not exempt             and not _authorized(request.headers.get("Authorization"), password):
         return Response(status_code=401, headers={"WWW-Authenticate": 'Basic realm="haddock demo"'})
     return await call_next(request)
 
@@ -202,13 +204,19 @@ def queue(request: Request, selected: str | None = None):
 def ticket_page(request: Request, ticket_id: str):
     conn = db.connect()
     ticket = db.get_ticket(conn, ticket_id)
-    problem = conn.execute("SELECT id, title, status FROM problems WHERE id = ?",
+    problem = conn.execute("SELECT id, title, status, github_number, github_url FROM problems WHERE id = ?",
                            ((ticket or {}).get("problem_id"),)).fetchone()
+    notice = None
+    if ticket and ticket.get("kind") == "proactive":
+        ids = json.loads(ticket["body"]).get("tickets", [])
+        notice = {"tickets": [dict(r) for r in conn.execute(
+            f"SELECT id, subject, created_at FROM tickets WHERE id IN ({','.join('?' * len(ids))}) ORDER BY created_at",
+            ids)]}
     conn.close()
     if ticket is None:
         raise HTTPException(404)
     return templates.TemplateResponse(request, "ticket.html", {
-        "problem": dict(problem) if problem else None, "problem_status": views.PROBLEM_STATUS_LABELS,
+        "problem": dict(problem) if problem else None, "problem_status": views.PROBLEM_STATUS_LABELS, "notice": notice,
         **_shell(ticket_id),
         "t": ticket,
         "customer": CUSTOMERS[ticket["customer_id"]],
@@ -272,6 +280,7 @@ def radar_page(request: Request):
     return templates.TemplateResponse(request, "radar.html", {
         **_shell(), "problems": shown, "hidden": len(found) - len(shown), "signals": signals,
         "candidates": sum(1 for p in shown if p["status"] == "candidate"),
+        "requested": sum(1 for p in shown if p["status"] == "requested"),
         "graph": views.radar_graph(found, CUSTOMERS), "v": views,
     })
 
@@ -292,12 +301,16 @@ def problem_page(request: Request, problem_id: str):
         p = problems.get_problem(conn, problem_id, CUSTOMERS)
         req = product_request.load(conn, problem_id) if p else None
         duplicates = radar.duplicate_candidates(conn, p) if p and p["status"] == "candidate" else []
+        notices = [dict(r) for r in conn.execute(
+            "SELECT n.ticket_id, n.customer_id, t.state FROM notices n JOIN tickets t ON t.id = n.ticket_id "
+            "WHERE n.problem_id = ? ORDER BY n.customer_id", (problem_id,))]
     finally:
         conn.close()
     if p is None:
         raise HTTPException(404)
     return templates.TemplateResponse(request, "problem.html", {
         **_shell(), "p": p, "customers": CUSTOMERS, "v": views, "req": req, "duplicates": duplicates,
+        "notices": notices,
         "github_ready": github_client() is not None, "error": request.query_params.get("error"),
         "threshold": next((e for e in p["events"] if e["kind"] == "threshold"), None),
     })
@@ -346,6 +359,68 @@ def problem_request(problem_id: str, decision: str = Form(...), title: str = For
             return RedirectResponse(f"/radar/problems/{problem_id}?error=github-{e.status}", status_code=303)
     finally:
         conn.close()
+    return RedirectResponse(f"/radar/problems/{problem_id}", status_code=303)
+
+
+# --- the closed loop: docs/specs/notify.md ---------------------------------------------------
+
+def run_notices(problem_id: str) -> None:
+    conn = db.connect()
+    try:
+        notify.on_resolved(conn, problem_id, CUSTOMERS)
+    except Exception as error:
+        log.warning("notices failed for %s: %r", problem_id, error)
+    finally:
+        conn.close()
+
+
+@app.post("/webhooks/github", status_code=202)
+async def github_webhook(request: Request, background: BackgroundTasks) -> dict:
+    """GitHub `issues` events. The HMAC signature is the authentication, so basic auth does not apply."""
+    _no_public()
+    body = await request.body()
+    if not github.verify_signature(body, request.headers.get("X-Hub-Signature-256"),
+                                   os.environ.get("GITHUB_WEBHOOK_SECRET", "")):
+        raise HTTPException(401, "bad signature")
+    if request.headers.get("X-GitHub-Event") != "issues":
+        return {"ignored": request.headers.get("X-GitHub-Event")}
+    event = await request.json()
+    issue = event.get("issue") or {}
+    conn = db.connect()
+    try:
+        pid = radar.problem_for_issue(conn, issue.get("number"), issue.get("body") or "")
+        result = radar.issue_changed(conn, pid, issue.get("state", ""), issue.get("state_reason")) if pid else None
+    finally:
+        conn.close()
+    if result == "notify":
+        background.add_task(run_notices, pid)
+    return {"problem_id": pid, "action": event.get("action"), "result": result}
+
+
+@app.post("/radar/sync")
+def radar_sync(background: BackgroundTasks) -> RedirectResponse:
+    """«Comprobar GitHub»: the poll fallback when GitHub cannot reach this server (local demo)."""
+    _no_public()
+    gh = github_client()
+    if gh is None:
+        return RedirectResponse("/radar?error=github-config", status_code=303)
+    conn = db.connect()
+    try:
+        to_notify = radar.sync_issues(conn, gh)
+    except github.GitHubError as e:
+        return RedirectResponse(f"/radar?error=github-{e.status}", status_code=303)
+    finally:
+        conn.close()
+    for pid in to_notify:
+        background.add_task(run_notices, pid)
+    return RedirectResponse(f"/radar?synced={len(to_notify)}", status_code=303)
+
+
+@app.post("/radar/problems/{problem_id}/notices")
+def problem_notices(problem_id: str, background: BackgroundTasks) -> RedirectResponse:
+    """Draft the notices that are missing (a failed customer, or a reopened and closed issue)."""
+    _no_public()
+    background.add_task(run_notices, problem_id)
     return RedirectResponse(f"/radar/problems/{problem_id}", status_code=303)
 
 

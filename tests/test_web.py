@@ -159,3 +159,40 @@ def test_public_demo_never_writes_from_the_radar(client, monkeypatch):
     assert client.post("/radar/problems/P-0001/draft").status_code == 403
     assert client.post("/radar/problems/P-0001/request", data={"decision": "reject"}).status_code == 403
     assert client.get("/radar/problems/P-0001").status_code == 200
+
+
+def _signed(payload: dict, secret: str = "s3cret") -> tuple[bytes, dict]:
+    import hashlib
+    import hmac
+    import json as _json
+
+    body = _json.dumps(payload).encode()
+    sig = "sha256=" + hmac.new(secret.encode(), body, hashlib.sha256).hexdigest()
+    return body, {"X-Hub-Signature-256": sig, "X-GitHub-Event": "issues", "Content-Type": "application/json"}
+
+
+def test_github_webhook_resolves_and_queues_notices(client, monkeypatch):
+    monkeypatch.setenv("GITHUB_WEBHOOK_SECRET", "s3cret")
+    monkeypatch.setenv("DEMO_PASSWORD", "pw")  # the webhook skips basic auth: the signature is its auth
+    _seed_radar()
+    conn = db.connect()
+    conn.execute("UPDATE problems SET status = 'requested', github_number = 7 WHERE id = 'P-0001'")
+    conn.commit()
+    conn.close()
+    queued = []
+    monkeypatch.setattr(main, "run_notices", lambda pid: queued.append(pid))
+    payload = {"action": "closed", "issue": {"number": 7, "state": "closed", "state_reason": "completed", "body": ""}}
+
+    body, headers = _signed(payload)
+    assert client.post("/webhooks/github", content=body, headers={**headers, "X-Hub-Signature-256": "sha256=0"}).status_code == 401
+    r = client.post("/webhooks/github", content=body, headers=headers)
+    assert r.status_code == 202 and r.json()["result"] == "notify" and queued == ["P-0001"]
+    assert client.post("/webhooks/github", content=body, headers=headers).json()["result"] is None  # idempotent
+    assert client.get("/radar").status_code == 401  # everything else still asks for the password
+
+
+def test_public_demo_ignores_github(client, monkeypatch):
+    monkeypatch.setenv("HADDOCK_PUBLIC", "1")
+    body, headers = _signed({"action": "closed"})
+    assert client.post("/webhooks/github", content=body, headers=headers).status_code == 403
+    assert client.post("/radar/sync").status_code == 403

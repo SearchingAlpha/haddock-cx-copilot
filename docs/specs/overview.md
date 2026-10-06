@@ -112,6 +112,7 @@ flowchart LR
 | Radar de producto | `radar.md` | R |
 | Petición de producto | `product-request.md` | R3 |
 | Cliente de GitHub | `github.md` | R3 |
+| Avisos proactivos | `notify.md` | R4 |
 
 ## Done when
 - [ ] Cada módulo de la tabla tiene su spec antes de su código.

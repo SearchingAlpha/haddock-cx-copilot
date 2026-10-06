@@ -2,6 +2,7 @@
 
 import contextvars
 import json
+import re
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -180,3 +181,47 @@ def comment_new_customers(conn, problem_id: str, customers: dict[str, Customer],
                                                                              problem_id))
         _event(conn, problem_id, "commented", {"customers": new, "url": url})
     return url
+
+
+# --- the closed loop: docs/specs/notify.md ------------------------------------------------------------
+
+def issue_changed(conn, problem_id: str, state: str, state_reason: str | None) -> str | None:
+    """GitHub says the issue changed. Returns "notify" when the problem just became resolved. Idempotent."""
+    now = datetime.now().isoformat(timespec="seconds")
+    with conn:
+        if state == "closed" and state_reason in (None, "completed"):
+            if conn.execute("UPDATE problems SET status = 'resolved', resolved_at = ? WHERE id = ? AND status = 'requested'",
+                            (now, problem_id)).rowcount:
+                _event(conn, problem_id, "resolved", {"state_reason": state_reason or "completed"})
+                return "notify"
+        elif state == "closed":  # not_planned, duplicate: nothing was fixed, nobody is told it was
+            if conn.execute("UPDATE problems SET status = 'dismissed' WHERE id = ? AND status = 'requested'",
+                            (problem_id,)).rowcount:
+                _event(conn, problem_id, "dismissed", {"state_reason": state_reason})
+        elif state == "open":
+            if conn.execute("UPDATE problems SET status = 'requested', resolved_at = NULL WHERE id = ? "
+                            "AND status = 'resolved'", (problem_id,)).rowcount:
+                _event(conn, problem_id, "reopened", {})
+    return None
+
+
+def problem_for_issue(conn, number: int, body: str = "") -> str | None:
+    row = conn.execute("SELECT id FROM problems WHERE github_number = ? AND status != 'merged'", (number,)).fetchone()
+    if row:
+        return row["id"]
+    marker = re.search(r"<!-- haddock-problem:(P-\d+) -->", body or "")  # the database was reset: the marker remains
+    if marker and conn.execute("SELECT 1 FROM problems WHERE id = ?", (marker.group(1),)).fetchone():
+        return marker.group(1)
+    return None
+
+
+@observe(name="github-sync")
+def sync_issues(conn, gh: github.GitHub) -> list[str]:
+    """Poll instead of webhook: read the radar issues and apply their state. Returns problems to notify."""
+    to_notify = []
+    for issue in gh.list_issues(state="all"):
+        pid = problem_for_issue(conn, issue["number"], issue["body"])
+        if pid and issue_changed(conn, pid, issue["state"], issue["state_reason"]) == "notify":
+            to_notify.append(pid)
+    get_client().update_current_span(output={"notify": to_notify})
+    return to_notify

@@ -447,3 +447,10 @@ kbd.big { font-size: 22px; padding: 10px 16px; border-bottom-width: 3px; color: 
 .issue-line strong a { display: inline-flex; align-items: center; gap: 4px; }
 .issue-line svg { width: 14px; height: 14px; }
 .info-banner span { display: block; color: var(--muted); }
+.notice-card { border-color: var(--rail); }
+.notice-card header { gap: 8px; align-items: center; }
+.notice-card header svg { width: 16px; height: 16px; color: var(--rail); }
+.notice-card .body p { margin: 0 0 8px; }
+.notice-tickets { margin: 0; padding-left: 18px; font-size: 13px; }
+.radar-actions { display: flex; gap: 8px; align-items: center; margin: 0 0 14px; flex-wrap: wrap; }
+.notice-icon { color: var(--rail); width: 15px; height: 15px; }

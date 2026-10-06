@@ -78,6 +78,21 @@
   </header>
 
   <div class="ws-body">
+    {% if notice %}
+    <article class="message notice-card">
+      <header>
+        <i data-lucide="bell-ring"></i><strong>Aviso proactivo</strong>
+        <span class="muted">· {{ customer.name }} no ha vuelto a escribir: escribimos nosotros</span>
+      </header>
+      <div class="body">
+        <p>Producto resolvió <a href="/radar/problems/{{ problem.id }}">{{ problem.id }}</a> · {{ problem.title }}{% if problem.github_url %} · <a href="{{ problem.github_url }}" target="_blank" rel="noopener">issue #{{ problem.github_number }}</a>{% endif %}.</p>
+        <p class="muted">Lo que nos escribió este cliente:</p>
+        <ul class="notice-tickets">
+          {% for o in notice.tickets %}<li><a href="/tickets/{{ o.id }}">{{ o.created_at[:10] }} · {{ o.subject }}</a></li>{% endfor %}
+        </ul>
+      </div>
+    </article>
+    {% else %}
     <article class="message customer-msg">
       <header>
         <strong>{{ customer.contact_name }}</strong>
@@ -86,6 +101,7 @@
       </header>
       <div class="body">{{ t.body }}</div>
     </article>
+    {% endif %}
 
     {% if t.state == "processing" %}
       <div class="working" role="status"><span class="spinner" aria-hidden="true"></span>

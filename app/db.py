@@ -40,6 +40,10 @@ CREATE TABLE IF NOT EXISTS product_requests (
     problem_id TEXT PRIMARY KEY REFERENCES problems(id), title TEXT, body_md TEXT, payload TEXT, dropped TEXT,
     status TEXT, trace_id TEXT, cost_usd REAL, created_at TEXT, decided_at TEXT, decision TEXT
 );
+CREATE TABLE IF NOT EXISTS notices (
+    problem_id TEXT REFERENCES problems(id), customer_id TEXT, ticket_id TEXT REFERENCES tickets(id), created_at TEXT,
+    UNIQUE (problem_id, customer_id)
+);
 CREATE TABLE IF NOT EXISTS problem_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT, problem_id TEXT REFERENCES problems(id), kind TEXT,
     payload TEXT, created_at TEXT
@@ -154,8 +158,10 @@ def _avg(values: list[float]) -> float | None:
 
 def metrics(conn) -> dict:
     tickets = list_tickets(conn)
-    reviews = [dict(r) for r in conn.execute(
-        "SELECT r.*, t.mode FROM reviews r JOIN tickets t ON t.id = r.ticket_id")]
+    all_reviews = [dict(r) for r in conn.execute(
+        "SELECT r.*, t.mode, t.kind FROM reviews r JOIN tickets t ON t.id = r.ticket_id")]
+    reviews = [r for r in all_reviews if r["kind"] != "proactive"]  # notices are not the copilot/manual baseline
+    tickets = [t for t in tickets if t.get("kind") != "proactive"]
     copilot = [r for r in reviews if r["mode"] == "copilot"]
     manual = [r for r in reviews if r["mode"] == "manual"]
     processed = [t for t in tickets if t.get("status")]
@@ -175,6 +181,7 @@ def metrics(conn) -> dict:
         "escalation_rate": _avg([t["status"] == "escalated" for t in processed]),
         "category_corrections": sum(
             1 for r in reviews if r["category_final"] and r["category_final"] != predicted.get(r["ticket_id"])),
+        "notices_sent": sum(1 for r in all_reviews if r["kind"] == "proactive" and r["decision"] != "reject"),
         "by_category": dict(Counter(
             (t.get("classification") or {}).get("category") for t in processed if t.get("classification"))),
     }

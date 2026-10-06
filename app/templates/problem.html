@@ -35,6 +35,20 @@
   </div></div>
   {% endif %}
 
+  {% if p.status == "resolved" %}
+  <section class="request" aria-labelledby="notices-h">
+    <h2 id="notices-h">Avisos proactivos <span class="muted">· {{ notices | length }} de {{ p.impact.customers | length }} clientes</span></h2>
+    {% if notices %}
+    <ul class="notice-tickets">
+      {% for n in notices %}<li><a href="/tickets/{{ n.ticket_id }}">{{ customers[n.customer_id].name }}</a> <span class="muted">· {{ labels.state.get(n.state, n.state) | lower }}</span></li>{% endfor %}
+    </ul>
+    {% else %}<p class="muted">El copiloto está redactando los avisos. Aparecen en la cola, en «Avisos proactivos».</p>{% endif %}
+    {% if not public and notices | length < p.impact.customers | length %}
+    <form method="post" action="/radar/problems/{{ p.id }}/notices"><button class="btn" type="submit"><i data-lucide="bell-ring"></i>Redactar los avisos que faltan</button></form>
+    {% endif %}
+  </section>
+  {% endif %}
+
   {% if p.status == "candidate" %}
   <section class="request" aria-labelledby="req-h">
     <h2 id="req-h">Petición a producto</h2>

@@ -90,11 +90,19 @@ def age(created_at: str | None, now: datetime | None = None) -> str:
     return f"{minutes // (60 * 24)} d"
 
 
+PENDING = ("escalated", "ready", "processing")
+
+
 def queue_groups(tickets: list[dict]) -> list[dict]:
+    """Proactive notices that wait for review come first (docs/specs/notify.md); sent ones join «Enviados»."""
     order = {"urgent": 0, "high": 1, "normal": 2, "low": 3}
     groups = []
+    notices = sorted((t for t in tickets if t.get("kind") == "proactive" and t["state"] in PENDING),
+                     key=lambda t: (t["state"] != "escalated", t["created_at"], t["id"]))
+    if notices:
+        groups.append({"state": "proactive", "label": "Avisos proactivos", "tickets": notices, "collapsed": False})
     for state, label in QUEUE_GROUPS:
-        items = [t for t in tickets if t["state"] == state]
+        items = [t for t in tickets if t["state"] == state and not (t.get("kind") == "proactive" and state in PENDING)]
         items.sort(key=lambda t: (order.get((t.get("classification") or {}).get("priority"), 4), t["created_at"]))
         if items:
             groups.append({"state": state, "label": label, "tickets": items,

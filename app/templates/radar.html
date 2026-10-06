@@ -11,6 +11,21 @@
   <h1>Radar de producto</h1>
   <p class="lede">Qué partes de haddock generan tickets, a cuántos clientes afectan y cuánto pagan esos clientes. El copiloto agrupa cada ticket en un problema; una persona decide qué se pide a producto.</p>
 
+  {% if request.query_params.get("synced") is not none %}
+  {% set n = request.query_params.get("synced") | int %}
+  <div class="info-banner"><i data-lucide="refresh-cw"></i><div>GitHub comprobado.
+    {% if n %}<strong>{{ n }} {{ "problema resuelto" if n == 1 else "problemas resueltos" }}:</strong> el copiloto está redactando un aviso para cada cliente afectado. Aparecen en la cola, en «Avisos proactivos».{% else %}Sin cambios en las issues.{% endif %}</div></div>
+  {% elif request.query_params.get("error") %}
+  <div class="banner"><i data-lucide="circle-alert"></i><div><strong>{% if request.query_params.get("error") == "github-config" %}GitHub no está configurado.{% else %}GitHub respondió con un error.{% endif %}</strong><span>Revisa GITHUB_TOKEN y GITHUB_REPO en .env.</span></div></div>
+  {% endif %}
+
+  {% if not public and requested %}
+  <form class="radar-actions" method="post" action="/radar/sync">
+    <button class="btn" type="submit"><i data-lucide="refresh-cw"></i>Comprobar GitHub</button>
+    <span class="muted">{{ requested }} {{ "problema está" if requested == 1 else "problemas están" }} en producto. Si producto cerró la issue, el copiloto avisa a cada cliente afectado.</span>
+  </form>
+  {% endif %}
+
   {% if not problems %}
   <div class="empty">
     <i data-lucide="radar"></i>
