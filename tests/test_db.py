@@ -91,3 +91,26 @@ def test_metrics_with_known_reviews(conn, monkeypatch):
 def test_metrics_without_manual_reviews_has_no_baseline(conn):
     db.insert_ticket(conn, ticket())
     assert db.metrics(conn)["avg_seconds_manual"] is None
+
+
+def test_old_database_gets_the_radar_columns(tmp_path):
+    import sqlite3
+    path = str(tmp_path / "old.db")
+    old = sqlite3.connect(path)
+    old.executescript("CREATE TABLE tickets (id TEXT PRIMARY KEY, customer_id TEXT, channel TEXT, subject TEXT, "
+                      "body TEXT, created_at TEXT, mode TEXT, state TEXT);"
+                      "INSERT INTO tickets VALUES ('T-1', 'C-001', 'email', 's', 'b', '2026-10-01T09:00:00', "
+                      "'copilot', 'ready');")
+    old.close()
+    conn = db.connect(path)
+    t = db.get_ticket(conn, "T-1")
+    assert (t["kind"], t["source"], t["problem_id"]) == ("inbound", "live", None)
+    db.insert_ticket(conn, ticket("T-2"))  # named columns: works on the migrated table
+
+
+def test_history_tickets_stay_out_of_the_queue(conn):
+    db.insert_ticket(conn, ticket("T-1"), source="history")
+    db.insert_ticket(conn, ticket("T-2"))
+    assert [t["id"] for t in db.list_tickets(conn)] == ["T-2"]
+    assert db.get_ticket(conn, "T-1")["state"] == "history"
+    assert len(db.list_tickets(conn, history=True)) == 2

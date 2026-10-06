@@ -17,6 +17,7 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "process_ticket", lambda ticket, customers, kb: result(ticket.id))
     monkeypatch.setattr(main, "send_scores", lambda trace_id, review: scores.append((trace_id, review)))
     monkeypatch.setattr(main, "init_tracing", lambda: None)
+    monkeypatch.setattr(main, "radar_step", lambda ticket, result: None)  # tests/test_problems.py covers it
     with TestClient(main.app) as c:
         c.scores = scores
         yield c

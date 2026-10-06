@@ -17,9 +17,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langfuse import get_client
 
-from app import db, story, tour, views
+from app import db, radar, story, tour, views
 from app.data import load_customers, load_kb, load_tickets
 from app.domain import Category, TicketIn
+from app.entities import Gazetteer
 from app.observability import init_tracing
 from app.pipeline import process_ticket
 from app.tools import KBIndex
@@ -28,6 +29,7 @@ log = logging.getLogger(__name__)
 templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
 CUSTOMERS = load_customers()
 KB = KBIndex(load_kb())
+GAZETTEER = Gazetteer.from_customers(CUSTOMERS)
 
 
 @asynccontextmanager
@@ -77,6 +79,18 @@ def run_pipeline(ticket: TicketIn) -> None:
     conn = db.connect()
     try:
         db.save_result(conn, result)
+    finally:
+        conn.close()
+    radar_step(ticket, result)
+
+
+def radar_step(ticket: TicketIn, result) -> None:
+    """After the reply is ready: the ticket feeds the product radar (docs/specs/radar.md). Never blocks the reply."""
+    conn = db.connect()
+    try:
+        radar.ingest(conn, ticket, CUSTOMERS, GAZETTEER, classification=result.classification)
+    except Exception as error:
+        log.warning("radar failed for %s: %r", ticket.id, error)
     finally:
         conn.close()
 

@@ -26,19 +26,39 @@ CREATE TABLE IF NOT EXISTS reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT, ticket_id TEXT REFERENCES tickets(id), decision TEXT,
     final_text TEXT, edit_distance REAL, review_seconds REAL, category_final TEXT, created_at TEXT
 );
+CREATE TABLE IF NOT EXISTS signals (
+    ticket_id TEXT PRIMARY KEY REFERENCES tickets(id), customer_id TEXT, created_at TEXT, component TEXT,
+    kind TEXT, entity TEXT, symptom TEXT, priority TEXT, confidence TEXT, model TEXT, problem_id TEXT,
+    match_confidence REAL, matched TEXT, trace_id TEXT
+);
+CREATE TABLE IF NOT EXISTS problems (
+    id TEXT PRIMARY KEY, component TEXT, kind TEXT, entity TEXT, title TEXT, status TEXT,
+    first_ticket_at TEXT, last_ticket_at TEXT, detected_at TEXT, detected_at_n INTEGER,
+    resolved_at TEXT, github_number INTEGER, github_url TEXT, commented_customers INTEGER DEFAULT 0, merged_into TEXT
+);
+CREATE TABLE IF NOT EXISTS problem_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, problem_id TEXT REFERENCES problems(id), kind TEXT,
+    payload TEXT, created_at TEXT
+);
 """
-JSON_COLUMNS = ("reasons", "classification", "confidence", "evidence", "tool_calls", "tool_outputs", "escalation")
-LATE_COLUMNS = ("tool_outputs", "escalation")  # added after the first schema; migrated in connect()
+JSON_COLUMNS = ("reasons", "classification", "confidence", "evidence", "tool_calls", "tool_outputs", "escalation",
+                "matched", "payload")
+LATE_COLUMNS = {  # added after the first schema; migrated in connect()
+    "results": {"tool_outputs": "TEXT", "escalation": "TEXT"},
+    "tickets": {"kind": "TEXT DEFAULT 'inbound'", "source": "TEXT DEFAULT 'live'", "problem_id": "TEXT"},
+}
+TICKET_COLUMNS = "id, customer_id, channel, subject, body, created_at, mode, state, kind, source, problem_id"
 
 
 def connect(path: str | None = None) -> sqlite3.Connection:
-    conn = sqlite3.connect(path or os.environ.get("HADDOCK_DB", "haddock.db"), check_same_thread=False)
+    conn = sqlite3.connect(path or os.environ.get("HADDOCK_DB", "haddock.db"), check_same_thread=False, timeout=10)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
-    columns = {r["name"] for r in conn.execute("PRAGMA table_info(results)")}
-    for column in LATE_COLUMNS:
-        if column not in columns:
-            conn.execute(f"ALTER TABLE results ADD COLUMN {column} TEXT")
+    for table, late in LATE_COLUMNS.items():
+        columns = {r["name"] for r in conn.execute(f"PRAGMA table_info({table})")}
+        for column, sql_type in late.items():
+            if column not in columns:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {sql_type}")
     return conn
 
 
@@ -47,14 +67,17 @@ def mode_for(ticket_id: str) -> str:
     return "manual" if hashlib.sha256(ticket_id.encode()).digest()[0] % MANUAL_SHARE == 0 else "copilot"
 
 
-def insert_ticket(conn, ticket: TicketIn) -> str:
-    mode = mode_for(ticket.id)
+def insert_ticket(conn, ticket: TicketIn, *, source: str = "live", kind: str = "inbound",
+                  mode: str | None = None, problem_id: str | None = None) -> str:
+    """source=history: a radar ticket from the past; it never shows in the queue (docs/specs/radar.md)."""
+    mode = mode or mode_for(ticket.id)
+    state = "history" if source == "history" else "processing"
     try:
         with conn:
             conn.execute(
-                "INSERT INTO tickets VALUES (?, ?, ?, ?, ?, ?, ?, 'processing')",
+                f"INSERT INTO tickets ({TICKET_COLUMNS}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (ticket.id, ticket.customer_id, ticket.channel, ticket.subject, ticket.body,
-                 ticket.created_at.isoformat(), mode),
+                 ticket.created_at.isoformat(), mode, state, kind, source, problem_id),
             )
     except sqlite3.IntegrityError as error:
         raise ValueError(f"ticket {ticket.id} already exists") from error
@@ -91,8 +114,9 @@ def _row(row: sqlite3.Row | None) -> dict | None:
 TICKET_QUERY = "SELECT t.*, r.* FROM tickets t LEFT JOIN results r ON r.ticket_id = t.id"
 
 
-def list_tickets(conn) -> list[dict]:
-    return [_row(r) for r in conn.execute(f"{TICKET_QUERY} ORDER BY t.created_at DESC")]
+def list_tickets(conn, *, history: bool = False) -> list[dict]:
+    where = "" if history else "WHERE t.source = 'live'"
+    return [_row(r) for r in conn.execute(f"{TICKET_QUERY} {where} ORDER BY t.created_at DESC")]
 
 
 def get_ticket(conn, ticket_id: str) -> dict | None:
