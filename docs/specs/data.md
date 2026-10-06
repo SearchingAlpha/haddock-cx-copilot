@@ -165,6 +165,32 @@ Texto del artículo.
 - Idioma: mayoría `es`, 2 en `ca` y 2 en `en`.
 - Tono variado: cortos y largos, con faltas de ortografía, educados y enfadados.
 
+## Radar
+
+El radar de producto (`radar.md`) necesita volumen: con 40 tickets no hay patrones. `scripts/gen_radar_data.py` genera un segundo dataset:
+
+```mermaid
+flowchart LR
+    plan["PROBLEMS, DECOYS, NOISE en gen_radar_data.py"] --> gen["gen_radar_data.py — semilla 7"]
+    gen --> customers["customers.json: + C-011…C-050"]
+    gen --> tickets["radar/tickets.jsonl: R-001…R-250"]
+    gen --> truth["radar/truth.json: problemas plantados"]
+    tickets --> evals["evals/run_clustering.py"]
+    truth --> evals
+```
+
+- **Clientes.** Añade C-011…C-050. C-001…C-010 no cambian: el script mantiene su texto. Cada cliente de un problema plantado tiene la entidad de ese problema. Ejemplo: los clientes de P1 tienen facturas de Distribuciones Garrido en `failed` desde el 1-sep.
+- **Tickets.** 250 tickets del 24-ago al 4-oct. Las etiquetas son `RadarLabels`: las de `TicketLabels` más `component`, `kind`, `entity`, `problem_id` y `decoy`.
+- **Problemas plantados.** 7 problemas, con fecha de inicio y una curva de llegada (`spike`, `steady` o `rising`). P7 tiene 2 clientes starter: queda por debajo del umbral.
+- **Señuelos.** 40 tickets con las mismas palabras que un problema plantado y otra causa: una foto borrosa, una contraseña cambiada, un segundo terminal. Son `how_to` o `user_error` y no tienen `problem_id`.
+- **Ruido.** Dudas de usuarios, plan, proveedores, conciliación e inventario.
+- **Limitación.** Los textos son plantillas con variación (saludo, firma, minúsculas, «Os escribí hace unos días»). Un ticket real es más variado. Los evals deben reportar la precisión del ruido, no solo la pureza.
+
+| Función | Devuelve |
+|---|---|
+| `load_radar_tickets(path="data/radar/tickets.jsonl")` | `list[RadarTicket]` |
+| `load_radar_truth(path="data/radar/truth.json")` | `dict[str, dict]`, por id de problema |
+
 ## Errors and edge cases
 
 - Un artículo sin cabecera: `load_kb()` lanza `ValueError` con el nombre del fichero.

@@ -120,5 +120,1872 @@
       {"id": "F-1001", "supplier": "Distribuciones Andaluzas", "issue_date": "2026-09-26", "uploaded_at": "2026-09-27T09:00:00", "amount_eur": 715.40, "status": "processing"},
       {"id": "F-1002", "supplier": "Tortillería El Maíz", "issue_date": "2026-09-22", "uploaded_at": "2026-09-23T10:00:00", "amount_eur": 190.00, "status": "failed", "error": "OCR: file is a password-protected PDF"}
     ]
+  },
+  {
+    "id": "C-011",
+    "name": "Casa Urrutia",
+    "city": "Bilbao",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Iñaki Urrutia",
+    "contact_email": "inaki@casaurrutia.es",
+    "signup_date": "2025-02-21",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-22"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Kutxabank",
+        "status": "error",
+        "last_sync": "2026-09-14T06:00:00",
+        "error": "Kutxabank rechaza el consentimiento PSD2 después de reautorizar (401)"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1101",
+        "supplier": "Carnicería Goñi",
+        "issue_date": "2026-09-23",
+        "uploaded_at": "2026-09-24T09:07:00",
+        "amount_eur": 2279.57,
+        "status": "processed"
+      },
+      {
+        "id": "F-1102",
+        "supplier": "Makro",
+        "issue_date": "2026-09-24",
+        "uploaded_at": "2026-09-25T09:14:00",
+        "amount_eur": 1593.66,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-012",
+    "name": "Gure Etxea",
+    "city": "Vitoria-Gasteiz",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Ane Ibarra",
+    "contact_email": "ane@gureetxea.es",
+    "signup_date": "2025-02-13",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-21"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Kutxabank",
+        "status": "error",
+        "last_sync": "2026-09-14T06:00:00",
+        "error": "Kutxabank rechaza el consentimiento PSD2 después de reautorizar (401)"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1201",
+        "supplier": "Eroski Profesional",
+        "issue_date": "2026-09-19",
+        "uploaded_at": "2026-09-20T09:07:00",
+        "amount_eur": 934.74,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-013",
+    "name": "Sidrería Altxerri",
+    "city": "San Sebastián",
+    "plan": "pro",
+    "locations": 2,
+    "contact_name": "Jon Etxeberria",
+    "contact_email": "jon@sidreriaaltxerri.es",
+    "signup_date": "2025-05-18",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-07"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Kutxabank",
+        "status": "error",
+        "last_sync": "2026-09-14T06:00:00",
+        "error": "Kutxabank rechaza el consentimiento PSD2 después de reautorizar (401)"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1301",
+        "supplier": "Sidras Petritegi",
+        "issue_date": "2026-09-21",
+        "uploaded_at": "2026-09-22T09:07:00",
+        "amount_eur": 176.61,
+        "status": "processed"
+      },
+      {
+        "id": "F-1302",
+        "supplier": "Makro",
+        "issue_date": "2026-09-24",
+        "uploaded_at": "2026-09-25T09:14:00",
+        "amount_eur": 1055.98,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-014",
+    "name": "Pintxos Zazpi",
+    "city": "San Sebastián",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Maite Zubiri",
+    "contact_email": "maite@pintxoszazpi.es",
+    "signup_date": "2026-03-14",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-23"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Kutxabank",
+        "status": "error",
+        "last_sync": "2026-09-14T06:00:00",
+        "error": "Kutxabank rechaza el consentimiento PSD2 después de reautorizar (401)"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1401",
+        "supplier": "Makro",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:07:00",
+        "amount_eur": 1070.64,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-015",
+    "name": "Txoko Berria",
+    "city": "Bilbao",
+    "plan": "enterprise",
+    "locations": 3,
+    "contact_name": "Koldo Arrieta",
+    "contact_email": "koldo@txokoberria.es",
+    "signup_date": "2025-02-15",
+    "billing": {
+      "monthly_price_eur": 420.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-23"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Kutxabank",
+        "status": "error",
+        "last_sync": "2026-09-14T06:00:00",
+        "error": "Kutxabank rechaza el consentimiento PSD2 después de reautorizar (401)"
+      },
+      {
+        "kind": "pos",
+        "provider": "Ágora",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1501",
+        "supplier": "Carnicería Goñi",
+        "issue_date": "2026-09-19",
+        "uploaded_at": "2026-09-20T09:07:00",
+        "amount_eur": 2278.61,
+        "status": "processed"
+      },
+      {
+        "id": "F-1502",
+        "supplier": "Pescados Getxo",
+        "issue_date": "2026-09-28",
+        "uploaded_at": "2026-09-29T09:14:00",
+        "amount_eur": 1539.37,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-016",
+    "name": "Erretegia Mendi",
+    "city": "Pamplona",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Garazi Mendia",
+    "contact_email": "garazi@erretegiamendi.es",
+    "signup_date": "2025-05-08",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-06"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Kutxabank",
+        "status": "error",
+        "last_sync": "2026-09-14T06:00:00",
+        "error": "Kutxabank rechaza el consentimiento PSD2 después de reautorizar (401)"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1601",
+        "supplier": "Makro",
+        "issue_date": "2026-09-27",
+        "uploaded_at": "2026-09-28T09:07:00",
+        "amount_eur": 1006.33,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-017",
+    "name": "La Bilbaína",
+    "city": "Bilbao",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Begoña Larrea",
+    "contact_email": "begona@labilbaina.es",
+    "signup_date": "2025-06-12",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-18"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Kutxabank",
+        "status": "error",
+        "last_sync": "2026-09-14T06:00:00",
+        "error": "Kutxabank rechaza el consentimiento PSD2 después de reautorizar (401)"
+      },
+      {
+        "kind": "pos",
+        "provider": "Square",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1701",
+        "supplier": "Eroski Profesional",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:07:00",
+        "amount_eur": 2073.06,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-018",
+    "name": "Mesón El Fogón",
+    "city": "Madrid",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Luis Herranz",
+    "contact_email": "luis@mesonelfogon.es",
+    "signup_date": "2025-11-08",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-23"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Santander",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1801",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 423.23,
+        "status": "processed"
+      },
+      {
+        "id": "F-1802",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 362.1,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-1803",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 802.59,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-1804",
+        "supplier": "Makro",
+        "issue_date": "2026-09-28",
+        "uploaded_at": "2026-09-29T09:28:00",
+        "amount_eur": 507.48,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-019",
+    "name": "Casa Lucía",
+    "city": "Madrid",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Lucía Gómez",
+    "contact_email": "lucia@casalucia.es",
+    "signup_date": "2025-02-16",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-23"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "BBVA",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-1901",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 1565.89,
+        "status": "processed"
+      },
+      {
+        "id": "F-1902",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 950.24,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-1903",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 1355.29,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      }
+    ]
+  },
+  {
+    "id": "C-020",
+    "name": "La Tasquita de Chamberí",
+    "city": "Madrid",
+    "plan": "pro",
+    "locations": 2,
+    "contact_name": "Pedro Sanz",
+    "contact_email": "pedro@latasquitadechamberi.es",
+    "signup_date": "2025-09-10",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-23"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "CaixaBank",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2001",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 227.68,
+        "status": "processed"
+      },
+      {
+        "id": "F-2002",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 565.76,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2003",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 1661.72,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2004",
+        "supplier": "Mahou",
+        "issue_date": "2026-09-24",
+        "uploaded_at": "2026-09-25T09:28:00",
+        "amount_eur": 1885.4,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-021",
+    "name": "Grupo Alcalá Food",
+    "city": "Madrid",
+    "plan": "enterprise",
+    "locations": 4,
+    "contact_name": "Elena Ruiz",
+    "contact_email": "elena@grupoalcalafood.es",
+    "signup_date": "2025-06-17",
+    "billing": {
+      "monthly_price_eur": 560.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-21"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Santander",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2101",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 2223.15,
+        "status": "processed"
+      },
+      {
+        "id": "F-2102",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 925.26,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2103",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 663.87,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2104",
+        "supplier": "Makro",
+        "issue_date": "2026-09-20",
+        "uploaded_at": "2026-09-21T09:28:00",
+        "amount_eur": 1704.68,
+        "status": "processed"
+      },
+      {
+        "id": "F-2105",
+        "supplier": "Pescados del Cantábrico",
+        "issue_date": "2026-09-21",
+        "uploaded_at": "2026-09-22T09:35:00",
+        "amount_eur": 279.09,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-022",
+    "name": "El Rincón de Getafe",
+    "city": "Getafe",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Antonio Pardo",
+    "contact_email": "antonio@elrincondegetafe.es",
+    "signup_date": "2025-11-22",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-07"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "BBVA",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2201",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 1233.72,
+        "status": "processed"
+      },
+      {
+        "id": "F-2202",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 883.43,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2203",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 1126.81,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      }
+    ]
+  },
+  {
+    "id": "C-023",
+    "name": "Taberna Los Arcos",
+    "city": "Alcalá de Henares",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Rosa Medina",
+    "contact_email": "rosa@tabernalosarcos.es",
+    "signup_date": "2025-08-18",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-06"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Bankinter",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Ágora",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2301",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 362.73,
+        "status": "processed"
+      },
+      {
+        "id": "F-2302",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 1055.86,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2303",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 1839.0,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2304",
+        "supplier": "Mahou",
+        "issue_date": "2026-09-20",
+        "uploaded_at": "2026-09-21T09:28:00",
+        "amount_eur": 2245.85,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-024",
+    "name": "Brasería Sierra",
+    "city": "Collado Villalba",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Jorge Alonso",
+    "contact_email": "jorge@braseriasierra.es",
+    "signup_date": "2026-02-23",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-15"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Santander",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2401",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 2312.26,
+        "status": "processed"
+      },
+      {
+        "id": "F-2402",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 269.3,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2403",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 1379.15,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      }
+    ]
+  },
+  {
+    "id": "C-025",
+    "name": "Arrocería La Barca",
+    "city": "Toledo",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Carmen Toledano",
+    "contact_email": "carmen@arrocerialabarca.es",
+    "signup_date": "2025-03-03",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-13"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Unicaja",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2501",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 875.68,
+        "status": "processed"
+      },
+      {
+        "id": "F-2502",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 898.91,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2503",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 1237.32,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2504",
+        "supplier": "Makro",
+        "issue_date": "2026-09-25",
+        "uploaded_at": "2026-09-26T09:28:00",
+        "amount_eur": 248.84,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-026",
+    "name": "Cervecería El Grifo",
+    "city": "Madrid",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Álvaro Gil",
+    "contact_email": "alvaro@cerveceriaelgrifo.es",
+    "signup_date": "2025-12-29",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-19"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "ING",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2601",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 1185.17,
+        "status": "processed"
+      },
+      {
+        "id": "F-2602",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 1624.19,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2603",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 230.15,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2604",
+        "supplier": "Mahou",
+        "issue_date": "2026-09-22",
+        "uploaded_at": "2026-09-23T09:28:00",
+        "amount_eur": 1584.87,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-027",
+    "name": "Asador Castilla",
+    "city": "Segovia",
+    "plan": "pro",
+    "locations": 2,
+    "contact_name": "Teresa Velasco",
+    "contact_email": "teresa@asadorcastilla.es",
+    "signup_date": "2025-07-15",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-10"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "CaixaBank",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2701",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 747.42,
+        "status": "processed"
+      },
+      {
+        "id": "F-2702",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 981.18,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2703",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 1634.59,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2704",
+        "supplier": "Carnes Selectas Guadarrama",
+        "issue_date": "2026-09-18",
+        "uploaded_at": "2026-09-19T09:28:00",
+        "amount_eur": 2262.9,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-028",
+    "name": "Bar La Plaza",
+    "city": "Guadalajara",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Manuel Ortega",
+    "contact_email": "manuel@barlaplaza.es",
+    "signup_date": "2025-06-11",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-09"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Ibercaja",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2801",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 1501.22,
+        "status": "processed"
+      },
+      {
+        "id": "F-2802",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 1230.43,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2803",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 594.06,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      }
+    ]
+  },
+  {
+    "id": "C-029",
+    "name": "Gastrobar Lavapiés",
+    "city": "Madrid",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Sara Benítez",
+    "contact_email": "sara@gastrobarlavapies.es",
+    "signup_date": "2025-09-01",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-17"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "BBVA",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Square",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-2901",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-08-27",
+        "uploaded_at": "2026-08-28T09:07:00",
+        "amount_eur": 1795.62,
+        "status": "processed"
+      },
+      {
+        "id": "F-2902",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-12",
+        "uploaded_at": "2026-09-13T09:14:00",
+        "amount_eur": 1009.14,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2903",
+        "supplier": "Distribuciones Garrido",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:21:00",
+        "amount_eur": 2207.85,
+        "status": "failed",
+        "error": "No se pudo leer el total"
+      },
+      {
+        "id": "F-2904",
+        "supplier": "Makro",
+        "issue_date": "2026-09-25",
+        "uploaded_at": "2026-09-26T09:28:00",
+        "amount_eur": 276.14,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-030",
+    "name": "Can Pujol",
+    "city": "Barcelona",
+    "plan": "pro",
+    "locations": 2,
+    "contact_name": "Jordi Pujol",
+    "contact_email": "jordi@canpujol.es",
+    "signup_date": "2026-04-02",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-22"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "CaixaBank",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3001",
+        "supplier": "Makro",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:07:00",
+        "amount_eur": 731.81,
+        "status": "processed"
+      },
+      {
+        "id": "F-3002",
+        "supplier": "Estrella Damm",
+        "issue_date": "2026-09-20",
+        "uploaded_at": "2026-09-21T09:14:00",
+        "amount_eur": 1982.54,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-031",
+    "name": "El Xiringuito",
+    "city": "Sitges",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Núria Vidal",
+    "contact_email": "nuria@elxiringuito.es",
+    "signup_date": "2025-07-17",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-26"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Sabadell",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Square",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3101",
+        "supplier": "Estrella Damm",
+        "issue_date": "2026-09-22",
+        "uploaded_at": "2026-09-23T09:07:00",
+        "amount_eur": 1721.78,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-032",
+    "name": "Bistró Gràcia",
+    "city": "Barcelona",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Pau Ferrer",
+    "contact_email": "pau@bistrogracia.es",
+    "signup_date": "2025-04-02",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-07"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Sabadell",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Ágora",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3201",
+        "supplier": "Mercabarna Fruites",
+        "issue_date": "2026-09-24",
+        "uploaded_at": "2026-09-25T09:07:00",
+        "amount_eur": 2302.36,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-033",
+    "name": "Grup Mediterrani",
+    "city": "Barcelona",
+    "plan": "enterprise",
+    "locations": 5,
+    "contact_name": "Montse Soler",
+    "contact_email": "montse@grupmediterrani.es",
+    "signup_date": "2025-04-18",
+    "billing": {
+      "monthly_price_eur": 700.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-13"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "CaixaBank",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3301",
+        "supplier": "Makro",
+        "issue_date": "2026-09-20",
+        "uploaded_at": "2026-09-21T09:07:00",
+        "amount_eur": 439.5,
+        "status": "processed"
+      },
+      {
+        "id": "F-3302",
+        "supplier": "Mercabarna Fruites",
+        "issue_date": "2026-09-28",
+        "uploaded_at": "2026-09-29T09:14:00",
+        "amount_eur": 629.01,
+        "status": "processed"
+      },
+      {
+        "id": "F-3303",
+        "supplier": "Estrella Damm",
+        "issue_date": "2026-09-25",
+        "uploaded_at": "2026-09-26T09:21:00",
+        "amount_eur": 2009.83,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-034",
+    "name": "La Huerta de Murcia",
+    "city": "Murcia",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Ginés Martínez",
+    "contact_email": "gines@lahuertademurcia.es",
+    "signup_date": "2025-08-17",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-22"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Cajamar",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3401",
+        "supplier": "Frutas Hermanos Ruiz",
+        "issue_date": "2026-09-22",
+        "uploaded_at": "2026-09-23T09:07:00",
+        "amount_eur": 99.46,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-035",
+    "name": "Casa Pepa",
+    "city": "Valencia",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Pepa Ferrando",
+    "contact_email": "pepa@casapepa.es",
+    "signup_date": "2025-06-27",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-09"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Sabadell",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3501",
+        "supplier": "Pescados Albufera",
+        "issue_date": "2026-09-23",
+        "uploaded_at": "2026-09-24T09:07:00",
+        "amount_eur": 1498.67,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-036",
+    "name": "Arrocería Malvarrosa",
+    "city": "Valencia",
+    "plan": "pro",
+    "locations": 2,
+    "contact_name": "Vicent Llorens",
+    "contact_email": "vicent@arroceriamalvarrosa.es",
+    "signup_date": "2025-02-11",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-19"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "CaixaBank",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3601",
+        "supplier": "Pescados Albufera",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:07:00",
+        "amount_eur": 2285.02,
+        "status": "processed"
+      },
+      {
+        "id": "F-3602",
+        "supplier": "Makro",
+        "issue_date": "2026-09-28",
+        "uploaded_at": "2026-09-29T09:14:00",
+        "amount_eur": 1652.02,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-037",
+    "name": "Mar de Cádiz",
+    "city": "Cádiz",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Rocío Bernal",
+    "contact_email": "rocio@mardecadiz.es",
+    "signup_date": "2025-08-03",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-17"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Unicaja",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3701",
+        "supplier": "Cruzcampo",
+        "issue_date": "2026-09-28",
+        "uploaded_at": "2026-09-29T09:07:00",
+        "amount_eur": 1933.09,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-038",
+    "name": "Freiduría Triana",
+    "city": "Sevilla",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Curro Romero",
+    "contact_email": "curro@freiduriatriana.es",
+    "signup_date": "2025-09-18",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-25"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "CaixaBank",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3801",
+        "supplier": "Cruzcampo",
+        "issue_date": "2026-09-24",
+        "uploaded_at": "2026-09-25T09:07:00",
+        "amount_eur": 1000.42,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-039",
+    "name": "Grupo Sur Gastro",
+    "city": "Málaga",
+    "plan": "enterprise",
+    "locations": 3,
+    "contact_name": "Inma Castillo",
+    "contact_email": "inma@gruposurgastro.es",
+    "signup_date": "2025-08-28",
+    "billing": {
+      "monthly_price_eur": 420.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-10"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Unicaja",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-3901",
+        "supplier": "Cruzcampo",
+        "issue_date": "2026-09-24",
+        "uploaded_at": "2026-09-25T09:07:00",
+        "amount_eur": 233.79,
+        "status": "processed"
+      },
+      {
+        "id": "F-3902",
+        "supplier": "Distribuciones Andaluzas",
+        "issue_date": "2026-09-19",
+        "uploaded_at": "2026-09-20T09:14:00",
+        "amount_eur": 2364.58,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-040",
+    "name": "Pulpería O Porto",
+    "city": "A Coruña",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Xosé Varela",
+    "contact_email": "xose@pulperiaoporto.es",
+    "signup_date": "2025-02-10",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-08"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Abanca",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Ágora",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4001",
+        "supplier": "Mariscos Rías Baixas",
+        "issue_date": "2026-09-19",
+        "uploaded_at": "2026-09-20T09:07:00",
+        "amount_eur": 875.52,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-041",
+    "name": "Casa Fermín",
+    "city": "Oviedo",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Fermín Álvarez",
+    "contact_email": "fermin@casafermin.es",
+    "signup_date": "2025-10-16",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-08"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Unicaja",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4101",
+        "supplier": "Sidra El Gaitero",
+        "issue_date": "2026-09-18",
+        "uploaded_at": "2026-09-19T09:07:00",
+        "amount_eur": 1399.27,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-042",
+    "name": "La Bodeguilla",
+    "city": "Salamanca",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Isabel Hernández",
+    "contact_email": "isabel@labodeguilla.es",
+    "signup_date": "2025-02-20",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-11"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Santander",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4201",
+        "supplier": "Makro",
+        "issue_date": "2026-09-23",
+        "uploaded_at": "2026-09-24T09:07:00",
+        "amount_eur": 1507.73,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-043",
+    "name": "Restaurante Marisma",
+    "city": "Huelva",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Paco Domínguez",
+    "contact_email": "paco@restaurantemarisma.es",
+    "signup_date": "2025-12-05",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-13"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "CaixaBank",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Square",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4301",
+        "supplier": "Mariscos Rías Baixas",
+        "issue_date": "2026-09-27",
+        "uploaded_at": "2026-09-28T09:07:00",
+        "amount_eur": 959.09,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-044",
+    "name": "El Patio Cordobés",
+    "city": "Córdoba",
+    "plan": "pro",
+    "locations": 2,
+    "contact_name": "Rafael Luque",
+    "contact_email": "rafael@elpatiocordobes.es",
+    "signup_date": "2025-09-14",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-08"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "BBVA",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Ágora",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4401",
+        "supplier": "Cruzcampo",
+        "issue_date": "2026-09-23",
+        "uploaded_at": "2026-09-24T09:07:00",
+        "amount_eur": 1481.26,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-045",
+    "name": "Burger Lab",
+    "city": "Zaragoza",
+    "plan": "pro",
+    "locations": 3,
+    "contact_name": "Marcos Lahoz",
+    "contact_email": "marcos@burgerlab.es",
+    "signup_date": "2025-09-10",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-20"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Ibercaja",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Revo",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4501",
+        "supplier": "Makro",
+        "issue_date": "2026-09-19",
+        "uploaded_at": "2026-09-20T09:07:00",
+        "amount_eur": 2051.04,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-046",
+    "name": "Grupo Tapa Norte",
+    "city": "Santander",
+    "plan": "enterprise",
+    "locations": 4,
+    "contact_name": "Cristina Ceballos",
+    "contact_email": "cristina@grupotapanorte.es",
+    "signup_date": "2025-07-09",
+    "billing": {
+      "monthly_price_eur": 560.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-28"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Santander",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4601",
+        "supplier": "Makro",
+        "issue_date": "2026-09-25",
+        "uploaded_at": "2026-09-26T09:07:00",
+        "amount_eur": 810.38,
+        "status": "processed"
+      },
+      {
+        "id": "F-4602",
+        "supplier": "Pescados del Cantábrico",
+        "issue_date": "2026-09-20",
+        "uploaded_at": "2026-09-21T09:14:00",
+        "amount_eur": 326.05,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-047",
+    "name": "Ramen Kaze",
+    "city": "Madrid",
+    "plan": "pro",
+    "locations": 1,
+    "contact_name": "Kenji Moreno",
+    "contact_email": "kenji@ramenkaze.es",
+    "signup_date": "2026-01-04",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-10"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "ING",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Square",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:10:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4701",
+        "supplier": "Makro",
+        "issue_date": "2026-09-22",
+        "uploaded_at": "2026-09-23T09:07:00",
+        "amount_eur": 1195.62,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-048",
+    "name": "Vegano Verde",
+    "city": "Valencia",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Laura Peris",
+    "contact_email": "laura@veganoverde.es",
+    "signup_date": "2025-10-12",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-16"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "ING",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4801",
+        "supplier": "Huerta de Aranjuez",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:07:00",
+        "amount_eur": 143.35,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-049",
+    "name": "Pizzería Nápoles",
+    "city": "Alicante",
+    "plan": "pro",
+    "locations": 2,
+    "contact_name": "Davide Russo",
+    "contact_email": "davide@pizzerianapoles.es",
+    "signup_date": "2026-04-28",
+    "billing": {
+      "monthly_price_eur": 149.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-05"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Sabadell",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "disconnected",
+        "last_sync": "2026-09-27T23:50:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-4901",
+        "supplier": "Makro",
+        "issue_date": "2026-09-20",
+        "uploaded_at": "2026-09-21T09:07:00",
+        "amount_eur": 1684.06,
+        "status": "processed"
+      }
+    ]
+  },
+  {
+    "id": "C-050",
+    "name": "Cafetería Aurora",
+    "city": "Valladolid",
+    "plan": "starter",
+    "locations": 1,
+    "contact_name": "Aurora Prieto",
+    "contact_email": "aurora@cafeteriaaurora.es",
+    "signup_date": "2025-12-10",
+    "billing": {
+      "monthly_price_eur": 59.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-07"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "BBVA",
+        "status": "ok",
+        "last_sync": "2026-10-04T06:00:00"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "F-5001",
+        "supplier": "Cafés Orús",
+        "issue_date": "2026-09-26",
+        "uploaded_at": "2026-09-27T09:07:00",
+        "amount_eur": 778.59,
+        "status": "processed"
+      }
+    ]
   }
 ]
