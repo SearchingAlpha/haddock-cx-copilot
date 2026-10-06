@@ -1,7 +1,7 @@
 """Build haddock.golden.db for the public demo: the live queue plus a precomputed radar. Spec: docs/specs/deploy.md.
 
     python -m uv run python -m scripts.build_golden
-    python -m uv run python -m scripts.build_golden --base haddock.db --radar evals/results/notices-v1.db \\
+    python -m uv run python -m scripts.build_golden --base haddock.db --radar data/snapshots/radar-notices.db \\
         --requested P-0009=7
 
 The public demo never calls an LLM, so every radar state must be in the file:
@@ -61,7 +61,7 @@ def build(base: str, radar_db: str, out: str, requested: dict[str, int]) -> dict
 def main() -> None:
     parser = argparse.ArgumentParser(prog="scripts.build_golden")
     parser.add_argument("--base", default="haddock.db", help="The live queue: processed T- tickets")
-    parser.add_argument("--radar", default="evals/results/notices-v1.db", help="A radar run with drafts and notices")
+    parser.add_argument("--radar", default="data/snapshots/radar-notices.db", help="A radar run with drafts and notices")
     parser.add_argument("--out", default="haddock.golden.db")
     parser.add_argument("--requested", nargs="*", default=[], help="P-xxxx=<issue number>")
     args = parser.parse_args()

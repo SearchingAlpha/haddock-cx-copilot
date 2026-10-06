@@ -109,6 +109,7 @@ No hay conductor y narrador separados. Las reglas cambian así:
 | 150–180 | Cola → «Avisos proactivos» → el primero | — | La tarjeta con los tickets del cliente y el borrador: «El 16 de septiembre nos escribiste…» | «Cada cliente recibe un aviso con su fecha y su caso. El agente CX lo revisa como cualquier borrador.» Pulsa `A`. |
 
 **Pre-warm del radar** (en la misma base de datos que la cola):
+0. Atajo, también en una máquina nueva: `cp data/snapshots/queue.db haddock.db` deja la cola y el radar listos, con Kutxabank en `P-0009`. Si lo usas, sáltate el paso 1.
 1. `python -m uv run python -m scripts.radar_backfill --reset --draft` (≈1 min y ≈0,15 $): carga el histórico y redacta las 6 peticiones.
 2. Comprueba `/radar`: 6 problemas «Para pedir a producto», P7 (Safari) abierto.
 3. `.env` con `GITHUB_TOKEN` y `GITHUB_REPO`. Pulsa «Comprobar GitHub» una vez para confirmar el token.

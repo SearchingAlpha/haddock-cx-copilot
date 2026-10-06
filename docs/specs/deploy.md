@@ -41,7 +41,7 @@ npx wrangler deploy                            # Docker en marcha: construye y s
 
 ## Behavior
 
-1. La imagen copia `haddock.golden.db` como `haddock.db`. `scripts/build_golden.py` la construye: la cola en vivo de `haddock.db` sin revisiones, más el radar de una ejecución de eval (`evals/results/notices-v1.db`). Tiene un problema en cada estado: candidatos con su petición redactada, uno en producto (`--requested P-xxxx=<issue>`) y uno resuelto con sus avisos en la cola. La demo pública enseña el ciclo completo sin llamar a ningún LLM.
+1. La imagen copia `haddock.golden.db` como `haddock.db`. `scripts/build_golden.py` la construye: la cola en vivo de `haddock.db` sin revisiones, más el radar de una ejecución de eval (`data/snapshots/radar-notices.db`). Tiene un problema en cada estado: candidatos con su petición redactada, uno en producto (`--requested P-xxxx=<issue>`) y uno resuelto con sus avisos en la cola. La demo pública enseña el ciclo completo sin llamar a ningún LLM.
 2. El contenedor duerme tras 30 min sin peticiones. El disco no persiste: al despertar, la base de datos vuelve al estado de `haddock.golden.db`. Las revisiones de una sesión se pierden al dormir, pero sus scores ya están en Langfuse.
 3. Para cambiar el estado inicial, vuelve a ejecutar `python -m scripts.build_golden` y despliega.
 
