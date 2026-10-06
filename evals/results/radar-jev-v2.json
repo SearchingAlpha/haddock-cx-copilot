@@ -1,0 +1,1184 @@
+{
+ "run_name": "radar-jev-v2",
+ "options": {
+  "run_name": "radar-jev-v2",
+  "matcher": "jev",
+  "limit": null,
+  "workers": 8
+ },
+ "run": {
+  "ari": 0.869,
+  "purity": 0.903,
+  "planted_recall": 1.0,
+  "noise_kept_out": 0.847,
+  "noise_in_problems": 19,
+  "problems_found": 21,
+  "mixed_problems": 1,
+  "component_accuracy": 0.952,
+  "kind_accuracy": 0.904,
+  "entity_accuracy_planted": 0.992,
+  "candidates": 6,
+  "seconds": 46.1,
+  "planted_detected": 1.0,
+  "false_candidates": 1
+ },
+ "problems": [
+  {
+   "planted": "P1",
+   "title": "El OCR no lee el total de las facturas de Distribuciones Garrido desde el release del 1-sep",
+   "tickets": 32,
+   "main_problem": "P-0006",
+   "main_share": 1.0,
+   "splits": 1,
+   "status": "candidate",
+   "detected_at_n": 3,
+   "planted_before_detection": 3,
+   "days_to_detect": 0.8
+  },
+  {
+   "planted": "P2",
+   "title": "Kutxabank no sincroniza desde el 15-sep: rechaza el consentimiento PSD2 después de reautorizar",
+   "tickets": 22,
+   "main_problem": "P-0013",
+   "main_share": 1.0,
+   "splits": 1,
+   "status": "candidate",
+   "detected_at_n": 3,
+   "planted_before_detection": 3,
+   "days_to_detect": 0.5
+  },
+  {
+   "planted": "P3",
+   "title": "Revo duplica las ventas cuando el cierre de caja pasa de medianoche",
+   "tickets": 26,
+   "main_problem": "P-0008",
+   "main_share": 0.962,
+   "splits": 2,
+   "status": "candidate",
+   "detected_at_n": 3,
+   "planted_before_detection": 3,
+   "days_to_detect": 1.9
+  },
+  {
+   "planted": "P4",
+   "title": "El coste del escandallo no se actualiza cuando cambia el precio del proveedor",
+   "tickets": 18,
+   "main_problem": "P-0021",
+   "main_share": 1.0,
+   "splits": 1,
+   "status": "candidate",
+   "detected_at_n": 3,
+   "planted_before_detection": 3,
+   "days_to_detect": 1.8
+  },
+  {
+   "planted": "P5",
+   "title": "El Excel exportado del P&L suma el IVA en las ventas",
+   "tickets": 14,
+   "main_problem": "P-0008",
+   "main_share": 1.0,
+   "splits": 1,
+   "status": "candidate",
+   "detected_at_n": 3,
+   "planted_before_detection": 0,
+   "days_to_detect": -15.1
+  },
+  {
+   "planted": "P6",
+   "title": "Petición: un P&L consolidado de todos los locales",
+   "tickets": 12,
+   "main_problem": "P-0001",
+   "main_share": 1.0,
+   "splits": 1,
+   "status": "candidate",
+   "detected_at_n": 5,
+   "planted_before_detection": 5,
+   "days_to_detect": 16.7
+  },
+  {
+   "planted": "P7",
+   "title": "En Safari no se descarga el PDF original de la factura",
+   "tickets": 2,
+   "main_problem": "P-0026",
+   "main_share": 1.0,
+   "splits": 1,
+   "status": "open",
+   "detected_at_n": null,
+   "planted_before_detection": 0,
+   "days_to_detect": null
+  }
+ ],
+ "found": [
+  {
+   "id": "P-0001",
+   "component": "reports.pnl",
+   "kind": "feature",
+   "entity": null,
+   "title": "Solicita reportes P&L consolidados para múltiples locales.",
+   "status": "candidate",
+   "first_ticket_at": "2026-08-24T13:12:00",
+   "last_ticket_at": "2026-09-29T11:41:00",
+   "detected_at": "2026-09-09T17:48:00",
+   "detected_at_n": 5,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0002",
+   "component": "invoices.suppliers",
+   "kind": "feature",
+   "entity": null,
+   "title": "El cliente pregunta si puede enviar facturas de proveedores por email en lugar de subirlas manualmente.",
+   "status": "open",
+   "first_ticket_at": "2026-08-25T17:05:00",
+   "last_ticket_at": "2026-08-25T17:05:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0003",
+   "component": "other",
+   "kind": "feature",
+   "entity": null,
+   "title": "Solicitud de información sobre formación para equipo nuevo.",
+   "status": "open",
+   "first_ticket_at": "2026-08-29T08:05:00",
+   "last_ticket_at": "2026-08-29T08:05:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0004",
+   "component": "bank.sync",
+   "kind": "bug",
+   "entity": "Abanca",
+   "title": "Sincronización con Abanca falla tras cambio de tarjeta de coordenadas.",
+   "status": "open",
+   "first_ticket_at": "2026-08-31T19:41:00",
+   "last_ticket_at": "2026-08-31T19:41:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0005",
+   "component": "other",
+   "kind": "bug",
+   "entity": null,
+   "title": "Cierre de mes más rápido tras mejora de rendimiento.",
+   "status": "open",
+   "first_ticket_at": "2026-09-01T08:33:00",
+   "last_ticket_at": "2026-09-01T08:33:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0006",
+   "component": "invoices.suppliers",
+   "kind": "bug",
+   "entity": "Distribuciones Garrido",
+   "title": "Factura de Distribuciones Garrido con error. Problema recurrente en OCR.",
+   "status": "candidate",
+   "first_ticket_at": "2026-09-01T17:55:00",
+   "last_ticket_at": "2026-09-28T20:33:00",
+   "detected_at": "2026-09-01T19:41:00",
+   "detected_at_n": 3,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0007",
+   "component": "pos.sync",
+   "kind": "bug",
+   "entity": "Last.app",
+   "title": "Las ventas de la semana no aparecen en el sistema, POS funciona normalmente.",
+   "status": "open",
+   "first_ticket_at": "2026-09-03T16:41:00",
+   "last_ticket_at": "2026-10-03T11:55:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0008",
+   "component": "reports.pnl",
+   "kind": "bug",
+   "entity": "Revo",
+   "title": "P&L infla las ventas del 06/09; Revo muestra la mitad",
+   "status": "candidate",
+   "first_ticket_at": "2026-09-08T08:41:00",
+   "last_ticket_at": "2026-10-04T22:20:00",
+   "detected_at": "2026-09-09T21:41:00",
+   "detected_at_n": 3,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0009",
+   "component": "other",
+   "kind": "feature",
+   "entity": null,
+   "title": "Cliente pregunta si existe aplicación móvil para Android.",
+   "status": "open",
+   "first_ticket_at": "2026-09-09T09:05:00",
+   "last_ticket_at": "2026-09-09T09:05:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0010",
+   "component": "pos.sales",
+   "kind": "bug",
+   "entity": "Revo",
+   "title": "Revo: ventas se duplican algunos viernes y sábados en haddock.",
+   "status": "merged",
+   "first_ticket_at": "2026-09-09T10:33:00",
+   "last_ticket_at": "2026-09-09T10:33:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": "P-0008"
+  },
+  {
+   "id": "P-0011",
+   "component": "bank.sync",
+   "kind": "feature",
+   "entity": "Kutxabank",
+   "title": "Añadir nueva cuenta bancaria Kutxabank para segundo local.",
+   "status": "open",
+   "first_ticket_at": "2026-09-11T09:12:00",
+   "last_ticket_at": "2026-09-24T13:33:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0012",
+   "component": "other",
+   "kind": "feature",
+   "entity": null,
+   "title": "Cliente solicita formación para nuevo equipo de trabajo.",
+   "status": "open",
+   "first_ticket_at": "2026-09-11T18:55:00",
+   "last_ticket_at": "2026-09-11T18:55:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0013",
+   "component": "bank.sync",
+   "kind": "bug",
+   "entity": "Kutxabank",
+   "title": "Conexión con Kutxabank falla, no se sincronizan movimientos bancarios.",
+   "status": "candidate",
+   "first_ticket_at": "2026-09-15T08:12:00",
+   "last_ticket_at": "2026-10-02T10:48:00",
+   "detected_at": "2026-09-15T11:55:00",
+   "detected_at_n": 3,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0014",
+   "component": "other",
+   "kind": "feature",
+   "entity": null,
+   "title": "Consulta sobre disponibilidad de formación para equipos nuevos",
+   "status": "open",
+   "first_ticket_at": "2026-09-15T09:41:00",
+   "last_ticket_at": "2026-09-15T09:41:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0015",
+   "component": "other",
+   "kind": "feature",
+   "entity": null,
+   "title": "El cliente pregunta si existe app de Haddock para Android.",
+   "status": "open",
+   "first_ticket_at": "2026-09-15T12:48:00",
+   "last_ticket_at": "2026-09-15T12:48:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0016",
+   "component": "bank.sync",
+   "kind": "bug",
+   "entity": "Kutxabank",
+   "title": "No se puede reautorizar la conexión con Kutxabank en sincronización bancaria.",
+   "status": "merged",
+   "first_ticket_at": "2026-09-15T12:55:00",
+   "last_ticket_at": "2026-09-15T12:55:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": "P-0013"
+  },
+  {
+   "id": "P-0017",
+   "component": "bank.sync",
+   "kind": "bug",
+   "entity": "Kutxabank",
+   "title": "Kutxabank requiere reautorización diaria aunque se autoriza correctamente.",
+   "status": "merged",
+   "first_ticket_at": "2026-09-15T13:48:00",
+   "last_ticket_at": "2026-09-16T13:20:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": "P-0013"
+  },
+  {
+   "id": "P-0018",
+   "component": "bank.sync",
+   "kind": "bug",
+   "entity": "ING",
+   "title": "Sincronización bancaria con ING falla tras cambio de tarjeta de coordenadas.",
+   "status": "open",
+   "first_ticket_at": "2026-09-15T16:55:00",
+   "last_ticket_at": "2026-09-15T16:55:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0019",
+   "component": "pos.sales",
+   "kind": "feature",
+   "entity": "Revo",
+   "title": "Consulta: visualizar ventas por camarero desde datos de Revo en haddock.",
+   "status": "candidate",
+   "first_ticket_at": "2026-09-17T12:41:00",
+   "last_ticket_at": "2026-09-30T20:20:00",
+   "detected_at": "2026-09-25T22:12:00",
+   "detected_at_n": 2,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0020",
+   "component": "pos.sales",
+   "kind": "bug",
+   "entity": "Revo",
+   "title": "Las ventas de Revo aparecen duplicadas al cerrar caja después de medianoche",
+   "status": "merged",
+   "first_ticket_at": "2026-09-18T13:12:00",
+   "last_ticket_at": "2026-09-24T16:55:00",
+   "detected_at": "2026-09-22T14:33:00",
+   "detected_at_n": 3,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": "P-0008"
+  },
+  {
+   "id": "P-0021",
+   "component": "inventory.recipes",
+   "kind": "bug",
+   "entity": null,
+   "title": "El coste de los platos en el escandallo no se actualiza.",
+   "status": "candidate",
+   "first_ticket_at": "2026-09-20T08:41:00",
+   "last_ticket_at": "2026-10-03T13:20:00",
+   "detected_at": "2026-09-21T18:05:00",
+   "detected_at_n": 3,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0022",
+   "component": "reports.pnl",
+   "kind": "bug",
+   "entity": null,
+   "title": "P&L duplica ventas en cierre de día.",
+   "status": "merged",
+   "first_ticket_at": "2026-09-22T18:41:00",
+   "last_ticket_at": "2026-09-22T18:41:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": "P-0020"
+  },
+  {
+   "id": "P-0023",
+   "component": "account.users",
+   "kind": "feature",
+   "entity": null,
+   "title": "Solicita permiso granular: gestor vea ventas pero no banco.",
+   "status": "open",
+   "first_ticket_at": "2026-09-24T18:33:00",
+   "last_ticket_at": "2026-09-24T18:33:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0024",
+   "component": "reports.export",
+   "kind": "bug",
+   "entity": null,
+   "title": "Exportación de P&L suma IVA en ventas, no coincide con web.",
+   "status": "merged",
+   "first_ticket_at": "2026-09-26T17:33:00",
+   "last_ticket_at": "2026-09-26T17:33:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": "P-0008"
+  },
+  {
+   "id": "P-0025",
+   "component": "reports.export",
+   "kind": "bug",
+   "entity": null,
+   "title": "P&L export a Excel no coincide con pantalla por diferencia de IVA.",
+   "status": "merged",
+   "first_ticket_at": "2026-09-28T20:20:00",
+   "last_ticket_at": "2026-09-28T20:20:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": "P-0008"
+  },
+  {
+   "id": "P-0026",
+   "component": "invoices.suppliers",
+   "kind": "bug",
+   "entity": null,
+   "title": "Descargar PDF de factura no funciona en Safari desde Mac.",
+   "status": "open",
+   "first_ticket_at": "2026-09-29T13:48:00",
+   "last_ticket_at": "2026-09-29T22:33:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0027",
+   "component": "other",
+   "kind": "feature",
+   "entity": null,
+   "title": "Cliente solicita información sobre formaciones para equipo nuevo.",
+   "status": "open",
+   "first_ticket_at": "2026-09-30T08:55:00",
+   "last_ticket_at": "2026-09-30T08:55:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  },
+  {
+   "id": "P-0028",
+   "component": "reports.export",
+   "kind": "bug",
+   "entity": null,
+   "title": "P&L exportado a Excel no coincide con pantalla por diferencia de IVA.",
+   "status": "merged",
+   "first_ticket_at": "2026-09-30T10:33:00",
+   "last_ticket_at": "2026-09-30T19:00:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": "P-0008"
+  },
+  {
+   "id": "P-0029",
+   "component": "pos.sales",
+   "kind": "bug",
+   "entity": "Revo",
+   "title": "Ventas duplicadas del 30/09 en sincronización con POS Revo.",
+   "status": "open",
+   "first_ticket_at": "2026-10-04T15:05:00",
+   "last_ticket_at": "2026-10-04T15:05:00",
+   "detected_at": null,
+   "detected_at_n": null,
+   "resolved_at": null,
+   "github_number": null,
+   "github_url": null,
+   "commented_customers": 0,
+   "merged_into": null
+  }
+ ],
+ "errors": [
+  {
+   "ticket": "R-002",
+   "expected": {
+    "problem_id": null,
+    "component": "invoices.suppliers",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0002",
+    "component": "invoices.suppliers",
+    "kind": "feature",
+    "entity": null
+   },
+   "symptom": "El cliente pregunta si puede enviar facturas de proveedores por email en lugar de subirlas manualmente."
+  },
+  {
+   "ticket": "R-008",
+   "expected": {
+    "problem_id": null,
+    "component": "account.billing",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": null,
+    "component": "invoices.suppliers",
+    "kind": "how_to",
+    "entity": null
+   },
+   "symptom": "Cliente solicita descargar facturas de Haddock para contabilidad."
+  },
+  {
+   "ticket": "R-011",
+   "expected": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0003",
+    "component": "other",
+    "kind": "feature",
+    "entity": null
+   },
+   "symptom": "Solicitud de información sobre formación para equipo nuevo."
+  },
+  {
+   "ticket": "R-016",
+   "expected": {
+    "problem_id": null,
+    "component": "invoices.ocr",
+    "kind": "user_error",
+    "entity": "Cruzcampo"
+   },
+   "got": {
+    "problem_id": null,
+    "component": "invoices.ocr",
+    "kind": "how_to",
+    "entity": "Cruzcampo"
+   },
+   "symptom": "OCR no lee el total en albarán de Cruzcampo."
+  },
+  {
+   "ticket": "R-019",
+   "expected": {
+    "problem_id": null,
+    "component": "bank.sync",
+    "kind": "user_error",
+    "entity": "Abanca"
+   },
+   "got": {
+    "problem_id": "P-0004",
+    "component": "bank.sync",
+    "kind": "bug",
+    "entity": "Abanca"
+   },
+   "symptom": "Sincronización con Abanca falla tras cambio de tarjeta de coordenadas."
+  },
+  {
+   "ticket": "R-021",
+   "expected": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0005",
+    "component": "other",
+    "kind": "bug",
+    "entity": null
+   },
+   "symptom": "Cierre de mes más rápido tras mejora de rendimiento."
+  },
+  {
+   "ticket": "R-023",
+   "expected": {
+    "problem_id": "P1",
+    "component": "invoices.ocr",
+    "kind": "bug",
+    "entity": "Distribuciones Garrido"
+   },
+   "got": {
+    "problem_id": "P-0006",
+    "component": "invoices.suppliers",
+    "kind": "bug",
+    "entity": "Distribuciones Garrido"
+   },
+   "symptom": "Factura de Distribuciones Garrido con error. Problema recurrente en OCR."
+  },
+  {
+   "ticket": "R-027",
+   "expected": {
+    "problem_id": null,
+    "component": "invoices.ocr",
+    "kind": "user_error",
+    "entity": "Makro"
+   },
+   "got": {
+    "problem_id": null,
+    "component": "invoices.ocr",
+    "kind": "how_to",
+    "entity": "Makro"
+   },
+   "symptom": "OCR no lee el total de albarán de Makro"
+  },
+  {
+   "ticket": "R-034",
+   "expected": {
+    "problem_id": null,
+    "component": "pos.sync",
+    "kind": "user_error",
+    "entity": "Last.app"
+   },
+   "got": {
+    "problem_id": "P-0007",
+    "component": "pos.sync",
+    "kind": "bug",
+    "entity": "Last.app"
+   },
+   "symptom": "Las ventas de la semana no aparecen en el sistema, POS funciona normalmente."
+  },
+  {
+   "ticket": "R-061",
+   "expected": {
+    "problem_id": "P3",
+    "component": "pos.sales",
+    "kind": "bug",
+    "entity": "Revo"
+   },
+   "got": {
+    "problem_id": "P-0008",
+    "component": "reports.pnl",
+    "kind": "bug",
+    "entity": "Revo"
+   },
+   "symptom": "P&L infla las ventas del 06/09; Revo muestra la mitad"
+  },
+  {
+   "ticket": "R-064",
+   "expected": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0009",
+    "component": "other",
+    "kind": "feature",
+    "entity": null
+   },
+   "symptom": "Cliente pregunta si existe aplicación móvil para Android."
+  },
+  {
+   "ticket": "R-071",
+   "expected": {
+    "problem_id": "P1",
+    "component": "invoices.ocr",
+    "kind": "bug",
+    "entity": "Distribuciones Garrido"
+   },
+   "got": {
+    "problem_id": "P-0006",
+    "component": "invoices.suppliers",
+    "kind": "bug",
+    "entity": "Distribuciones Garrido"
+   },
+   "symptom": "Facturas de Distribuciones Garrido se quedan en error desde semanas."
+  },
+  {
+   "ticket": "R-072",
+   "expected": {
+    "problem_id": "P1",
+    "component": "invoices.ocr",
+    "kind": "bug",
+    "entity": "Distribuciones Garrido"
+   },
+   "got": {
+    "problem_id": "P-0006",
+    "component": "invoices.suppliers",
+    "kind": "bug",
+    "entity": "Distribuciones Garrido"
+   },
+   "symptom": "Facturas de Distribuciones Garrido quedan en error y no se procesan."
+  },
+  {
+   "ticket": "R-078",
+   "expected": {
+    "problem_id": null,
+    "component": "bank.sync",
+    "kind": "how_to",
+    "entity": "Kutxabank"
+   },
+   "got": {
+    "problem_id": "P-0011",
+    "component": "bank.sync",
+    "kind": "feature",
+    "entity": "Kutxabank"
+   },
+   "symptom": "Añadir nueva cuenta bancaria Kutxabank para segundo local."
+  },
+  {
+   "ticket": "R-085",
+   "expected": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0012",
+    "component": "other",
+    "kind": "feature",
+    "entity": null
+   },
+   "symptom": "Cliente solicita formación para nuevo equipo de trabajo."
+  },
+  {
+   "ticket": "R-089",
+   "expected": {
+    "problem_id": null,
+    "component": "pos.sync",
+    "kind": "user_error",
+    "entity": "Last.app"
+   },
+   "got": {
+    "problem_id": "P-0007",
+    "component": "pos.sync",
+    "kind": "bug",
+    "entity": "Last.app"
+   },
+   "symptom": "Las ventas del POS Last.app no aparecen desde el domingo."
+  },
+  {
+   "ticket": "R-097",
+   "expected": {
+    "problem_id": null,
+    "component": "account.billing",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": null,
+    "component": "invoices.suppliers",
+    "kind": "how_to",
+    "entity": null
+   },
+   "symptom": "Cliente solicita descargar facturas de haddock para contabilidad."
+  },
+  {
+   "ticket": "R-098",
+   "expected": {
+    "problem_id": null,
+    "component": "invoices.ocr",
+    "kind": "user_error",
+    "entity": "Makro"
+   },
+   "got": {
+    "problem_id": null,
+    "component": "invoices.ocr",
+    "kind": "how_to",
+    "entity": "Makro"
+   },
+   "symptom": "OCR no lee el total de la factura de Makro desde foto de albarán."
+  },
+  {
+   "ticket": "R-106",
+   "expected": {
+    "problem_id": "P1",
+    "component": "invoices.ocr",
+    "kind": "bug",
+    "entity": "Distribuciones Garrido"
+   },
+   "got": {
+    "problem_id": "P-0006",
+    "component": "invoices.suppliers",
+    "kind": "bug",
+    "entity": "Distribuciones Garrido"
+   },
+   "symptom": "Facturas de Distribuciones Garrido se quedan en error desde semanas."
+  },
+  {
+   "ticket": "R-110",
+   "expected": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0014",
+    "component": "other",
+    "kind": "feature",
+    "entity": null
+   },
+   "symptom": "Consulta sobre disponibilidad de formación para equipos nuevos"
+  },
+  {
+   "ticket": "R-114",
+   "expected": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0015",
+    "component": "other",
+    "kind": "feature",
+    "entity": null
+   },
+   "symptom": "El cliente pregunta si existe app de Haddock para Android."
+  },
+  {
+   "ticket": "R-118",
+   "expected": {
+    "problem_id": "P3",
+    "component": "pos.sales",
+    "kind": "bug",
+    "entity": "Revo"
+   },
+   "got": {
+    "problem_id": "P-0008",
+    "component": "reports.pnl",
+    "kind": "bug",
+    "entity": "Revo"
+   },
+   "symptom": "P&L muestra ventas dobles comparado con Revo del 11/09."
+  },
+  {
+   "ticket": "R-119",
+   "expected": {
+    "problem_id": null,
+    "component": "bank.sync",
+    "kind": "user_error",
+    "entity": "ING"
+   },
+   "got": {
+    "problem_id": "P-0018",
+    "component": "bank.sync",
+    "kind": "bug",
+    "entity": "ING"
+   },
+   "symptom": "Sincronización bancaria con ING falla tras cambio de tarjeta de coordenadas."
+  },
+  {
+   "ticket": "R-124",
+   "expected": {
+    "problem_id": null,
+    "component": "account.billing",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": null,
+    "component": "invoices.suppliers",
+    "kind": "how_to",
+    "entity": null
+   },
+   "symptom": "Cliente solicita descargar facturas de haddock para contabilidad."
+  },
+  {
+   "ticket": "R-135",
+   "expected": {
+    "problem_id": null,
+    "component": "pos.sales",
+    "kind": "how_to",
+    "entity": "Revo"
+   },
+   "got": {
+    "problem_id": "P-0019",
+    "component": "pos.sales",
+    "kind": "feature",
+    "entity": "Revo"
+   },
+   "symptom": "Consulta: visualizar ventas por camarero desde datos de Revo en haddock."
+  },
+  {
+   "ticket": "R-162",
+   "expected": {
+    "problem_id": "P3",
+    "component": "pos.sales",
+    "kind": "bug",
+    "entity": "Revo"
+   },
+   "got": {
+    "problem_id": "P-0008",
+    "component": "reports.pnl",
+    "kind": "bug",
+    "entity": null
+   },
+   "symptom": "P&L duplica ventas en cierre de día."
+  },
+  {
+   "ticket": "R-168",
+   "expected": {
+    "problem_id": null,
+    "component": "invoices.ocr",
+    "kind": "user_error",
+    "entity": "Cruzcampo"
+   },
+   "got": {
+    "problem_id": null,
+    "component": "invoices.ocr",
+    "kind": "how_to",
+    "entity": "Cruzcampo"
+   },
+   "symptom": "OCR no lee el total en albarán de Cruzcampo."
+  },
+  {
+   "ticket": "R-173",
+   "expected": {
+    "problem_id": null,
+    "component": "bank.sync",
+    "kind": "how_to",
+    "entity": "Kutxabank"
+   },
+   "got": {
+    "problem_id": "P-0011",
+    "component": "bank.sync",
+    "kind": "feature",
+    "entity": "Kutxabank"
+   },
+   "symptom": "Solicita añadir otra cuenta bancaria Kutxabank para sincronización."
+  },
+  {
+   "ticket": "R-177",
+   "expected": {
+    "problem_id": "P3",
+    "component": "pos.sales",
+    "kind": "bug",
+    "entity": "Revo"
+   },
+   "got": {
+    "problem_id": "P-0008",
+    "component": "reports.pnl",
+    "kind": "bug",
+    "entity": "Revo"
+   },
+   "symptom": "P&L infla las ventas duplicadas del 20/09 con POS Revo"
+  },
+  {
+   "ticket": "R-179",
+   "expected": {
+    "problem_id": null,
+    "component": "account.users",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0023",
+    "component": "account.users",
+    "kind": "feature",
+    "entity": null
+   },
+   "symptom": "Solicita permiso granular: gestor vea ventas pero no banco."
+  },
+  {
+   "ticket": "R-185",
+   "expected": {
+    "problem_id": null,
+    "component": "pos.sales",
+    "kind": "how_to",
+    "entity": "Revo"
+   },
+   "got": {
+    "problem_id": "P-0019",
+    "component": "pos.sales",
+    "kind": "feature",
+    "entity": "Revo"
+   },
+   "symptom": "Consulta: ¿Es posible ver ventas de Revo por camarero en haddock?"
+  },
+  {
+   "ticket": "R-190",
+   "expected": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "user_error",
+    "entity": null
+   },
+   "symptom": "Cierre de mes más rápido tras mejoras en haddock."
+  },
+  {
+   "ticket": "R-218",
+   "expected": {
+    "problem_id": null,
+    "component": "other",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": "P-0027",
+    "component": "other",
+    "kind": "feature",
+    "entity": null
+   },
+   "symptom": "Cliente solicita información sobre formaciones para equipo nuevo."
+  },
+  {
+   "ticket": "R-222",
+   "expected": {
+    "problem_id": null,
+    "component": "pos.sales",
+    "kind": "how_to",
+    "entity": "Revo"
+   },
+   "got": {
+    "problem_id": "P-0019",
+    "component": "pos.sales",
+    "kind": "feature",
+    "entity": "Revo"
+   },
+   "symptom": "No se muestran las ventas de Revo desglosadas por camarero en haddock."
+  },
+  {
+   "ticket": "R-238",
+   "expected": {
+    "problem_id": null,
+    "component": "pos.sync",
+    "kind": "user_error",
+    "entity": "Last.app"
+   },
+   "got": {
+    "problem_id": "P-0007",
+    "component": "pos.sync",
+    "kind": "bug",
+    "entity": "Last.app"
+   },
+   "symptom": "Ventas de la semana no se cargan en haddock desde el TPV."
+  },
+  {
+   "ticket": "R-239",
+   "expected": {
+    "problem_id": null,
+    "component": "account.billing",
+    "kind": "how_to",
+    "entity": null
+   },
+   "got": {
+    "problem_id": null,
+    "component": "invoices.suppliers",
+    "kind": "how_to",
+    "entity": null
+   },
+   "symptom": "Cliente solicita descargar facturas de haddock para contabilidad."
+  }
+ ]
+}

@@ -76,6 +76,39 @@ python -m evals.run_experiment --limit 5             # prueba rápida
 - `prompt_label`: el label del prompt del agente en Langfuse (`production`, `staging`).
 - `classify_only`: no ejecuta el agente. Sirve para comparar clasificadores sin coste de Sonnet.
 
+## Radar
+
+`evals/run_clustering.py` mide el radar (`radar.md`) contra los problemas plantados de `data/radar/`. No usa un dataset de Langfuse: el clustering depende del orden de los tickets, y un experimento de Langfuse evalúa cada item por separado.
+
+```mermaid
+flowchart LR
+    n1["1. BD nueva: evals/results/run.db"] --> n2["2. radar.backfill: 250 tickets en orden"]
+    n2 --> n3["3. señales y problemas"]
+    n3 --> n4["4. evals/clustering.py contra truth.json"]
+    n4 --> n5["5. evals/results/run.json"]
+    n4 --> n6["6. traza radar-eval con scores en Langfuse"]
+```
+
+```
+python -m evals.run_clustering --run-name radar-jev-v4
+python -m evals.run_clustering --matcher haiku --run-name radar-haiku-match-v4
+python -m evals.run_clustering --limit 60          # prueba rápida
+```
+
+| Score | Cómo |
+|---|---|
+| `ari` | Adjusted Rand index contra los problemas plantados. Un ticket sin problema es su propio grupo. |
+| `purity` | Por problema encontrado, la parte de tickets del problema plantado más frecuente. |
+| `planted_recall` | Tickets plantados que tienen un problema / tickets plantados. |
+| `noise_kept_out` | Ruido y señuelos sin problema / ruido y señuelos. |
+| `mixed_problems` | Problemas encontrados que contienen dos problemas plantados. |
+| `planted_detected` | Problemas plantados (menos P7) que llegan a `candidate`. |
+| `false_candidates` | Problemas en `candidate` que no son el principal de ningún problema plantado. |
+| `component_accuracy`, `kind_accuracy` | Señales iguales a la etiqueta, sobre los 250 tickets. |
+| `entity_accuracy_planted` | Entidad igual a la etiqueta, solo en tickets plantados. |
+
+Por problema plantado: el problema principal, su parte, cuántos problemas lo parten, `detected_at_n` y los días entre la fecha de inicio y la detección.
+
 ## Errors and edge cases
 - Un ticket sin `key_points`: no ocurre; `tests/test_data.py` lo impide.
 - Un ticket escalado sin borrador: `key_points_coverage` y `groundedness` no se calculan.

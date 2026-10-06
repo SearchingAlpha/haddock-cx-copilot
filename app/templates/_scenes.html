@@ -207,3 +207,22 @@ def get_invoices(ctx, status=None):
   {% endfor %}
 </div>
 {% endmacro %}
+
+{% macro radar_loop() %}
+<div class="sv">
+  <ol class="sv-pipe">
+    {% for icon, label in [("inbox", "Tickets"), ("radar", "Problema"), ("github", "Issue"), ("wrench", "Fix"), ("bell-ring", "Aviso al cliente")] %}
+    <li class="rise" style="animation-delay: {{ 120 + loop.index0 * 180 }}ms"><i data-lucide="{{ icon }}"></i><span>{{ label }}</span></li>
+    {% endfor %}
+  </ol>
+  <p class="sv-band rise" style="animation-delay: 1100ms"><i data-lucide="user-check"></i>El agente CX aprueba la issue y revisa cada aviso</p>
+</div>
+{% endmacro %}
+
+{% macro radar_numbers() %}
+<div class="sv sv-row">
+  {% for big, text in [("0,989", "ARI contra los problemas plantados"), ("0", "peticiones falsas a producto"), ("100 %", "citas literales en las issues"), ("12 de 12", "avisos que pasan los guardrails")] %}
+  <div class="sv-card rise" style="animation-delay: {{ 150 + loop.index0 * 180 }}ms"><strong class="sv-num">{{ big }}</strong><span>{{ text }}</span></div>
+  {% endfor %}
+</div>
+{% endmacro %}

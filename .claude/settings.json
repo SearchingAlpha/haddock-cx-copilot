@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m uv run pytest:*)",
+      "Bash(python -m uv run python -m scripts.check:*)",
+      "Bash(python -m uv run python -m app.cli:*)",
+      "Bash(python -m uv run python -m evals.run_experiment:*)",
+      "Bash(python -m uv run python -m scripts.push_prompts:*)",
+      "Bash(python -m uv run python -m evals.upload_dataset:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git switch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Bash(git push:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && python -m uv run python .claude/hooks/after_edit.py",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

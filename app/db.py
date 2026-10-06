@@ -26,19 +26,48 @@ CREATE TABLE IF NOT EXISTS reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT, ticket_id TEXT REFERENCES tickets(id), decision TEXT,
     final_text TEXT, edit_distance REAL, review_seconds REAL, category_final TEXT, created_at TEXT
 );
+CREATE TABLE IF NOT EXISTS signals (
+    ticket_id TEXT PRIMARY KEY REFERENCES tickets(id), customer_id TEXT, created_at TEXT, component TEXT,
+    kind TEXT, entity TEXT, symptom TEXT, priority TEXT, confidence TEXT, model TEXT, problem_id TEXT,
+    match_confidence REAL, matched TEXT, trace_id TEXT
+);
+CREATE TABLE IF NOT EXISTS problems (
+    id TEXT PRIMARY KEY, component TEXT, kind TEXT, entity TEXT, title TEXT, status TEXT,
+    first_ticket_at TEXT, last_ticket_at TEXT, detected_at TEXT, detected_at_n INTEGER,
+    resolved_at TEXT, github_number INTEGER, github_url TEXT, issue_customers TEXT, merged_into TEXT
+);
+CREATE TABLE IF NOT EXISTS product_requests (
+    problem_id TEXT PRIMARY KEY REFERENCES problems(id), title TEXT, body_md TEXT, payload TEXT, dropped TEXT,
+    status TEXT, trace_id TEXT, cost_usd REAL, created_at TEXT, decided_at TEXT, decision TEXT
+);
+CREATE TABLE IF NOT EXISTS notices (
+    problem_id TEXT REFERENCES problems(id), customer_id TEXT, ticket_id TEXT REFERENCES tickets(id), created_at TEXT,
+    UNIQUE (problem_id, customer_id)
+);
+CREATE TABLE IF NOT EXISTS problem_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, problem_id TEXT REFERENCES problems(id), kind TEXT,
+    payload TEXT, created_at TEXT
+);
 """
-JSON_COLUMNS = ("reasons", "classification", "confidence", "evidence", "tool_calls", "tool_outputs", "escalation")
-LATE_COLUMNS = ("tool_outputs", "escalation")  # added after the first schema; migrated in connect()
+JSON_COLUMNS = ("reasons", "classification", "confidence", "evidence", "tool_calls", "tool_outputs", "escalation",
+                "matched", "payload", "dropped")
+LATE_COLUMNS = {  # added after the first schema; migrated in connect()
+    "results": {"tool_outputs": "TEXT", "escalation": "TEXT"},
+    "tickets": {"kind": "TEXT DEFAULT 'inbound'", "source": "TEXT DEFAULT 'live'", "problem_id": "TEXT"},
+    "problems": {"issue_customers": "TEXT", "merged_into": "TEXT"},
+}
+TICKET_COLUMNS = "id, customer_id, channel, subject, body, created_at, mode, state, kind, source, problem_id"
 
 
 def connect(path: str | None = None) -> sqlite3.Connection:
-    conn = sqlite3.connect(path or os.environ.get("HADDOCK_DB", "haddock.db"), check_same_thread=False)
+    conn = sqlite3.connect(path or os.environ.get("HADDOCK_DB", "haddock.db"), check_same_thread=False, timeout=10)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
-    columns = {r["name"] for r in conn.execute("PRAGMA table_info(results)")}
-    for column in LATE_COLUMNS:
-        if column not in columns:
-            conn.execute(f"ALTER TABLE results ADD COLUMN {column} TEXT")
+    for table, late in LATE_COLUMNS.items():
+        columns = {r["name"] for r in conn.execute(f"PRAGMA table_info({table})")}
+        for column, sql_type in late.items():
+            if column not in columns:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {sql_type}")
     return conn
 
 
@@ -47,14 +76,17 @@ def mode_for(ticket_id: str) -> str:
     return "manual" if hashlib.sha256(ticket_id.encode()).digest()[0] % MANUAL_SHARE == 0 else "copilot"
 
 
-def insert_ticket(conn, ticket: TicketIn) -> str:
-    mode = mode_for(ticket.id)
+def insert_ticket(conn, ticket: TicketIn, *, source: str = "live", kind: str = "inbound",
+                  mode: str | None = None, problem_id: str | None = None) -> str:
+    """source=history: a radar ticket from the past; it never shows in the queue (docs/specs/radar.md)."""
+    mode = mode or mode_for(ticket.id)
+    state = "history" if source == "history" else "processing"
     try:
         with conn:
             conn.execute(
-                "INSERT INTO tickets VALUES (?, ?, ?, ?, ?, ?, ?, 'processing')",
+                f"INSERT INTO tickets ({TICKET_COLUMNS}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (ticket.id, ticket.customer_id, ticket.channel, ticket.subject, ticket.body,
-                 ticket.created_at.isoformat(), mode),
+                 ticket.created_at.isoformat(), mode, state, kind, source, problem_id),
             )
     except sqlite3.IntegrityError as error:
         raise ValueError(f"ticket {ticket.id} already exists") from error
@@ -91,8 +123,9 @@ def _row(row: sqlite3.Row | None) -> dict | None:
 TICKET_QUERY = "SELECT t.*, r.* FROM tickets t LEFT JOIN results r ON r.ticket_id = t.id"
 
 
-def list_tickets(conn) -> list[dict]:
-    return [_row(r) for r in conn.execute(f"{TICKET_QUERY} ORDER BY t.created_at DESC")]
+def list_tickets(conn, *, history: bool = False) -> list[dict]:
+    where = "" if history else "WHERE t.source = 'live'"
+    return [_row(r) for r in conn.execute(f"{TICKET_QUERY} {where} ORDER BY t.created_at DESC")]
 
 
 def get_ticket(conn, ticket_id: str) -> dict | None:
@@ -125,8 +158,10 @@ def _avg(values: list[float]) -> float | None:
 
 def metrics(conn) -> dict:
     tickets = list_tickets(conn)
-    reviews = [dict(r) for r in conn.execute(
-        "SELECT r.*, t.mode FROM reviews r JOIN tickets t ON t.id = r.ticket_id")]
+    all_reviews = [dict(r) for r in conn.execute(
+        "SELECT r.*, t.mode, t.kind FROM reviews r JOIN tickets t ON t.id = r.ticket_id")]
+    reviews = [r for r in all_reviews if r["kind"] != "proactive"]  # notices are not the copilot/manual baseline
+    tickets = [t for t in tickets if t.get("kind") != "proactive"]
     copilot = [r for r in reviews if r["mode"] == "copilot"]
     manual = [r for r in reviews if r["mode"] == "manual"]
     processed = [t for t in tickets if t.get("status")]
@@ -146,6 +181,7 @@ def metrics(conn) -> dict:
         "escalation_rate": _avg([t["status"] == "escalated" for t in processed]),
         "category_corrections": sum(
             1 for r in reviews if r["category_final"] and r["category_final"] != predicted.get(r["ticket_id"])),
+        "notices_sent": sum(1 for r in all_reviews if r["kind"] == "proactive" and r["decision"] != "reject"),
         "by_category": dict(Counter(
             (t.get("classification") or {}).get("category") for t in processed if t.get("classification"))),
     }

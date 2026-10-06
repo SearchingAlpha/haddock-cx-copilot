@@ -76,3 +76,48 @@ Juez Sonnet. La v1 y la v2 se volvieron a juzgar con `evals/rejudge.py`.
 - **Juez:** la primera groundedness (0.63) era un error del juez. La evidencia llegaba como JSON doblemente escapado, y Haiku listaba afirmaciones y luego decía que tenían soporte.
 - **Etiqueta discutible (T-040):** el cliente da las gracias porque el banco ya funciona, pero sus datos dicen que CaixaBank sigue en error. El agente se lo avisa. La respuesta del agente es probablemente mejor que la etiqueta.
 - **Coste por ticket:** unos $0.017 con Sonnet. La caché del prompt reduce el coste cuando los tickets llegan seguidos.
+
+## Radar de producto: clustering (fase R1)
+
+Dataset `data/radar/`: 250 tickets, 7 problemas plantados, 40 señuelos (`docs/specs/data.md`). `python -m evals.run_clustering`. Cada ejecución deja `evals/results/<run>.json` y una traza `radar-eval` con los scores.
+
+```mermaid
+flowchart LR
+    s["spike: Jev 20/20 en «¿mismo problema?»; confianza de los sí 0.46-0.82"] -->|"umbral 0.8 -> 0.4"| v1
+    v1["v1: P1 y P3 partidos por el componente"] -->|"candidatos por área o entidad; merge con sí doble"| v2
+    v2["v2: P5 mezclado con P3"] -->|"sin entidad = mismo componente; mismo kind; componente por mayoría"| v3
+    v3["v3: 3 candidatos falsos: «¿se puede…?» como feature"] -->|"descripción de kind: una pregunta es how_to"| v4
+    v4["v4: 0 candidatos falsos"]
+```
+
+| Score | v1 | v2 | v3 | v4 (Jev) | v4 matcher Haiku |
+|---|---|---|---|---|---|
+| ARI | 0.915 | 0.869 | 0.996 | **0.989** | 0.994 |
+| Purity | 0.993 | 0.903 | 1.0 | **1.0** | 1.0 |
+| Problemas mezclados | 0 | 1 | 0 | **0** | 0 |
+| Ruido fuera de los problemas | 0.887 | 0.847 | 0.855 | **0.935** | 0.944 |
+| `kind` correcto | 0.924 | 0.904 | 0.904 | **0.952** | 0.956 |
+| Plantados detectados (6) | 6 | 6 | 6 | **6** | 6 |
+| Candidatos falsos | 3 | 1 | 3 | **0** | 0 |
+| Segundos (250 tickets) | 48 | 46 | 50 | **47** | 101 |
+
+**Detección (v4).** Cada problema plantado llega a `candidate` con 2 a 5 tickets suyos:
+
+| Problema | Tickets | Detectado con | Días después del inicio |
+|---|---|---|---|
+| P1 OCR de Garrido | 32 | 3 | 0.8 |
+| P2 Kutxabank | 22 | 3 | 0.5 |
+| P3 Revo duplica ventas | 26 | 3 | 1.9 |
+| P4 escandallos | 18 | 3 | 1.8 |
+| P5 Excel del P&L con IVA | 14 | 4 | 4.6 |
+| P6 P&L multi-local (feature) | 12 | 5 | 16.7 |
+| P7 Safari (2 clientes starter) | 2 | no llega: correcto | — |
+
+**Decisiones:**
+- El matcher sigue en Jev. Haiku da la misma calidad, pero tarda el doble y cuesta más.
+- El umbral de confianza baja a 0.4. Los errores de v1 a v3 no venían del matcher, sino del filtro de candidatos y del `kind`.
+- P6 tarda 16.7 días porque es una feature con una curva plana: hasta el quinto ticket no hay 3 clientes distintos.
+
+**Limitaciones:**
+- Los textos son plantillas con variación. Un ticket real es más variado, así que este resultado es una cota superior.
+- Dos ejecuciones con los mismos datos no son idénticas: Jev no es determinista (`kind` correcto 0.904–0.952). Por eso el eval mide la frontera de `kind`, y la petición a producto siempre pasa por una persona.

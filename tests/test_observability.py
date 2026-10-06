@@ -79,6 +79,10 @@ def exported_spans(monkeypatch):
     yield finished
     Agent.instrument_all(False)
     langfuse.shutdown()
+    # Forget the client: get_client() would return this shut-down instance to later tests, and a score queued on it
+    # (radar.approve -> create_score) blocks the next flush() forever.
+    from langfuse._client.resource_manager import LangfuseResourceManager
+    LangfuseResourceManager._instances.pop("pk-lf-test", None)
 
 
 def test_one_ticket_makes_one_readable_trace(exported_spans):

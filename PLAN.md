@@ -235,6 +235,23 @@ flowchart LR
 - [ ] 3 retos resueltos en el tiempo previsto, como mínimo.
 - [ ] Las respuestas preparadas están escritas.
 
+### Fase R: Radar de producto y cierre del ciclo
+
+**Objetivo:** pasar de responder tickets a mejorar el producto. Ticket → problema → petición de producto en GitHub → fix → aviso proactivo a cada cliente afectado.
+
+**Spec:** `radar.md`. Después: `product-request.md`, `github.md` y `notify.md`.
+
+1. **R0, datos:** `scripts/gen_radar_data.py` genera 250 tickets con 7 problemas plantados, señuelos y ruido, y 40 clientes nuevos.
+2. **R1, señales y clustering:** `signals.py` (Jev: componente y tipo; Haiku: síntoma), `entities.py` (determinista), `problems.py` (BM25 y una pregunta sí/no a Jev por candidato) y `radar.py`. El eval `evals/run_clustering.py` calcula purity, ARI, precisión del ruido y en qué ticket se detecta cada problema plantado.
+3. **R2, página `/radar`:** impacto determinista (MRR de clientes afectados, severidad, tendencia), tabla ordenada y grafo área → problema → cliente.
+4. **R3, petición de producto:** Sonnet redacta la issue con citas literales de los tickets. Un agente CX la aprueba. `github.py` crea la issue o comenta «+N clientes» en la que ya existe.
+5. **R4, cerrar el ciclo:** el webhook de GitHub (o `/radar/sync`) detecta la issue cerrada. `notify.py` redacta un aviso proactivo por cliente afectado. Los avisos pasan los guardrails y entran en la cola.
+6. **R5, demo pública:** una BD golden con un problema en cada estado. Las acciones que escriben en GitHub devuelven 403.
+
+**Hecho cuando:**
+- [ ] El eval de clustering detecta los 6 problemas que cruzan el umbral y no pide nada para P7.
+- [ ] Una issue real se crea desde la UI, y cerrarla deja un aviso por cliente en la cola.
+
 ## Fuera del código
 
 - Responde a Enric. Elige presencial u online: la oficina suma puntos. Propón una fecha después del día 5 de preparación. Confirma que el live-coding será sobre este repositorio.

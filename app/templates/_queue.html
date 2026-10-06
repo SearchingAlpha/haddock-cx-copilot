@@ -17,6 +17,7 @@
       <a class="row" href="/tickets/{{ t.id }}" {% if t.id == selected %}aria-current="true"{% endif %}>
         <span class="who">
           {% if t.state == "escalated" %}<i data-lucide="triangle-alert" class="risk-icon" aria-label="Escalado"></i>
+          {% elif t.kind == "proactive" %}<i data-lucide="bell-ring" class="notice-icon" aria-label="Aviso proactivo"></i>
           {% elif c.priority == "urgent" %}<span class="urgent-dot" title="Urgente" aria-label="Urgente"></span>
           {% elif t.state == "processing" %}<i data-lucide="loader" class="muted" aria-label="Investigando"></i>{% endif %}
           {{ t.customer }}

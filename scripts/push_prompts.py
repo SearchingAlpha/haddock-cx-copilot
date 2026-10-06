@@ -7,7 +7,7 @@
 import argparse
 
 from app.observability import init_tracing
-from app.prompts import AGENT_SYSTEM, DEFAULT_CONFIG, JUDGE, local_text
+from app.prompts import ALL, DEFAULT_CONFIG, local_text
 
 
 def push(name: str, label: str, message: str | None) -> None:
@@ -28,7 +28,7 @@ def push(name: str, label: str, message: str | None) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(prog="scripts.push_prompts")
-    parser.add_argument("names", nargs="*", default=[AGENT_SYSTEM, JUDGE])
+    parser.add_argument("names", nargs="*", default=ALL)
     parser.add_argument("--label", default="production")
     parser.add_argument("-m", "--message")
     args = parser.parse_args()

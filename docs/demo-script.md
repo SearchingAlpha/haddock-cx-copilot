@@ -92,3 +92,28 @@ No hay conductor y narrador separados. Las reglas cambian así:
 - [ ] Ensayo 3: fuerza el escalón 2 (no arranques el webhook).
 - [ ] Ensayo 4: fuerza el escalón 3 (Langfuse cerrado, cambia al vídeo).
 - [ ] Ensayo 5: completo, con `haddock.golden.db` restaurado antes, como el día real.
+
+## Radar de producto (2 min 30 s, después de `/metrics`)
+
+**Momento de la demo:** el entrevistador ve que 250 tickets se convierten en 6 problemas de producto con su impacto, que una petición aprobada crea una issue real, y que al cerrarla cada cliente afectado recibe un aviso personal en la cola. Ticket → problema → issue → fix → cliente avisado.
+
+| Segundo | Acción | Entrada fija | Qué aparece | Qué dices |
+|---|---|---|---|---|
+| 0–30 | Clic en el icono del radar | — | Cifras arriba; grafo área → problema → cliente; clientes con anillo rojo | «Los tickets también dicen qué arreglar. El copiloto los agrupa en problemas y mide a quién afectan y cuánto pagan esos clientes.» |
+| 30–50 | Pasa el ratón por Kutxabank | — | Sus 7 clientes; el resto se apaga | «Siete clientes, 1.134 € al mes. Se detectó con 3 tickets, medio día después del inicio.» |
+| 50–90 | Clic en el problema de Kutxabank | — | Aviso ámbar «Cruzó el umbral»; la petición redactada con citas literales | «Sonnet redacta la issue. Los números y los clientes los pone el código, y cada cita es texto literal de un ticket.» |
+| 90–105 | «Crear la issue en GitHub» | — | «Issue #N en GitHub» | «Una persona aprueba. La issue ya está en el repo de producto.» |
+| 105–125 | En la terminal, pulsa Enter | `python -m uv run python -m scripts.seed_demo R-LIVE-1` | `R-LIVE-1 202`. Unos 30 s después, la issue tiene el comentario «+1 cliente · C-051 · enterprise · 3 locales» | «Entra un ticket nuevo del mismo problema. Producto se entera solo.» |
+| 125–140 | Pestaña de GitHub: cierra la issue como completada | — | La issue cerrada | «Hago de developer: el fix está hecho.» |
+| 140–150 | En `/radar`, «Comprobar GitHub» | — | «1 problema resuelto: el copiloto está redactando un aviso para cada cliente» | «Sin webhook en local: la app pregunta a GitHub.» |
+| 150–180 | Cola → «Avisos proactivos» → el primero | — | La tarjeta con los tickets del cliente y el borrador: «El 16 de septiembre nos escribiste…» | «Cada cliente recibe un aviso con su fecha y su caso. El agente CX lo revisa como cualquier borrador.» Pulsa `A`. |
+
+**Pre-warm del radar** (en la misma base de datos que la cola):
+0. Atajo, también en una máquina nueva: `cp data/snapshots/queue.db haddock.db` deja la cola y el radar listos, con Kutxabank en `P-0009`. Si lo usas, sáltate el paso 1.
+1. `python -m uv run python -m scripts.radar_backfill --reset --draft` (≈1 min y ≈0,15 $): carga el histórico y redacta las 6 peticiones.
+2. Comprueba `/radar`: 6 problemas «Para pedir a producto», P7 (Safari) abierto.
+3. `.env` con `GITHUB_TOKEN` y `GITHUB_REPO`. Pulsa «Comprobar GitHub» una vez para confirmar el token.
+4. Ten abierta la pestaña del repo de issues, con la sesión iniciada.
+5. Plan B sin red: la URL pública tiene el mismo radar ya calculado, con un problema resuelto y sus avisos en la cola.
+
+R-LIVE-1 es de C-051 (Asador Bidasoa), un cliente con Kutxabank en error que no está en el histórico. Su borrador en la cola también es coherente: el agente ve el error de consentimiento.

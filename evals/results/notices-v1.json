@@ -1,0 +1,169 @@
+{
+ "run_name": "notices-v1",
+ "problem": "P-0004",
+ "run": {
+  "guardrails_pass": 1.0,
+  "cites_own_date": 1.0,
+  "format_ok": 1.0,
+  "notices": 12,
+  "customers": 12
+ },
+ "items": [
+  {
+   "ticket": "N-P0004-C018",
+   "customer": "C-018",
+   "subject": "Ya está solucionado el problema con las facturas de Garrido",
+   "draft": "Hola, Luis:\n\nEl 28 de septiembre nos escribiste porque las facturas de Distribuciones Garrido no se leían y te aparecía el mensaje «No se pudo leer el total», aunque las subías en PDF original.\n\nQueremos contarte que ya hemos solucionado el problema: el sistema vuelve a leer el total de las facturas de este proveedor, también las que llegan con dos tipos de IVA en columnas.\n\nPara que te figuren en haddock, solo tienes que volver a subir las facturas de Garrido que te dieron error.\n\nGracias por avisarnos y por tu paciencia. Si algo no funciona como esperas, escríbenos y lo revisamos.\n\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 109
+   }
+  },
+  {
+   "ticket": "N-P0004-C019",
+   "customer": "C-019",
+   "subject": "Resuelto: el error al leer las facturas de Distribuciones Garrido",
+   "draft": "Hola, Lucía:\n\nEl 9 de septiembre nos escribiste porque las facturas de Distribuciones Garrido te aparecían con el error «No se pudo leer el total». Queremos contarte que ya hemos solucionado el problema: haddock vuelve a leer correctamente el total de esas facturas, también las que llegan con dos tipos de IVA en columnas.\n\nPara recuperar las que fallaron, solo tienes que volver a subirlas a haddock; así no hará falta que las metas a mano.\n\nGracias por avisarnos, tu mensaje nos ayudó a detectar y corregir el fallo.\n\nUn saludo,\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 97
+   }
+  },
+  {
+   "ticket": "N-P0004-C020",
+   "customer": "C-020",
+   "subject": "Ya está solucionado el error con las facturas de Garrido",
+   "draft": "Hola, Pedro:\n\nEl 7 de septiembre nos escribiste porque las facturas de Distribuciones Garrido no se leían y te aparecía el mensaje «No se pudo leer el total», aunque las subías en PDF original. Queríamos avisarte de que ya hemos corregido este problema y haddock vuelve a leer el total de esas facturas.\n\nPara que te quede todo al día, vuelve a subir las facturas de Garrido que te dieron error.\n\nGracias por avisarnos y por tu paciencia. Si algo no funciona como esperas, respóndenos a este correo.\n\nUn saludo,\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 96
+   }
+  },
+  {
+   "ticket": "N-P0004-C021",
+   "customer": "C-021",
+   "subject": "Ya está solucionado el problema con las facturas de Garrido",
+   "draft": "Hola Elena,\n\nTe escribimos porque el problema que nos comentaste el 1 de septiembre ya está solucionado: el total de las facturas de Distribuciones Garrido salía vacío o con el aviso «No se pudo leer el total». Ya hemos corregido la lectura de estas facturas. Para recuperar las que se quedaron en error, vuelve a subirlas a haddock y comprueba que el total aparece correctamente.\n\nSentimos las molestias que esto te haya causado. Gracias por avisarnos y por darnos tantos detalles, nos ayudó mucho.\n\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 90
+   }
+  },
+  {
+   "ticket": "N-P0004-C022",
+   "customer": "C-022",
+   "subject": "Resuelto: el error al leer las facturas de Distribuciones Garrido",
+   "draft": "Hola, Antonio:\n\nEl 2 de septiembre nos escribiste porque las facturas de Distribuciones Garrido daban error de lectura y no se leía el total, aunque el PDF se veía perfecto. Volviste a avisarnos el 14 de septiembre al seguir igual.\n\nQueremos contarte que ya lo hemos solucionado: haddock vuelve a leer el total de las facturas de Distribuciones Garrido, incluidas las que traen dos tipos de IVA en columnas.\n\nSi alguna factura de este proveedor se quedó en error, vuelve a subirla y debería leerse bien.\n\nGracias por avisarnos y por tu paciencia.\n\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 99
+   }
+  },
+  {
+   "ticket": "N-P0004-C023",
+   "customer": "C-023",
+   "subject": "Ya está solucionado el problema con las facturas de Garrido",
+   "draft": "Hola, Rosa:\n\nEl 5 de septiembre nos escribiste porque las facturas de Distribuciones Garrido te salían con el error «No se pudo leer el total», y después volviste a avisarnos de que seguía igual. Queremos contarte que ya hemos solucionado el problema: el sistema vuelve a leer el total de las facturas de este proveedor, incluidas las que llegan con dos tipos de IVA en columnas.\n\nPara recuperar las que quedaron en error, vuelve a subirlas a haddock y comprueba que ya se leen bien.\n\nGracias por avisarnos y por tu paciencia: tus mensajes nos ayudaron a detectarlo.\n\nUn saludo,\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 106
+   }
+  },
+  {
+   "ticket": "N-P0004-C024",
+   "customer": "C-024",
+   "subject": "Resuelto: ya se leen las facturas de Distribuciones Garrido",
+   "draft": "Hola, Jorge:\n\nEl 2 de septiembre nos escribiste porque las facturas de Distribuciones Garrido no se leían y te aparecía el mensaje «No se pudo leer el total», aunque las subías en PDF original. Volviste a avisarnos el 11 de septiembre, ya que el problema continuaba con las facturas que llegan con dos tipos de IVA en columnas.\n\nQueremos contarte que ya lo hemos solucionado: haddock vuelve a leer el total de las facturas de Distribuciones Garrido. Para recuperar las que fallaron, vuelve a subirlas y deberían leerse correctamente.\n\nGracias por avisarnos y por la paciencia mientras lo arreglábamos.\n\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 105
+   }
+  },
+  {
+   "ticket": "N-P0004-C025",
+   "customer": "C-025",
+   "subject": "Resuelto: el total de las facturas de Distribuciones Garrido",
+   "draft": "Hola, Carmen:\n\nEl 1 de septiembre nos escribiste porque el total de las facturas de Distribuciones Garrido salía vacío, cuando antes se leía sin problema. Queríamos avisarte de que ya hemos solucionado el fallo: haddock vuelve a leer el total de esas facturas, también las que llegan con dos tipos de IVA en columnas.\n\nSi alguna factura de Garrido te dio error, vuelve a subirla y se leerá correctamente.\n\nGracias por avisarnos y por tu paciencia. Si algo no funciona como esperas, respóndenos a este correo.\n\nUn saludo,\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 94
+   }
+  },
+  {
+   "ticket": "N-P0004-C026",
+   "customer": "C-026",
+   "subject": "Resuelto: el total de las facturas de Garrido ya se lee",
+   "draft": "Hola Álvaro,\n\nEl 4 de septiembre nos escribiste porque las facturas de Distribuciones Garrido aparecían en rojo con el mensaje «No se pudo leer el total», mientras que las de otros proveedores se leían bien. Más adelante nos contaste que el proveedor enviaba ahora las facturas con dos tipos de IVA en columnas.\n\nQueremos avisarte de que ya hemos corregido el problema: haddock vuelve a leer el total de las facturas de Distribuciones Garrido. Si alguna factura sigue dándote error, respóndenos a este correo y la revisamos enseguida.\n\nGracias por avisarnos y por tu paciencia.\n\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 101
+   }
+  },
+  {
+   "ticket": "N-P0004-C027",
+   "customer": "C-027",
+   "subject": "Solucionado: el total de las facturas de Distribuciones Garrido",
+   "draft": "Hola, Teresa:\n\nEl 4 de septiembre nos escribiste porque haddock no conseguía leer el total de las facturas de Distribuciones Garrido, que ahora llegan con dos tipos de IVA en columnas, y el 15 de septiembre nos contaste que seguía igual. Ya lo hemos solucionado: haddock vuelve a leer el total de las facturas de este proveedor. Si alguna de las que te quedaron en error sigue sin el total, súbela de nuevo y debería leerse correctamente.\n\nGracias por avisarnos y por tu paciencia.\n\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 90
+   }
+  },
+  {
+   "ticket": "N-P0004-C028",
+   "customer": "C-028",
+   "subject": "Resuelto: el problema con las facturas de Distribuciones Garrido",
+   "draft": "Hola, Manuel:\n\nEl 8 de septiembre nos escribiste porque las facturas de Distribuciones Garrido salían en rojo: haddock no sacaba el total desde que el proveedor las envía con dos tipos de IVA en columnas. Queremos contarte que ya hemos solucionado el problema y que haddock vuelve a leer el total de esas facturas.\n\nPara las facturas que quedaron en error, súbelas de nuevo a haddock y se leerán correctamente.\n\nGracias por avisarnos y por tu paciencia. Si algo no funciona como esperas, respóndenos a este correo.\n\nUn saludo,\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 95
+   }
+  },
+  {
+   "ticket": "N-P0004-C029",
+   "customer": "C-029",
+   "subject": "Solucionado el problema con las facturas de Distribuciones Garrido",
+   "draft": "Hola, Sara:\n\nEl 4 de septiembre nos escribiste porque haddock no leía el total de las facturas de Distribuciones Garrido, que aparecían en error o con el total vacío, y nos contabas que el proveedor ahora las envía con dos tipos de IVA en columnas.\n\nQueremos avisarte de que ya está solucionado: haddock vuelve a leer el total de esas facturas. Para recuperar las que fallaron, solo tienes que volver a subirlas.\n\nGracias por avisarnos y por tu paciencia: tu mensaje nos ayudó a detectar el problema.\n\nUn saludo,\nEl equipo de soporte de haddock",
+   "reasons": [],
+   "scores": {
+    "guardrails_pass": true,
+    "cites_own_date": true,
+    "format_ok": true,
+    "words": 95
+   }
+  }
+ ]
+}

@@ -88,6 +88,10 @@ flowchart LR
 | borrador | La respuesta que propone el agente. |
 | escalar | Enviar el ticket a la cola de escalado, sin borrador válido. |
 | traza | El registro en Langfuse de un ticket, del paso 2 al paso 8. |
+| señal | Lo que el radar extrae de un ticket: componente, tipo, entidad y síntoma (`radar.md`). |
+| problema | Un grupo de tickets con la misma causa de producto. |
+| petición de producto | La issue de GitHub que el radar redacta para un problema. Un agente CX la aprueba. |
+| aviso proactivo | El mensaje que el copiloto redacta para un cliente afectado cuando se resuelve el problema. |
 
 ## Module specs
 
@@ -105,6 +109,10 @@ flowchart LR
 | `/intro` y `/presentacion` | `story.md` | 5 |
 | `/codigo` | `tour.md` | 5 |
 | Demo pública | `deploy.md` | 5 |
+| Radar de producto | `radar.md` | R |
+| Petición de producto | `product-request.md` | R3 |
+| Cliente de GitHub | `github.md` | R3 |
+| Avisos proactivos | `notify.md` | R4 |
 
 ## Done when
 - [ ] Cada módulo de la tabla tiene su spec antes de su código.

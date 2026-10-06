@@ -22,3 +22,23 @@ PRICES_PER_MTOK = {
 
 # Haiku as judge agreed with Sonnet on only 56% of groundedness verdicts (evals/rejudge.py): too noisy.
 JUDGE_MODEL = "claude-sonnet-5-5"
+
+# Product radar. Spec: docs/specs/radar.md
+SIGNAL_MODEL = JEV_MODEL  # component and kind: typed decisions
+SYMPTOM_MODEL = FALLBACK_CLASSIFIER_MODEL  # one normalized sentence: generative, so Haiku
+MATCH_MODEL = JEV_MODEL  # "same product problem?" yes/no per candidate; Haiku as fallback
+# A "yes" below it opens a new problem. Spike (scripts/hello_radar_match.py): Jev 20/20 right, but its
+# right "yes" answers had confidence 0.46-0.82, so 0.8 would split almost every problem.
+RADAR_MATCH_CONFIDENCE = 0.4
+RADAR_BM25_TOP_K = 3  # candidates per ticket sent to the matcher
+RADAR_PROBLEM_SYMPTOMS = 10  # a problem's document: its title and its last N symptoms
+# A problem becomes a candidate with 3 customers, or with 2 customers whose MRR adds up to 400 EUR.
+# One enterprise customer alone (420-700 EUR) is never enough: one voice is not a pattern.
+RADAR_THRESHOLD = {"customers": 3, "mrr_eur": 400.0, "mrr_min_customers": 2}
+TREND_WINDOW_DAYS = 7
+
+# Product requests and the closed loop. Specs: docs/specs/product-request.md, github.md, notify.md
+REQUEST_MODEL = AGENT_MODEL  # writes the GitHub issue: generative, grounded on the tickets
+NOTICE_MODEL = AGENT_MODEL  # writes one proactive notice per affected customer
+REQUEST_MAX_TICKETS = 12  # tickets Sonnet reads per request: the first 3 and the last 9
+GITHUB_API = "https://api.github.com"

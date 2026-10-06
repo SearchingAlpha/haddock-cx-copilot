@@ -90,11 +90,19 @@ def age(created_at: str | None, now: datetime | None = None) -> str:
     return f"{minutes // (60 * 24)} d"
 
 
+PENDING = ("escalated", "ready", "processing")
+
+
 def queue_groups(tickets: list[dict]) -> list[dict]:
+    """Proactive notices that wait for review come first (docs/specs/notify.md); sent ones join «Enviados»."""
     order = {"urgent": 0, "high": 1, "normal": 2, "low": 3}
     groups = []
+    notices = sorted((t for t in tickets if t.get("kind") == "proactive" and t["state"] in PENDING),
+                     key=lambda t: (t["state"] != "escalated", t["created_at"], t["id"]))
+    if notices:
+        groups.append({"state": "proactive", "label": "Avisos proactivos", "tickets": notices, "collapsed": False})
     for state, label in QUEUE_GROUPS:
-        items = [t for t in tickets if t["state"] == state]
+        items = [t for t in tickets if t["state"] == state and not (t.get("kind") == "proactive" and state in PENDING)]
         items.sort(key=lambda t: (order.get((t.get("classification") or {}).get("priority"), 4), t["created_at"]))
         if items:
             groups.append({"state": state, "label": label, "tickets": items,
@@ -157,3 +165,120 @@ def evidence_items(ticket: dict) -> list[dict]:
 
 def reason_view(reasons: list[str] | None) -> list[dict]:
     return [{"code": r, "label": REASON_LABELS.get(r, r), "blocking": r in BLOCKING} for r in reasons or []]
+
+
+# --- product radar: docs/specs/ui.md (Radar) --------------------------------------------------
+
+AREA_LABELS = {"invoices": "Facturas", "bank": "Banco", "pos": "TPV", "inventory": "Inventario",
+               "reports": "Informes", "account": "Cuenta", "other": "Otros"}
+PROBLEM_STATUS_LABELS = {"open": "Abierto", "candidate": "Para pedir a producto", "requested": "En producto",
+                         "resolved": "Resuelto", "dismissed": "Descartado", "merged": "Unido"}
+KIND_LABELS = {"bug": "Fallo", "feature": "Petición de función", "how_to": "Duda", "user_error": "Error del cliente"}
+EVENT_LABELS = {"opened": "Primer ticket", "ticket_added": "Ticket nuevo", "threshold": "Cruzó el umbral",
+                "merged": "Unido", "requested": "Issue creada", "commented": "Comentario en la issue",
+                "resolved": "Issue cerrada", "dismissed": "Descartado", "reopened": "Issue reabierta",
+                "notices": "Avisos proactivos en la cola"}
+# DESIGN.md: amber = check this, red = risk, rail teal = in product's hands, neutral = done. No green.
+STATUS_COLORS = {"candidate": "#e38215", "requested": "#03363d", "resolved": "#8aa6b5",
+                 "dismissed": "#d8dcde", "open": "#aeb8bd"}
+TOP, ROW_H = 20, 22
+GRAPH_X = {"area": 70, "problem": 380, "customer": 760}
+
+
+def money(value: float | None) -> str:
+    """1839.0 -> '1.839 €' (Spanish thousands separator, no decimals)."""
+    if value is None:
+        return "—"
+    return f"{value:,.0f}".replace(",", ".") + " €"
+
+
+def area_of(component: str) -> str:
+    return component.split(".")[0]
+
+
+def sparkline(weekly: list[int], width: int = 84, height: int = 22) -> Markup:
+    """Inline SVG of tickets per week; the last point is the current week."""
+    if not weekly:
+        return Markup("")
+    top = max(max(weekly), 1)
+    step = width / max(len(weekly) - 1, 1)
+    points = [(round(i * step, 1), round(height - 2 - (v / top) * (height - 4), 1)) for i, v in enumerate(weekly)]
+    path = " ".join(f"{x},{y}" for x, y in points)
+    x, y = points[-1]
+    label = ", ".join(str(v) for v in weekly)
+    return Markup(
+        f'<svg class="spark" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" '
+        f'aria-label="Tickets por semana: {label}"><polyline points="{path}" fill="none" stroke="#5c6970" '
+        f'stroke-width="1.5" stroke-linejoin="round"/><circle cx="{x}" cy="{y}" r="2.5" fill="#17202a"/></svg>')
+
+
+def trend_label(trend: float) -> str:
+    if trend >= 1.25:
+        return "↑ sube"
+    if trend <= 0.8:
+        return "↓ baja"
+    return "→ estable"
+
+
+def shown_on_radar(p: dict) -> bool:
+    """One ticket in an open problem is not a pattern yet: the graph shows it only from 2 tickets."""
+    return p["status"] != "merged" and (p["impact"].tickets >= 2 or p["status"] != "open")
+
+
+def _short(text: str, n: int = 52) -> str:
+    return text if len(text) <= n else text[: n - 1].rstrip() + "…"
+
+
+def radar_graph(problems: list[dict], customers: dict) -> dict:
+    """Nodes and edges for cytoscape with fixed positions: areas | problems | customers.
+
+    Deterministic, so the graph never jumps. Each problem gets a band of rows as tall as its number of
+    customers, and its customers sit in that band (ordered by the mean height of their problems), so edges
+    stay short. A customer in two problems or more gets the `multi` class.
+    """
+    shown = [p for p in problems if shown_on_radar(p)]
+    shown.sort(key=lambda p: (list(AREA_LABELS).index(area_of(p["component"])), -p["impact"].score, p["id"]))
+    nodes, edges, y_problem = [], [], {}
+    cursor, last_area = 0.0, None
+    for p in shown:
+        if last_area is not None and area_of(p["component"]) != last_area:
+            cursor += 1  # one empty row between areas
+        rows = max(len(p["by_customer"]), 1)
+        y_problem[p["id"]] = TOP + (cursor + rows / 2) * ROW_H
+        cursor += rows
+        last_area = area_of(p["component"])
+    height = TOP * 2 + cursor * ROW_H
+
+    for a in dict.fromkeys(area_of(p["component"]) for p in shown):
+        ys = [y_problem[p["id"]] for p in shown if area_of(p["component"]) == a]
+        nodes.append({"data": {"id": f"area:{a}", "label": AREA_LABELS[a], "kind": "area"},
+                      "position": {"x": GRAPH_X["area"], "y": round((min(ys) + max(ys)) / 2, 1)}, "classes": "area"})
+
+    links: dict[str, list[str]] = {}
+    max_score = max((p["impact"].score for p in shown), default=1) or 1
+    for p in shown:
+        imp = p["impact"]
+        nodes.append({"data": {"id": p["id"], "label": _short(p["title"]), "kind": "problem",
+                               "status": p["status"], "color": STATUS_COLORS.get(p["status"], "#aeb8bd"),
+                               "size": round(14 + 26 * (imp.score / max_score) ** 0.5, 1),
+                               "tickets": imp.tickets, "customers": len(imp.customers), "mrr": money(imp.mrr_eur),
+                               "href": f"/radar/problems/{p['id']}"},
+                      "position": {"x": GRAPH_X["problem"], "y": round(y_problem[p["id"]], 1)},
+                      "classes": f"problem {p['status']}"})
+        edges.append({"data": {"id": f"e:area:{p['id']}", "source": f"area:{area_of(p['component'])}",
+                               "target": p["id"], "width": 1}})
+        for cid, n in sorted(p["by_customer"].items()):
+            links.setdefault(cid, []).append(p["id"])
+            edges.append({"data": {"id": f"e:{p['id']}:{cid}", "source": p["id"], "target": f"c:{cid}",
+                                   "width": min(1 + n, 5)}})
+
+    order = sorted(links, key=lambda c: (sum(y_problem[p] for p in links[c]) / len(links[c]), c))
+    step = (height - 2 * TOP) / max(len(order), 1)
+    for i, cid in enumerate(order):
+        c = customers.get(cid)
+        nodes.append({"data": {"id": f"c:{cid}", "label": c.name if c else cid, "kind": "customer",
+                               "plan": c.plan if c else "", "mrr": money(c.billing.monthly_price_eur) if c else "",
+                               "problems": len(links[cid])},
+                      "position": {"x": GRAPH_X["customer"], "y": round(TOP + (i + 0.5) * step, 1)},
+                      "classes": "customer multi" if len(links[cid]) > 1 else "customer"})
+    return {"nodes": nodes, "edges": edges, "height": round(height), "multi": sum(1 for c in links if len(links[c]) > 1)}

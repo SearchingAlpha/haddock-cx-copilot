@@ -20,7 +20,26 @@
     {% endif %}
   </section>
 
-  {% if not manual %}
+  {% if problem %}
+  <section class="ctx-section">
+    <h3>Radar de producto</h3>
+    <p class="ctx-line">Forma parte de <a href="/radar/problems/{{ problem.id }}">{{ problem.id }}</a> · {{ problem_status.get(problem.status, problem.status) | lower }}</p>
+    <p class="ctx-line muted">{{ problem.title }}</p>
+  </section>
+  {% endif %}
+
+  {% if notice %}
+  <details class="ctx-section more" open>
+    <summary>Cómo lo hizo el copilot</summary>
+    <ol class="trail">
+      <li>Producto cerró la issue: el problema pasó a resuelto</li>
+      <li>Leyó solo los {{ notice.tickets | length }} tickets de este cliente</li>
+      <li>Escribió el aviso · ${{ "%.3f" | format(t.cost_usd or 0) }}</li>
+      <li>Guardrails: {{ "sin motivos" if not t.reasons else (t.reasons | join(", ")) }}</li>
+    </ol>
+    {% if trace_url %}<p><a href="{{ trace_url }}" target="_blank" rel="noopener">Ver la traza en Langfuse <i data-lucide="external-link"></i></a></p>{% endif %}
+  </details>
+  {% elif not manual %}
   {% set cited = evidence | selectattr("cited") | list %}
   {% set rest = evidence | rejectattr("cited") | list %}
   <section class="ctx-section">
@@ -70,6 +89,21 @@
   </header>
 
   <div class="ws-body">
+    {% if notice %}
+    <article class="message notice-card">
+      <header>
+        <i data-lucide="bell-ring"></i><strong>Aviso proactivo</strong>
+        <span class="muted">· {{ customer.name }} no ha vuelto a escribir: escribimos nosotros</span>
+      </header>
+      <div class="body">
+        <p>Producto resolvió <a href="/radar/problems/{{ problem.id }}">{{ problem.id }}</a> · {{ problem.title }}{% if problem.github_url %} · <a href="{{ problem.github_url }}" target="_blank" rel="noopener">issue #{{ problem.github_number }}</a>{% endif %}.</p>
+        <p class="muted">Lo que nos escribió este cliente:</p>
+        <ul class="notice-tickets">
+          {% for o in notice.tickets %}<li><a href="/tickets/{{ o.id }}">{{ o.created_at[:10] }} · {{ o.subject }}</a></li>{% endfor %}
+        </ul>
+      </div>
+    </article>
+    {% else %}
     <article class="message customer-msg">
       <header>
         <strong>{{ customer.contact_name }}</strong>
@@ -78,6 +112,7 @@
       </header>
       <div class="body">{{ t.body }}</div>
     </article>
+    {% endif %}
 
     {% if t.state == "processing" %}
       <div class="working" role="status"><span class="spinner" aria-hidden="true"></span>

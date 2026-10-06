@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 
-from app.domain import Customer, KBArticle, Ticket
+from app.domain import Customer, KBArticle, RadarTicket, Ticket
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
@@ -21,6 +21,16 @@ def load_customers(path: str | Path = DATA_DIR / "customers.json") -> dict[str, 
 def load_tickets(path: str | Path = DATA_DIR / "tickets.jsonl") -> list[Ticket]:
     lines = Path(path).read_text(encoding="utf-8").splitlines()
     return [Ticket.model_validate_json(line) for line in lines if line.strip()]
+
+
+def load_radar_tickets(path: str | Path = DATA_DIR / "radar" / "tickets.jsonl") -> list[RadarTicket]:
+    lines = Path(path).read_text(encoding="utf-8").splitlines()
+    return [RadarTicket.model_validate_json(line) for line in lines if line.strip()]
+
+
+def load_radar_truth(path: str | Path = DATA_DIR / "radar" / "truth.json") -> dict[str, dict]:
+    """Planted problems by id: title, component, entity, kind, start, customers."""
+    return {p["id"]: p for p in json.loads(Path(path).read_text(encoding="utf-8"))}
 
 
 def _parse_article(file: Path) -> KBArticle:

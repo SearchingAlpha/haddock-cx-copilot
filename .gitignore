@@ -9,3 +9,6 @@ evals/*.log
 .impeccable/review/
 .impeccable/questions/
 .impeccable/config.local.json
+
+# Demo snapshots: the only databases in the repo (data/snapshots/README.md)
+!data/snapshots/*.db

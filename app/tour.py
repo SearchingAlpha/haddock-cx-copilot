@@ -126,6 +126,20 @@ TOUR = [
         "human_decision, edit_distance y review_seconds en la traza del ticket.",
         "Uno de cada cinco tickets va sin copilot: es la línea base de tiempo.",
     ], [Excerpt("app/main.py", symbol="send_scores"), Excerpt("app/db.py", symbol="mode_for")]),
+    Stop("Radar", Markup("De tickets sueltos a <em>problemas de producto.</em>"), [
+        "Jev decide el componente y el tipo; la entidad sale de un diccionario, sin LLM.",
+        "Candidatos por área o entidad, BM25 y una pregunta sí/no a Jev por candidato. Un sí doble une dos problemas.",
+        "Eval con 7 problemas plantados y 40 señuelos: ARI 0.989, 0 candidatos falsos (docs/results.md).",
+    ], [Excerpt("docs/specs/radar.md", diagram=1), Excerpt("app/problems.py", symbol="assign")]),
+    Stop("Petición a producto", Markup("Sonnet escribe, <em>el código cuenta y comprueba.</em>"), [
+        "Los números de la issue salen del código. Cada cita tiene que ser texto literal de su ticket.",
+        "Sin nombres, emails ni teléfonos: Sonnet nunca los ve. Un agente CX aprueba antes de crear la issue.",
+    ], [Excerpt("app/product_request.py", symbol="check_quotes"),
+        Excerpt("app/product_request.py", symbol="draft_request")]),
+    Stop("Cerrar el ciclo", Markup("Producto cierra la issue y <em>cada cliente recibe su aviso.</em>"), [
+        "El aviso de cada cliente solo lee sus propios tickets: no puede filtrar datos de otro.",
+        "Pasa los mismos guardrails y la misma revisión que cualquier borrador.",
+    ], [Excerpt("docs/specs/notify.md", diagram=1), Excerpt("app/notify.py", symbol="on_resolved")]),
     Stop("Deploy", Markup("La demo pública <em>no puede gastar tokens.</em>"), [
         "Cloudflare Containers, una sola instancia, la base de datos dentro de la imagen.",
         "Con HADDOCK_PUBLIC=1 no hay pipeline: el webhook responde 403.",

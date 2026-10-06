@@ -12,7 +12,7 @@ flowchart LR
     c --> a{"4. basic auth: DEMO_PASSWORD"}
     a -->|"no"| r401["401"]
     a -->|"sí"| app["5. app: cola, ticket, /metrics, /presentacion"]
-    app -->|"POST /webhooks/ticket, /demo/load"| r403["6. 403 en modo público"]
+    app -->|"POST /webhooks/ticket, /demo/load, /webhooks/github, /radar/*"| r403["6. 403 en modo público"]
     app -->|"scores de la revisión"| lf[("Langfuse")]
     app --> db[("haddock.db = haddock.golden.db de la imagen")]
 ```
@@ -22,7 +22,7 @@ flowchart LR
 3. El contenedor ejecuta la imagen del `Dockerfile`.
 4. Si `DEMO_PASSWORD` existe, la app pide basic auth en todas las rutas menos `/static`.
 5. Con la contraseña, la app funciona como en local: revisar, aprobar, `/metrics` y la presentación.
-6. Con `HADDOCK_PUBLIC=1`, el webhook y la carga de demo responden 403 y la UI oculta el botón «Demo».
+6. Con `HADDOCK_PUBLIC=1`, el webhook y la carga de demo responden 403 y la UI oculta el botón «Demo». El radar se puede leer, pero no escribe: redactar, aprobar, rechazar, «Comprobar GitHub» y el webhook de GitHub responden 403, y sus botones no aparecen.
 
 ## Interface
 
@@ -41,9 +41,9 @@ npx wrangler deploy                            # Docker en marcha: construye y s
 
 ## Behavior
 
-1. La imagen copia `haddock.golden.db` como `haddock.db`.
+1. La imagen copia `haddock.golden.db` como `haddock.db`. `scripts/build_golden.py` la construye: la cola en vivo de `haddock.db` sin revisiones, más el radar de una ejecución de eval (`data/snapshots/radar-notices.db`). Tiene un problema en cada estado: candidatos con su petición redactada, uno en producto (`--requested P-xxxx=<issue>`) y uno resuelto con sus avisos en la cola. La demo pública enseña el ciclo completo sin llamar a ningún LLM.
 2. El contenedor duerme tras 30 min sin peticiones. El disco no persiste: al despertar, la base de datos vuelve al estado de `haddock.golden.db`. Las revisiones de una sesión se pierden al dormir, pero sus scores ya están en Langfuse.
-3. Para cambiar el estado inicial, actualiza `haddock.golden.db` en local y vuelve a desplegar.
+3. Para cambiar el estado inicial, vuelve a ejecutar `python -m scripts.build_golden` y despliega.
 
 ## Errors and edge cases
 - Contraseña incorrecta o ausente: 401 con `WWW-Authenticate: Basic`.

@@ -125,3 +125,52 @@ class Ticket(TicketIn):
     """A labeled ticket from data/tickets.jsonl: the ground truth for evals."""
 
     labels: TicketLabels
+
+
+# --- product radar: docs/specs/radar.md ------------------------------------------------------
+
+class Component(str, Enum):
+    """The part of the product. The prefix is the Category."""
+
+    invoices_ocr = "invoices.ocr"
+    invoices_suppliers = "invoices.suppliers"
+    invoices_duplicates = "invoices.duplicates"
+    bank_sync = "bank.sync"
+    bank_reconciliation = "bank.reconciliation"
+    pos_sync = "pos.sync"
+    pos_sales = "pos.sales"
+    inventory_stock = "inventory.stock"
+    inventory_recipes = "inventory.recipes"
+    reports_pnl = "reports.pnl"
+    reports_export = "reports.export"
+    account_users = "account.users"
+    account_billing = "account.billing"
+    other = "other"
+
+    @property
+    def category(self) -> Category:
+        return Category(self.value.split(".")[0])
+
+
+class Kind(str, Enum):
+    bug = "bug"
+    feature = "feature"
+    how_to = "how_to"
+    user_error = "user_error"
+
+
+CLUSTERED_KINDS = frozenset({Kind.bug, Kind.feature})  # how_to and user_error never form a problem
+
+
+class RadarLabels(TicketLabels):
+    """Ground truth of the radar dataset. Never shown to the models."""
+
+    component: Component
+    kind: Kind
+    entity: str | None = None
+    problem_id: str | None = None  # planted problem (data/radar/truth.json); None for noise and decoys
+    decoy: bool = False  # same words as a planted problem, another cause
+
+
+class RadarTicket(TicketIn):
+    labels: RadarLabels

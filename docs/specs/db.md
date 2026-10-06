@@ -9,6 +9,9 @@
 erDiagram
     TICKETS ||--o| RESULTS : "procesado por el pipeline"
     TICKETS ||--o{ REVIEWS : "revisado por un agente CX"
+    TICKETS ||--o| SIGNALS : "leído por el radar"
+    PROBLEMS ||--o{ SIGNALS : "agrupa"
+    PROBLEMS ||--o{ PROBLEM_EVENTS : "historial"
 
     TICKETS {
         string id PK
@@ -18,7 +21,10 @@ erDiagram
         string body
         datetime created_at
         string mode "copilot | manual"
-        string state "processing | ready | escalated | sent | rejected"
+        string state "processing | ready | escalated | sent | rejected | history"
+        string kind "inbound | proactive"
+        string source "live | history"
+        string problem_id
     }
     RESULTS {
         string ticket_id PK
@@ -44,6 +50,36 @@ erDiagram
         string category_final
         datetime created_at
     }
+    SIGNALS {
+        string ticket_id PK
+        string component "invoices.ocr, bank.sync..."
+        string kind "bug | feature | how_to | user_error"
+        string entity "banco, TPV o proveedor"
+        string symptom
+        string priority
+        string problem_id
+        float match_confidence
+        json matched "respuestas del matcher"
+    }
+    PROBLEMS {
+        string id PK "P-0001"
+        string component
+        string kind
+        string entity
+        string title
+        string status "open | candidate | requested | resolved | dismissed | merged"
+        datetime detected_at
+        int detected_at_n
+        string merged_into
+        int github_number
+    }
+    PROBLEM_EVENTS {
+        int id PK
+        string problem_id
+        string kind "opened | ticket_added | threshold | merged"
+        json payload
+        datetime created_at
+    }
 ```
 
 ## Interface
@@ -67,6 +103,8 @@ def mode_for(ticket_id: str) -> str                          # manual para ~20% 
 4. `record_review()` guarda la decisión y cambia el `state` a `sent` o `rejected`.
 5. La distancia de edición es `1 - SequenceMatcher(borrador, texto final).ratio()`. 0 significa sin cambios.
 6. `metrics()` calcula las métricas de impacto.
+7. `connect()` añade las columnas nuevas (`LATE_COLUMNS`) a una base de datos antigua. `insert_ticket()` nombra sus columnas, así funciona con las dos.
+8. `insert_ticket(source="history")` guarda un ticket del pasado para el radar, con `state = history`. `list_tickets()` lo excluye: no aparece en la cola ni en `/metrics`. `get_ticket()` sí lo devuelve.
 
 **Métricas de `metrics()`:**
 

@@ -2,6 +2,7 @@
 
     python -m scripts.seed_demo                      # the default demo mix
     python -m scripts.seed_demo T-001 T-011 T-020
+    python -m scripts.seed_demo R-LIVE-1             # the radar's live ticket (data/radar/live.jsonl)
 """
 
 import sys
@@ -9,7 +10,7 @@ import time
 
 import httpx
 
-from app.data import load_tickets
+from app.data import DATA_DIR, load_radar_tickets, load_tickets
 
 DEMO = ["T-001", "T-002", "T-006", "T-011", "T-020", "T-021", "T-026"]  # every state the UI must show
 
@@ -23,7 +24,7 @@ def main() -> None:
             break
         except httpx.HTTPError:
             time.sleep(1)
-    tickets = {t.id: t for t in load_tickets()}
+    tickets = {t.id: t for t in [*load_tickets(), *load_radar_tickets(DATA_DIR / "radar" / "live.jsonl")]}
     for tid in wanted:
         r = httpx.post(base + "/webhooks/ticket", json=tickets[tid].model_dump(mode="json", exclude={"labels"}))
         print(tid, r.status_code, r.json().get("mode", r.text[:80]))

@@ -43,7 +43,9 @@ def main() -> None:
               f"tools=[{tools}] ${r.cost_usd:.4f} {' '.join(r.reasons)}")
         if args.verbose and r.agent and r.agent.draft:
             print(textwrap.indent(textwrap.fill(r.agent.draft, 100), "    | "))
-            print(f"    evidence={r.agent.evidence} confidence={r.agent.confidence}\n")
+            print(f"    evidence={r.agent.evidence} confidence={r.agent.confidence}")
+        if args.verbose and r.trace_id:
+            print(f"    trace: {langfuse.get_trace_url(trace_id=r.trace_id)}\n")
 
     langfuse.flush()
     print(f"\n{len(tickets)} tickets, category {correct}/{len(tickets)}, agent cost ${total_cost:.4f}")
