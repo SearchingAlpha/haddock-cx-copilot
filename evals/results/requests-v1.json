@@ -1,0 +1,108 @@
+{
+ "run_name": "requests-v1",
+ "run": {
+  "quotes_literal": 1.0,
+  "entity_named": 1.0,
+  "no_pii": 1.0,
+  "title_ok": 1.0,
+  "total_cost_usd": 0.1232
+ },
+ "items": [
+  {
+   "problem": "P-0001",
+   "title": "Falta un P&L consolidado que muestre todos los locales de un cliente en una sola vista",
+   "scores": {
+    "quotes": 4,
+    "quotes_literal": 1.0,
+    "entity_named": null,
+    "no_pii": true,
+    "title_ok": true,
+    "steps": 4,
+    "criteria": 4,
+    "cost_usd": 0.0216
+   },
+   "dropped": [],
+   "body_md": "<!-- haddock-problem:P-0001 -->\n## Resumen\nSeis clientes con 2 a 4 locales (C-001, C-020, C-030, C-036, C-045, C-046) piden desde el 24-ago-2026 un P&L consolidado de todos sus locales. Hoy exportan el P&L de cada local y lo juntan a mano en un Excel. Varios clientes han vuelto a escribir porque la petición sigue sin respuesta.\n\n## Impacto\n| Medida | Valor |\n|---|---|\n| Tickets | 12 |\n| Clientes afectados | 6 |\n| MRR de clientes afectados | 1.305 €/mes |\n| Tickets urgentes o altos | 8% |\n| Tickets por semana (6 semanas) | 3 · 1 · 3 · 3 · 1 · 1 |\n| Primer ticket | 2026-08-24 |\n\n## Pasos para reproducir\n1. Entrar en haddock con una cuenta que tenga 2 o más locales, por ejemplo con el perfil de C-045 (3 locales).\n2. Abrir el informe de P&L (reports.pnl).\n3. Comprobar que el informe solo permite ver un local cada vez y que no existe una vista con todos los locales ni una comparación entre ellos.\n4. Comprobar que el único modo de obtener el total es exportar el P&L de cada local y sumarlos fuera de haddock.\n\n## Componente sospechoso\n`reports.pnl`: reports.pnl: el informe de P&L trabaja por local y no ofrece agregación ni comparación entre locales de una misma cuenta.\n\n## Criterios de aceptación\n- [ ] Una cuenta con 2 o más locales puede abrir en reports.pnl una vista que muestre el P&L de todos sus locales sumados.\n- [ ] La vista consolidada permite comparar los locales entre sí, con el desglose de cada uno junto al total.\n- [ ] El total consolidado coincide con la suma de los P&L individuales de cada local para el mismo periodo.\n- [ ] Una cuenta con un solo local sigue viendo su P&L sin cambios.\n\n## Lo que dicen los clientes\n> Cada mes exporto el P&L de los 3 locales y los junto en un Excel\n>\n> — ticket `R-001`\n\n> una vista del P&L con todos los locales y la comparación entre ellos\n>\n> — ticket `R-013`\n\n> Tenemos 2 locales y queremos ver un P&L conjunto. Ahora tengo que sumar los informes a mano\n>\n> — ticket `R-132`\n\n> Podéis añadir un informe consolidado de todos los locales\n>\n> — ticket `R-104`\n\n## Clientes afectados\n- C-001 · pro · 2 locales · 1 tickets\n- C-020 · pro · 2 locales · 4 tickets\n- C-030 · pro · 2 locales · 2 tickets\n- C-036 · pro · 2 locales · 1 tickets\n- C-045 · pro · 3 locales · 3 tickets\n- C-046 · enterprise · 4 locales · 1 tickets\n\n---\nRedactado por el radar de producto de haddock-cx-copilot a partir de 12 tickets. Un agente CX lo revisó antes de crear esta issue."
+  },
+  {
+   "problem": "P-0004",
+   "title": "El OCR no lee el total de las facturas de Distribuciones Garrido desde el 1-sep",
+   "scores": {
+    "quotes": 4,
+    "quotes_literal": 1.0,
+    "entity_named": true,
+    "no_pii": true,
+    "title_ok": true,
+    "steps": 4,
+    "criteria": 4,
+    "cost_usd": 0.0231
+   },
+   "dropped": [],
+   "body_md": "<!-- haddock-problem:P-0004 -->\n## Resumen\nDesde el 1 de septiembre, 12 clientes reportan que las facturas de Distribuciones Garrido salen en error o con el total vacío (\"No se pudo leer el total\"), también en PDF originales. Los clientes dicen que las de otros proveedores y las anteriores a septiembre se leen bien, y varios mencionan que el proveedor ahora envía las facturas con dos tipos de IVA en columnas.\n\n## Impacto\n| Medida | Valor |\n|---|---|\n| Tickets | 32 |\n| Clientes afectados | 12 |\n| MRR de clientes afectados | 1.839 €/mes |\n| Tickets urgentes o altos | 97% |\n| Tickets por semana (6 semanas) | 0 · 18 · 10 · 3 · 0 · 1 |\n| Primer ticket | 2026-09-01 |\n\n## Pasos para reproducir\n1. Subir a haddock una factura en PDF original de Distribuciones Garrido emitida desde septiembre, con dos tipos de IVA en columnas.\n2. Comprobar el estado de la factura tras el procesamiento: se espera error \"No se pudo leer el total\" o total vacío.\n3. Subir una factura del mismo proveedor anterior a septiembre y otra de un proveedor distinto, y comparar el resultado.\n4. Si no se reproduce, revisar primero el formato real (maquetación de columnas de IVA) de las facturas recientes del proveedor frente a las antiguas.\n\n## Componente sospechoso\n`invoices.ocr`: invoices.ocr: la extracción del total parece fallar con el nuevo formato de factura del proveedor (dos tipos de IVA en columnas), mientras que otros proveedores y las facturas antiguas funcionan.\n\n## Criterios de aceptación\n- [ ] Una factura en PDF de Distribuciones Garrido con dos tipos de IVA en columnas se procesa y se extrae el total correcto.\n- [ ] Las facturas recientes de este proveedor que quedaron en error desde el 1-sep se pueden reprocesar y quedan leídas.\n- [ ] Las facturas anteriores a septiembre de este proveedor y las de otros proveedores siguen leyéndose con el mismo resultado que antes.\n- [ ] El mensaje \"No se pudo leer el total\" deja de aparecer en facturas válidas de este proveedor en una muestra de prueba.\n\n## Lo que dicen los clientes\n> Distribuciones Garrido nos manda ahora las facturas con dos tipos de IVA en columnas y haddock no saca el total.\n>\n> — ticket `R-087`\n\n> El total de las facturas de Distribuciones Garrido sale vacío. Antes funcionaba perfecto.\n>\n> — ticket `R-024`\n\n> Me sale «No se pudo leer el total». Las subo en PDF original, no es una foto.\n>\n> — ticket `R-208`\n\n> Desde principios de mes todas las facturas de Distribuciones Garrido me salen en rojo. Las de otros proveedores van bien.\n>\n> — ticket `R-079`\n\n## Clientes afectados\n- C-018 · pro · 1 local · 1 tickets\n- C-019 · starter · 1 local · 1 tickets\n- C-020 · pro · 2 locales · 2 tickets\n- C-021 · enterprise · 4 locales · 7 tickets\n- C-022 · starter · 1 local · 2 tickets\n- C-023 · pro · 1 local · 4 tickets\n- C-024 · pro · 1 local · 2 tickets\n- C-025 · starter · 1 local · 1 tickets\n- C-026 · pro · 1 local · 5 tickets\n- C-027 · pro · 2 locales · 2 tickets\n- C-028 · starter · 1 local · 2 tickets\n- C-029 · pro · 1 local · 3 tickets\n\n---\nRedactado por el radar de producto de haddock-cx-copilot a partir de 32 tickets. Un agente CX lo revisó antes de crear esta issue."
+  },
+  {
+   "problem": "P-0006",
+   "title": "Las ventas de Revo se duplican en haddock en días con cierre de caja tras medianoche",
+   "scores": {
+    "quotes": 5,
+    "quotes_literal": 1.0,
+    "entity_named": true,
+    "no_pii": true,
+    "title_ok": true,
+    "steps": 5,
+    "criteria": 4,
+    "cost_usd": 0.0223
+   },
+   "dropped": [],
+   "body_md": "<!-- haddock-problem:P-0006 -->\n## Resumen\n13 clientes (25 tickets) informan desde el 2026-09-08 de que las ventas del TPV Revo aparecen dobles en haddock y el P&L infla las ventas y descuadra el food cost. Los tickets coinciden en que ocurre en algunos días, sobre todo viernes y sábados, y dos de ellos mencionan cierres de caja pasada la medianoche. Varios clientes reportan que el problema continúa tras avisar antes, con casos hasta el 30/09.\n\n## Impacto\n| Medida | Valor |\n|---|---|\n| Tickets | 25 |\n| Clientes afectados | 13 |\n| MRR de clientes afectados | 3.711 €/mes |\n| Tickets urgentes o altos | 88% |\n| Tickets por semana (6 semanas) | 0 · 0 · 6 · 10 · 8 · 1 |\n| Primer ticket | 2026-09-08 |\n\n## Pasos para reproducir\n1. Tomar un cliente afectado con Revo (p. ej. C-018 o C-007) y elegir un día señalado, como el 20/09 o el 30/09.\n2. Comparar el total de ventas de ese día en Revo con el de haddock (P&L) y comprobar si es el doble.\n3. Revisar en pos.sales si hay tickets de Revo repetidos (mismo identificador de ticket) en ese día.\n4. Comprobar si el cierre de caja de ese día se hizo después de medianoche y si el día afectado es viernes o sábado.\n5. Si no se reproduce, verificar primero cómo se importan las ventas de Revo en cada sincronización y cómo se asignan al día de negocio.\n\n## Componente sospechoso\n`pos.sales`: pos.sales (importación de ventas de Revo): probable duplicación de tickets al asignar el día de negocio cuando el cierre de caja es posterior a medianoche.\n\n## Criterios de aceptación\n- [ ] Para un día con cierre de caja después de medianoche, el total de ventas de haddock coincide con el total de Revo, sin tickets repetidos.\n- [ ] Una nueva sincronización de Revo sobre el mismo día no crea ventas duplicadas.\n- [ ] Las ventas ya duplicadas de septiembre y octubre se corrigen en los clientes afectados y el P&L muestra importes correctos.\n- [ ] Hay una prueba automática con tickets de Revo a ambos lados de la medianoche que verifica que no se duplican.\n\n## Lo que dicen los clientes\n> ¿Por qué haddock suma dos veces las ventas de Revo algunos días? Siempre son viernes y sábados.\n>\n> — ticket `R-065`\n\n> Sales from Revo show up twice in haddock on days when we close the till after midnight.\n>\n> — ticket `R-197`\n\n> ventas repetidas otra vez, el viernes cerramos a la 1 y sale todo doble\n>\n> — ticket `R-196`\n\n> El P&L me dice que vendimos el doble el fin de semana.\n>\n> — ticket `R-070`\n\n> Nuestra encargada ha visto que las ventas del 20/09 están duplicadas. Usamos Revo.\n>\n> — ticket `R-177`\n\n## Clientes afectados\n- C-003 · enterprise · 6 locales · 1 tickets\n- C-007 · pro · 2 locales · 1 tickets\n- C-010 · pro · 1 local · 3 tickets\n- C-013 · pro · 2 locales · 1 tickets\n- C-016 · pro · 1 local · 3 tickets\n- C-018 · pro · 1 local · 2 tickets\n- C-021 · enterprise · 4 locales · 3 tickets\n- C-024 · pro · 1 local · 1 tickets\n- C-027 · pro · 2 locales · 1 tickets\n- C-033 · enterprise · 5 locales · 1 tickets\n- C-036 · pro · 2 locales · 3 tickets\n- C-039 · enterprise · 3 locales · 1 tickets\n- C-045 · pro · 3 locales · 4 tickets\n\n---\nRedactado por el radar de producto de haddock-cx-copilot a partir de 25 tickets. Un agente CX lo revisó antes de crear esta issue."
+  },
+  {
+   "problem": "P-0009",
+   "title": "La sincronización bancaria con Kutxabank falla con error 401 desde el 15-sep",
+   "scores": {
+    "quotes": 5,
+    "quotes_literal": 1.0,
+    "entity_named": true,
+    "no_pii": true,
+    "title_ok": true,
+    "steps": 4,
+    "criteria": 4,
+    "cost_usd": 0.0156
+   },
+   "dropped": [],
+   "body_md": "<!-- haddock-problem:P-0009 -->\n## Resumen\nSiete clientes de distintos planes no reciben movimientos de Kutxabank desde mediados de septiembre (entre el 14 y el 15). Reautorizar la conexión no lo soluciona y algunos ven un error 401 al sincronizar, mientras que la app del banco funciona con normalidad. La conciliación y el cierre contable están parados para estos clientes y varios han vuelto a escribir porque el problema persiste.\n\n## Impacto\n| Medida | Valor |\n|---|---|\n| Tickets | 22 |\n| Clientes afectados | 7 |\n| MRR de clientes afectados | 1.134 €/mes |\n| Tickets urgentes o altos | 96% |\n| Tickets por semana (6 semanas) | 0 · 0 · 0 · 18 · 2 · 2 |\n| Primer ticket | 2026-09-15 |\n\n## Pasos para reproducir\n1. Entrar con un cliente afectado (por ejemplo C-016) que tenga la conexión bancaria con Kutxabank configurada.\n2. Lanzar una sincronización manual de movimientos y comprobar si devuelve error 401 y si no entran movimientos posteriores al 14-15 de septiembre.\n3. Reautorizar la conexión con Kutxabank desde la configuración bancaria y repetir la sincronización; verificar si vuelve a fallar.\n4. Revisar en los logs de bank.sync las respuestas de Kutxabank y el estado del token o consentimiento de los clientes afectados. Comprobar también si una conexión nueva con Kutxabank, creada desde cero, falla igual.\n\n## Componente sospechoso\n`bank.sync`: bank.sync (integración con Kutxabank): el error 401 tras reautorizar apunta a un fallo en la autenticación o en la renovación del token con esta entidad.\n\n## Criterios de aceptación\n- [ ] Una sincronización de un cliente afectado con Kutxabank termina sin error 401 y trae los movimientos desde el 14 de septiembre.\n- [ ] Reautorizar la conexión con Kutxabank deja la conexión en estado activo y la siguiente sincronización funciona.\n- [ ] Los siete clientes afectados (C-011 a C-017) ven sus movimientos pendientes cargados en la conciliación sin duplicados.\n- [ ] Una sincronización programada con Kutxabank se completa durante al menos 3 días seguidos sin errores.\n\n## Lo que dicen los clientes\n> Desde mediados de mes Kutxabank nos da error 401 al sincronizar. En la app del banco todo funciona.\n>\n> — ticket `R-112`\n\n> Los movimientos de Kutxabank no entran desde el día 15. He reautorizado la conexión dos veces y vuelve a fallar.\n>\n> — ticket `R-111`\n\n> Necesito los movimientos del banco para el cierre y Kutxabank no actualiza nada desde el 14.\n>\n> — ticket `R-141`\n\n> Otro restaurante de la zona que también usa Kutxabank tiene el mismo problema. ¿Sabéis algo?\n>\n> — ticket `R-166`\n\n> He seguido los pasos del artículo de ayuda y no se arregla.\n>\n> — ticket `R-220`\n\n## Clientes afectados\n- C-011 · pro · 1 local · 4 tickets\n- C-012 · starter · 1 local · 2 tickets\n- C-013 · pro · 2 locales · 3 tickets\n- C-014 · starter · 1 local · 3 tickets\n- C-015 · enterprise · 3 locales · 4 tickets\n- C-016 · pro · 1 local · 4 tickets\n- C-017 · pro · 1 local · 2 tickets\n\n---\nRedactado por el radar de producto de haddock-cx-copilot a partir de 22 tickets. Un agente CX lo revisó antes de crear esta issue."
+  },
+  {
+   "problem": "P-0012",
+   "title": "El coste de los escandallos no se actualiza con los precios nuevos de las facturas",
+   "scores": {
+    "quotes": 5,
+    "quotes_literal": 1.0,
+    "entity_named": null,
+    "no_pii": true,
+    "title_ok": true,
+    "steps": 6,
+    "criteria": 4,
+    "cost_usd": 0.0215
+   },
+   "dropped": [],
+   "body_md": "<!-- haddock-problem:P-0012 -->\n## Resumen\nDesde el 20-sep-2026, 9 clientes distintos (18 tickets) indican que el coste de las recetas y el food cost siguen con precios antiguos, aunque han subido facturas nuevas o los proveedores han subido precios. Algunos clientes dicen que editar la receta no cambia nada y que el problema sigue días después de avisar. Los tickets no indican la causa.\n\n## Impacto\n| Medida | Valor |\n|---|---|\n| Tickets | 18 |\n| Clientes afectados | 9 |\n| MRR de clientes afectados | 1.251 €/mes |\n| Tickets urgentes o altos | 78% |\n| Tickets por semana (6 semanas) | 0 · 0 · 0 · 2 · 10 · 6 |\n| Primer ticket | 2026-09-20 |\n\n## Pasos para reproducir\n1. Elegir un cliente afectado (por ejemplo C-047 o C-049) y abrir un escandallo cuyo ingrediente tenga un precio nuevo en una factura reciente (por ejemplo, el aceite o la tortilla).\n2. Anotar el coste actual del ingrediente y del plato en inventory.recipes.\n3. Comprobar que la factura de septiembre o posterior está subida y procesada, con el precio nuevo del ingrediente.\n4. Abrir el escandallo y comparar: el coste sigue con el precio anterior (el de agosto o de hace un mes).\n5. Editar y guardar la receta y comprobar si el coste se recalcula. Según los tickets, no cambia.\n6. Si no se reproduce, comprobar primero si el precio de la factura nueva llega al ingrediente de la receta y si el recálculo del coste se lanza.\n\n## Componente sospechoso\n`inventory.recipes`: inventory.recipes: el recálculo del coste de los escandallos parece no recoger los precios nuevos de las facturas, ni siquiera al editar la receta.\n\n## Criterios de aceptación\n- [ ] Tras subir una factura con un precio nuevo para un ingrediente, el coste de las recetas que lo usan se actualiza con ese precio.\n- [ ] El food cost de la carta refleja las subidas de precio de los proveedores del mes en curso.\n- [ ] Editar y guardar una receta recalcula su coste con el último precio disponible de cada ingrediente.\n- [ ] Los escandallos de los clientes afectados quedan recalculados con los precios vigentes, sin importes de agosto ni de hace un mes.\n\n## Lo que dicen los clientes\n> La factura de septiembre trae otro precio y no se refleja.\n>\n> — ticket `R-153`\n\n> Los escandallos no recogen los precios nuevos. He probado a editar la receta y nada.\n>\n> — ticket `R-198`\n\n> He subido la factura nueva con el aceite más caro y el escandallo de la hamburguesa clásica sigue con el precio antiguo.\n>\n> — ticket `R-234`\n\n> El food cost de la carta no cambia aunque los precios de los proveedores han subido este mes.\n>\n> — ticket `R-202`\n\n> el coste de los platos no se actualiza, tengo la pizza margarita con el precio de hace un mes\n>\n> — ticket `R-151`\n\n## Clientes afectados\n- C-001 · pro · 2 locales · 2 tickets\n- C-004 · pro · 1 local · 1 tickets\n- C-030 · pro · 2 locales · 3 tickets\n- C-032 · pro · 1 local · 1 tickets\n- C-035 · starter · 1 local · 2 tickets\n- C-040 · pro · 1 local · 2 tickets\n- C-044 · pro · 2 locales · 1 tickets\n- C-047 · pro · 1 local · 4 tickets\n- C-049 · pro · 2 locales · 2 tickets\n\n---\nRedactado por el radar de producto de haddock-cx-copilot a partir de 18 tickets. Un agente CX lo revisó antes de crear esta issue."
+  },
+  {
+   "problem": "P-0014",
+   "title": "El export del P&L a Excel suma el IVA en las ventas y no cuadra con la pantalla",
+   "scores": {
+    "quotes": 4,
+    "quotes_literal": 1.0,
+    "entity_named": null,
+    "no_pii": true,
+    "title_ok": true,
+    "steps": 4,
+    "criteria": 4,
+    "cost_usd": 0.0191
+   },
+   "dropped": [],
+   "body_md": "<!-- haddock-problem:P-0014 -->\n## Resumen\nOcho clientes (C-002, C-006, C-031, C-034, C-037, C-041, C-046 y C-050) dicen que el Excel exportado del P&L muestra unas ventas más altas que la pantalla. Según los tickets, la diferencia es el 10% de IVA y la web muestra los datos correctamente. Los tickets van del 26-sep al 4-oct y varios clientes han vuelto a escribir porque sigue igual.\n\n## Impacto\n| Medida | Valor |\n|---|---|\n| Tickets | 14 |\n| Clientes afectados | 8 |\n| MRR de clientes afectados | 1.333 €/mes |\n| Tickets urgentes o altos | 71% |\n| Tickets por semana (6 semanas) | 0 · 0 · 0 · 0 · 1 · 13 |\n| Primer ticket | 2026-09-26 |\n\n## Pasos para reproducir\n1. Abrir el informe P&L en la web con un periodo que tenga ventas y anotar el total de ventas en pantalla.\n2. Exportar ese mismo P&L a Excel con el mismo periodo y los mismos filtros.\n3. Comparar las ventas del Excel con las de la pantalla y comprobar si la diferencia equivale al 10% de IVA.\n4. Repetir con una cuenta de 1 local y otra de varios locales, ya que hay tickets de ambos tipos. Los tickets no indican el periodo ni los filtros usados, así que conviene confirmarlos primero con un cliente afectado.\n\n## Componente sospechoso\n`reports.export`: reports.export: el Excel parece calcular las ventas con IVA incluido, mientras que la vista en pantalla las muestra correctamente.\n\n## Criterios de aceptación\n- [ ] El total de ventas del P&L exportado a Excel coincide con el total mostrado en pantalla para el mismo periodo y filtros.\n- [ ] Las ventas del Excel no incluyen el IVA, es decir, no hay una diferencia del 10% respecto a la pantalla.\n- [ ] Hay una prueba automática que compara el total de ventas del export con el de la vista del P&L.\n- [ ] Los clientes afectados pueden volver a exportar los P&L desde el 26-sep y obtener cifras correctas.\n\n## Lo que dicen los clientes\n> Mi gestoría dice que el P&L exportado suma el IVA en las ventas\n>\n> — ticket `R-193`\n\n> El Excel del P&L que exporto no cuadra con lo que veo en pantalla\n>\n> — ticket `R-206`\n\n> La diferencia entre el P&L en pantalla y el Excel es justo el 10% de IVA\n>\n> — ticket `R-207`\n\n> el export del pyg sale mal, las ventas con iva\n>\n> — ticket `R-243`\n\n## Clientes afectados\n- C-002 · starter · 1 local · 1 tickets\n- C-006 · pro · 1 local · 2 tickets\n- C-031 · starter · 1 local · 1 tickets\n- C-034 · pro · 1 local · 2 tickets\n- C-037 · pro · 1 local · 1 tickets\n- C-041 · pro · 1 local · 3 tickets\n- C-046 · enterprise · 4 locales · 1 tickets\n- C-050 · starter · 1 local · 3 tickets\n\n---\nRedactado por el radar de producto de haddock-cx-copilot a partir de 14 tickets. Un agente CX lo revisó antes de crear esta issue."
+  }
+ ]
+}

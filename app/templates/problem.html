@@ -20,6 +20,54 @@
   <div class="info-banner"><i data-lucide="merge"></i><div>Este problema se unió a <a href="/radar/problems/{{ p.merged_into }}">{{ p.merged_into }}</a>.</div></div>
   {% endif %}
 
+  {% if error %}
+  <div class="banner"><i data-lucide="circle-alert"></i><div>
+    {% if error == "github-config" %}<strong>GitHub no está configurado.</strong><span>Añade GITHUB_TOKEN y GITHUB_REPO a .env y reinicia el servidor.</span>
+    {% elif error == "draft" %}<strong>No se pudo redactar la petición.</strong><span>Mira la traza product-request en Langfuse y vuelve a intentarlo.</span>
+    {% else %}<strong>GitHub respondió con un error ({{ error[7:] }}).</strong><span>La petición sigue aquí, sin cambios. Revisa el token y el repo.</span>{% endif %}
+  </div></div>
+  {% endif %}
+
+  {% if p.github_url %}
+  <div class="info-banner issue-line"><i data-lucide="github"></i><div>
+    <strong>Issue <a href="{{ p.github_url }}" target="_blank" rel="noopener">#{{ p.github_number }} en GitHub <i data-lucide="external-link"></i></a></strong>
+    <span>{% if p.status == "resolved" %}Producto la cerró como resuelta.{% else %}Cada cliente nuevo con este problema se añade a la issue como comentario.{% endif %}</span>
+  </div></div>
+  {% endif %}
+
+  {% if p.status == "candidate" %}
+  <section class="request" aria-labelledby="req-h">
+    <h2 id="req-h">Petición a producto</h2>
+    {% if not req %}
+    <p class="muted">El copiloto redacta la issue con citas literales de los tickets. Tú decides si se envía.</p>
+    {% if not public %}<form method="post" action="/radar/problems/{{ p.id }}/draft">
+      <button class="btn primary" type="submit"><i data-lucide="file-pen-line"></i>Redactar la petición</button></form>{% endif %}
+    {% else %}
+    {% if req.dropped %}<p class="check-line"><i data-lucide="quote"></i>{{ req.dropped | length }} {{ "cita no era literal" if req.dropped | length == 1 else "citas no eran literales" }}: el código {{ "la quitó" if req.dropped | length == 1 else "las quitó" }}.</p>{% endif %}
+    <form method="post" action="/radar/problems/{{ p.id }}/request" class="request-form">
+      <label for="req-title">Título</label>
+      <input id="req-title" name="title" value="{{ req.title }}" maxlength="120" {% if public %}readonly{% endif %}>
+      <label for="req-body">Cuerpo de la issue <span class="muted">· markdown · los números y los clientes los pone el código</span></label>
+      <textarea id="req-body" name="body_md" rows="18" {% if public %}readonly{% endif %}>{{ req.body_md }}</textarea>
+      {% if duplicates %}
+      <fieldset class="dupes">
+        <legend>Puede ser el mismo problema que una issue abierta</legend>
+        <label><input type="radio" name="merge_into" value="" checked> Crear una issue nueva</label>
+        {% for d in duplicates %}<label><input type="radio" name="merge_into" value="{{ d.id }}"> Añadir a <a href="{{ d.github_url }}" target="_blank" rel="noopener">#{{ d.github_number }}</a> · {{ d.title }}</label>{% endfor %}
+      </fieldset>
+      {% endif %}
+      <div class="request-actions">
+        {% if public %}<span class="muted">Desactivado en la demo pública.</span>
+        {% elif not github_ready %}<span class="muted">GitHub no está configurado: añade GITHUB_TOKEN y GITHUB_REPO a .env.</span>
+        {% else %}<button class="btn primary" type="submit" name="decision" value="approve"><i data-lucide="send"></i>Crear la issue en GitHub</button>{% endif %}
+        {% if not public %}<button class="btn danger" type="submit" name="decision" value="reject" formnovalidate>Rechazar</button>{% endif %}
+        <span class="muted">Coste de la redacción: ${{ "%.3f" | format(req.cost_usd or 0) }}</span>
+      </div>
+    </form>
+    {% endif %}
+  </section>
+  {% endif %}
+
   <h2>Impacto</h2>
   <table class="ledger">
     <thead><tr><th>Medida</th><th>Valor</th><th>Base de cálculo</th></tr></thead>

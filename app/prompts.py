@@ -13,7 +13,8 @@ PROMPTS_DIR = Path(__file__).resolve().parent.parent / "prompts"
 AGENT_SYSTEM = "cx-agent-system"
 JUDGE = "eval-key-points-judge"
 SYMPTOM = "ticket-symptom"  # radar: docs/specs/radar.md
-ALL = [AGENT_SYSTEM, JUDGE, SYMPTOM]  # what scripts/push_prompts.py pushes by default
+PRODUCT_REQUEST = "product-request"  # docs/specs/product-request.md
+ALL = [AGENT_SYSTEM, JUDGE, SYMPTOM, PRODUCT_REQUEST]  # what scripts/push_prompts.py pushes by default
 
 # Defaults stored in the prompt's Langfuse config: change them in Langfuse, no deploy needed.
 DEFAULT_CONFIG = {

@@ -293,6 +293,7 @@ def get_problem(conn, problem_id: str, customers: dict[str, Customer]) -> dict |
         t = conn.execute("SELECT subject, body, channel FROM tickets WHERE id = ?", (s["ticket_id"],)).fetchone()
         s.update(dict(t) if t else {})
     p["impact"] = impact(p["signals"], customers, now_of(conn))
+    p["by_customer"] = dict(Counter(s["customer_id"] for s in p["signals"]))
     p["events"] = [dict(r) | {"payload": json.loads(r["payload"] or "{}")} for r in conn.execute(
         "SELECT * FROM problem_events WHERE problem_id = ? ORDER BY created_at, id", (problem_id,))]
     return p

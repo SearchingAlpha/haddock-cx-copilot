@@ -102,7 +102,7 @@ def backfill(conn, tickets, customers, *, workers=8, matcher=..., progress=None)
 13. El componente y la entidad de un problema son los más frecuentes entre sus tickets, no los del primero.
 14. `refresh_status()` calcula el impacto y comprueba el umbral.
 15. El umbral es 3 clientes distintos, o 2 clientes con 400 € de MRR de clientes afectados como mínimo. Un solo cliente enterprise nunca basta: una sola voz no es un patrón. Al cruzarlo, el problema pasa a `candidate` y guarda `detected_at_n`: el número de tickets del problema en ese momento.
-16. Si el problema ya tiene una issue abierta y tiene clientes nuevos, el radar añade el comentario «+N clientes» en GitHub (fase R3).
+16. Si el problema ya tiene una issue abierta y tiene clientes nuevos, el radar añade el comentario «+N clientes» en GitHub. Lo hace `radar.comment_new_customers()` (`product-request.md`).
 
 Cada transición de estado es un `UPDATE … WHERE status = ?`. Repetir una transición no tiene efecto. Cada transición añade una fila en `problem_events`.
 

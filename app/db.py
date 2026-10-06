@@ -34,7 +34,11 @@ CREATE TABLE IF NOT EXISTS signals (
 CREATE TABLE IF NOT EXISTS problems (
     id TEXT PRIMARY KEY, component TEXT, kind TEXT, entity TEXT, title TEXT, status TEXT,
     first_ticket_at TEXT, last_ticket_at TEXT, detected_at TEXT, detected_at_n INTEGER,
-    resolved_at TEXT, github_number INTEGER, github_url TEXT, commented_customers INTEGER DEFAULT 0, merged_into TEXT
+    resolved_at TEXT, github_number INTEGER, github_url TEXT, issue_customers TEXT, merged_into TEXT
+);
+CREATE TABLE IF NOT EXISTS product_requests (
+    problem_id TEXT PRIMARY KEY REFERENCES problems(id), title TEXT, body_md TEXT, payload TEXT, dropped TEXT,
+    status TEXT, trace_id TEXT, cost_usd REAL, created_at TEXT, decided_at TEXT, decision TEXT
 );
 CREATE TABLE IF NOT EXISTS problem_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT, problem_id TEXT REFERENCES problems(id), kind TEXT,
@@ -42,10 +46,11 @@ CREATE TABLE IF NOT EXISTS problem_events (
 );
 """
 JSON_COLUMNS = ("reasons", "classification", "confidence", "evidence", "tool_calls", "tool_outputs", "escalation",
-                "matched", "payload")
+                "matched", "payload", "dropped")
 LATE_COLUMNS = {  # added after the first schema; migrated in connect()
     "results": {"tool_outputs": "TEXT", "escalation": "TEXT"},
     "tickets": {"kind": "TEXT DEFAULT 'inbound'", "source": "TEXT DEFAULT 'live'", "problem_id": "TEXT"},
+    "problems": {"issue_customers": "TEXT", "merged_into": "TEXT"},
 }
 TICKET_COLUMNS = "id, customer_id, channel, subject, body, created_at, mode, state, kind, source, problem_id"
 

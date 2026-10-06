@@ -36,3 +36,9 @@ RADAR_PROBLEM_SYMPTOMS = 10  # a problem's document: its title and its last N sy
 # One enterprise customer alone (420-700 EUR) is never enough: one voice is not a pattern.
 RADAR_THRESHOLD = {"customers": 3, "mrr_eur": 400.0, "mrr_min_customers": 2}
 TREND_WINDOW_DAYS = 7
+
+# Product requests and the closed loop. Specs: docs/specs/product-request.md, github.md, notify.md
+REQUEST_MODEL = AGENT_MODEL  # writes the GitHub issue: generative, grounded on the tickets
+NOTICE_MODEL = AGENT_MODEL  # writes one proactive notice per affected customer
+REQUEST_MAX_TICKETS = 12  # tickets Sonnet reads per request: the first 3 and the last 9
+GITHUB_API = "https://api.github.com"

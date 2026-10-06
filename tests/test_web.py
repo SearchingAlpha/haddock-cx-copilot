@@ -114,3 +114,48 @@ def test_radar_pages_render(client):
     assert detail.status_code == 200 and "Cruzó el umbral" in detail.text
     assert client.get("/radar/problems/P-9999").status_code == 404
     assert client.get("/").status_code == 200  # history tickets stay out of the queue
+
+
+def test_request_flow_from_the_problem_page(client, monkeypatch):
+    from app import product_request
+    from tests.test_product_request import FakeAnthropic, FakeGitHub, draft
+
+    _seed_radar()
+    monkeypatch.setattr(product_request, "_client", lambda: FakeAnthropic(draft()))
+    assert "Redactar la petición" in client.get("/radar/problems/P-0001").text
+    assert client.post("/radar/problems/P-0001/draft", follow_redirects=False).status_code == 303
+    page = client.get("/radar/problems/P-0001").text
+    assert "Crear la issue en GitHub" not in page and "GitHub no está configurado" in page
+
+    gh = FakeGitHub()
+    monkeypatch.setattr(main, "github_client", lambda: gh)
+    page = client.get("/radar/problems/P-0001").text
+    assert "Crear la issue en GitHub" in page
+    req = product_request.load(db.connect(), "P-0001")
+    r = client.post("/radar/problems/P-0001/request", data={
+        "decision": "approve", "title": req["title"], "body_md": req["body_md"].replace("\n", "\r\n")},
+        follow_redirects=False)
+    assert r.status_code == 303 and len(gh.issues) == 1
+    assert product_request.load(db.connect(), "P-0001")["decision"] == "approve"  # \r\n from the form is not an edit
+    assert "#7 en GitHub" in client.get("/radar/problems/P-0001").text
+
+
+def test_request_without_github_redirects_with_an_error(client, monkeypatch):
+    from app import product_request
+    from tests.test_product_request import FakeAnthropic, draft
+
+    _seed_radar()
+    monkeypatch.setattr(product_request, "_client", lambda: FakeAnthropic(draft()))
+    monkeypatch.setattr(main, "github_client", lambda: None)
+    client.post("/radar/problems/P-0001/draft")
+    r = client.post("/radar/problems/P-0001/request", data={"decision": "approve", "title": "t", "body_md": "b"},
+                    follow_redirects=False)
+    assert r.headers["location"].endswith("?error=github-config")
+
+
+def test_public_demo_never_writes_from_the_radar(client, monkeypatch):
+    _seed_radar()
+    monkeypatch.setenv("HADDOCK_PUBLIC", "1")
+    assert client.post("/radar/problems/P-0001/draft").status_code == 403
+    assert client.post("/radar/problems/P-0001/request", data={"decision": "reject"}).status_code == 403
+    assert client.get("/radar/problems/P-0001").status_code == 200

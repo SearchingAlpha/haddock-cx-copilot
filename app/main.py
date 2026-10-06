@@ -17,7 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langfuse import get_client
 
-from app import db, problems, radar, story, tour, views
+from app import db, github, problems, product_request, radar, story, tour, views
 from app.data import load_customers, load_kb, load_tickets
 from app.domain import Category, TicketIn
 from app.entities import Gazetteer
@@ -84,11 +84,23 @@ def run_pipeline(ticket: TicketIn) -> None:
     radar_step(ticket, result)
 
 
+def github_client() -> github.GitHub | None:
+    return github.from_env()
+
+
 def radar_step(ticket: TicketIn, result) -> None:
-    """After the reply is ready: the ticket feeds the product radar (docs/specs/radar.md). Never blocks the reply."""
+    """After the reply is ready: the ticket feeds the product radar (docs/specs/radar.md). Never blocks the reply.
+
+    A problem that just crossed the threshold gets its request drafted; one with an open issue gets "+N clientes".
+    """
     conn = db.connect()
     try:
-        radar.ingest(conn, ticket, CUSTOMERS, GAZETTEER, classification=result.classification)
+        signal = radar.ingest(conn, ticket, CUSTOMERS, GAZETTEER, classification=result.classification)
+        row = conn.execute("SELECT status FROM problems WHERE id = ?", (signal.problem_id,)).fetchone()
+        if row and row["status"] == "candidate" and product_request.load(conn, signal.problem_id) is None:
+            radar.draft_for(conn, signal.problem_id, CUSTOMERS)
+        elif row and row["status"] == "requested" and (gh := github_client()):
+            radar.comment_new_customers(conn, signal.problem_id, CUSTOMERS, gh)
     except Exception as error:
         log.warning("radar failed for %s: %r", ticket.id, error)
     finally:
@@ -278,14 +290,63 @@ def problem_page(request: Request, problem_id: str):
     conn = db.connect()
     try:
         p = problems.get_problem(conn, problem_id, CUSTOMERS)
+        req = product_request.load(conn, problem_id) if p else None
+        duplicates = radar.duplicate_candidates(conn, p) if p and p["status"] == "candidate" else []
     finally:
         conn.close()
     if p is None:
         raise HTTPException(404)
     return templates.TemplateResponse(request, "problem.html", {
-        **_shell(), "p": p, "customers": CUSTOMERS, "v": views,
+        **_shell(), "p": p, "customers": CUSTOMERS, "v": views, "req": req, "duplicates": duplicates,
+        "github_ready": github_client() is not None, "error": request.query_params.get("error"),
         "threshold": next((e for e in p["events"] if e["kind"] == "threshold"), None),
     })
+
+
+def _no_public() -> None:
+    if is_public():
+        raise HTTPException(403, "Public demo: the radar does not write.")
+
+
+@app.post("/radar/problems/{problem_id}/draft")
+def problem_draft(problem_id: str) -> RedirectResponse:
+    _no_public()
+    conn = db.connect()
+    try:
+        radar.draft_for(conn, problem_id, CUSTOMERS)
+        error = ""
+    except Exception as e:
+        log.warning("draft failed for %s: %r", problem_id, e)
+        error = "?error=draft"
+    finally:
+        conn.close()
+    return RedirectResponse(f"/radar/problems/{problem_id}{error}", status_code=303)
+
+
+@app.post("/radar/problems/{problem_id}/request")
+def problem_request(problem_id: str, decision: str = Form(...), title: str = Form(""), body_md: str = Form(""),
+                    merge_into: str = Form("")) -> RedirectResponse:
+    """The CX agent decides: approve (create the issue), merge into an open issue, or reject."""
+    _no_public()
+    conn = db.connect()
+    try:
+        if decision == "reject":
+            radar.reject(conn, problem_id)
+            return RedirectResponse(f"/radar/problems/{problem_id}", status_code=303)
+        gh = github_client()
+        if gh is None:
+            return RedirectResponse(f"/radar/problems/{problem_id}?error=github-config", status_code=303)
+        if not title.strip() or not body_md.strip():
+            raise HTTPException(422, "Empty title or body.")
+        try:
+            radar.approve(conn, problem_id, CUSTOMERS, gh, title=title.strip(), body=body_md.replace("\r\n", "\n"),
+                          merge_into=merge_into or None)
+        except github.GitHubError as e:
+            log.warning("GitHub failed for %s: %r", problem_id, e)
+            return RedirectResponse(f"/radar/problems/{problem_id}?error=github-{e.status}", status_code=303)
+    finally:
+        conn.close()
+    return RedirectResponse(f"/radar/problems/{problem_id}", status_code=303)
 
 
 # --- Langfuse --------------------------------------------------------------------------------

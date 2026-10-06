@@ -110,6 +110,8 @@ flowchart LR
 | `/codigo` | `tour.md` | 5 |
 | Demo pública | `deploy.md` | 5 |
 | Radar de producto | `radar.md` | R |
+| Petición de producto | `product-request.md` | R3 |
+| Cliente de GitHub | `github.md` | R3 |
 
 ## Done when
 - [ ] Cada módulo de la tabla tiene su spec antes de su código.

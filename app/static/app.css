@@ -432,3 +432,18 @@ kbd.big { font-size: 22px; padding: 10px 16px; border-bottom-width: 3px; color: 
 .timeline li::before { content: ""; position: absolute; left: -6px; top: 10px; width: 10px; height: 10px; border-radius: 50%;
   background: var(--pane); border: 2px solid var(--line-strong, #aeb8bd); }
 .timeline .when { font: 600 11px var(--mono); color: var(--muted); margin-right: 6px; }
+.request { margin: 8px 0 0; }
+.request-form { display: grid; gap: 6px; background: var(--pane); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+.request-form label { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+.request-form input[name="title"] { font: 600 15px var(--font); color: var(--ink-strong); padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius); }
+.request-form textarea { font: 13px/1.5 var(--mono); color: var(--ink); padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: #fbfcfc; resize: vertical; }
+.request-form input:focus, .request-form textarea:focus { outline: none; box-shadow: var(--focus); }
+.request-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.btn.danger { color: var(--red); }
+.btn.danger:hover { background: var(--red-tint); }
+.dupes { border: 1px solid var(--amber-line); background: var(--amber-tint); border-radius: var(--radius); padding: 8px 12px; margin: 6px 0 0; display: grid; gap: 4px; }
+.dupes legend { font-size: 12px; font-weight: 600; color: var(--amber-ink); padding: 0 4px; }
+.dupes label { font-size: 13px; font-weight: 400; color: var(--ink); margin: 0; display: flex; gap: 6px; align-items: center; }
+.issue-line strong a { display: inline-flex; align-items: center; gap: 4px; }
+.issue-line svg { width: 14px; height: 14px; }
+.info-banner span { display: block; color: var(--muted); }
