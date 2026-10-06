@@ -51,6 +51,8 @@ CLI:
 python -m app.cli process data/tickets.jsonl [--limit N] [--ids T-001,T-020] [-v]
 ```
 
+Con `-v`, la CLI muestra cada borrador, su evidencia y la URL de su traza en Langfuse.
+
 ## Behavior
 
 1. `process_ticket()` abre la traza `process-ticket`. `session_id` es el id del ticket. La metadata incluye el cliente.
