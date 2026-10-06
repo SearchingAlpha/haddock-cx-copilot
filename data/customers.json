@@ -1987,5 +1987,36 @@
         "status": "processed"
       }
     ]
+  },
+  {
+    "id": "C-051",
+    "name": "Asador Bidasoa",
+    "city": "Irún",
+    "plan": "enterprise",
+    "locations": 3,
+    "contact_name": "Iñaki Olaizola",
+    "contact_email": "inaki@asadorbidasoa.es",
+    "signup_date": "2025-05-20",
+    "billing": {
+      "monthly_price_eur": 420.0,
+      "payment_status": "ok",
+      "next_billing_date": "2026-10-20"
+    },
+    "integrations": [
+      {
+        "kind": "bank",
+        "provider": "Kutxabank",
+        "status": "error",
+        "last_sync": "2026-10-04T06:00:00",
+        "error": "Kutxabank rechaza el consentimiento PSD2 después de reautorizar (401)"
+      },
+      {
+        "kind": "pos",
+        "provider": "Last.app",
+        "status": "ok",
+        "last_sync": "2026-10-05T06:10:00"
+      }
+    ],
+    "invoices": []
   }
 ]

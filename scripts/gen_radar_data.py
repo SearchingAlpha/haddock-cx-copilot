@@ -67,7 +67,18 @@ NEW_CUSTOMERS = [
     ("Pizzería Nápoles", "Alicante", "pro", 2, "Sabadell", "Last.app", ["Makro"], "Davide Russo"),
     ("Cafetería Aurora", "Valladolid", "starter", 1, "BBVA", None, ["Cafés Orús"], "Aurora Prieto"),
 ]
-POS_DISCONNECTED = {"C-049"}  # decoy: sales missing because the POS is disconnected
+POS_DISCONNECTED = {"C-049"}
+# Customers for the live demo (data/radar/live.jsonl). Added after the seeded ones and without the rng,
+# so adding one never changes the 250 tickets or the eval results.
+LIVE_CUSTOMERS = [{
+    "id": "C-051", "name": "Asador Bidasoa", "city": "Irún", "plan": "enterprise", "locations": 3,
+    "contact_name": "Iñaki Olaizola", "contact_email": "inaki@asadorbidasoa.es", "signup_date": "2025-05-20",
+    "billing": {"monthly_price_eur": 420.0, "payment_status": "ok", "next_billing_date": "2026-10-20"},
+    "integrations": [{"kind": "bank", "provider": "Kutxabank", "status": "error", "last_sync": "2026-10-04T06:00:00",
+                      "error": KUTXA_ERROR},
+                     {"kind": "pos", "provider": "Last.app", "status": "ok", "last_sync": "2026-10-05T06:10:00"}],
+    "invoices": [],
+}]  # decoy: sales missing because the POS is disconnected
 
 
 def _slug(text: str) -> str:
@@ -497,13 +508,14 @@ def main() -> None:
     # C-001..C-010 are hand-formatted: keep their text as it is, replace only what comes after.
     marker = ',\n  {\n    "id": "C-011"'
     head = text[: text.index(marker)] if marker in text else text[: text.rindex("\n]")]
-    new = build_customers(rng)
+    new = build_customers(rng) + LIVE_CUSTOMERS
     entries = ["  " + json.dumps(c, ensure_ascii=False, indent=2).replace("\n", "\n  ") for c in new]
     path.write_text(head + ",\n" + ",\n".join(entries) + "\n]\n", encoding="utf-8")
     all_customers = json.loads(path.read_text(encoding="utf-8"))
     customers = {c["id"]: Customer.model_validate(c) for c in all_customers}
 
-    tickets, truth = build_tickets(rng, customers)
+    live = {c["id"] for c in LIVE_CUSTOMERS}
+    tickets, truth = build_tickets(rng, {k: v for k, v in customers.items() if k not in live})
     out = DATA / "radar"
     out.mkdir(exist_ok=True)
     (out / "tickets.jsonl").write_text(

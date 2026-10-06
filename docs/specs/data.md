@@ -179,7 +179,7 @@ flowchart LR
     truth --> evals
 ```
 
-- **Clientes.** Añade C-011…C-050. C-001…C-010 no cambian: el script mantiene su texto. Cada cliente de un problema plantado tiene la entidad de ese problema. Ejemplo: los clientes de P1 tienen facturas de Distribuciones Garrido en `failed` desde el 1-sep.
+- **Clientes.** Añade C-011…C-050. C-001…C-010 no cambian: el script mantiene su texto. C-051 (Asador Bidasoa) es el cliente de la demo en directo (`data/radar/live.jsonl`): no tiene tickets en el histórico y se añade sin usar la semilla, así que no cambia los 250 tickets. Cada cliente de un problema plantado tiene la entidad de ese problema. Ejemplo: los clientes de P1 tienen facturas de Distribuciones Garrido en `failed` desde el 1-sep.
 - **Tickets.** 250 tickets del 24-ago al 4-oct. Las etiquetas son `RadarLabels`: las de `TicketLabels` más `component`, `kind`, `entity`, `problem_id` y `decoy`.
 - **Problemas plantados.** 7 problemas, con fecha de inicio y una curva de llegada (`spike`, `steady` o `rising`). P7 tiene 2 clientes starter: queda por debajo del umbral.
 - **Señuelos.** 40 tickets con las mismas palabras que un problema plantado y otra causa: una foto borrosa, una contraseña cambiada, un segundo terminal. Son `how_to` o `user_error` y no tienen `problem_id`.

@@ -36,7 +36,7 @@ def test_size_and_unique_ids(tickets):
 def test_first_ten_customers_are_unchanged(customers):
     assert customers["C-001"].name == "La Taberna del Puerto"
     assert customers["C-010"].name == "Tacos La Güera"
-    assert len(customers) == 50
+    assert len(customers) == 51  # C-051: the live demo customer
 
 
 def test_customers_and_tools_are_known(tickets, customers):

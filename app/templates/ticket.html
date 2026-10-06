@@ -28,7 +28,18 @@
   </section>
   {% endif %}
 
-  {% if not manual %}
+  {% if notice %}
+  <details class="ctx-section more" open>
+    <summary>Cómo lo hizo el copilot</summary>
+    <ol class="trail">
+      <li>Producto cerró la issue: el problema pasó a resuelto</li>
+      <li>Leyó solo los {{ notice.tickets | length }} tickets de este cliente</li>
+      <li>Escribió el aviso · ${{ "%.3f" | format(t.cost_usd or 0) }}</li>
+      <li>Guardrails: {{ "sin motivos" if not t.reasons else (t.reasons | join(", ")) }}</li>
+    </ol>
+    {% if trace_url %}<p><a href="{{ trace_url }}" target="_blank" rel="noopener">Ver la traza en Langfuse <i data-lucide="external-link"></i></a></p>{% endif %}
+  </details>
+  {% elif not manual %}
   {% set cited = evidence | selectattr("cited") | list %}
   {% set rest = evidence | rejectattr("cited") | list %}
   <section class="ctx-section">
