@@ -52,7 +52,7 @@ def sync_issues(conn, gh) -> list[str]                                          
 
 1. GitHub llama a `POST /webhooks/github` con el evento `issues`. El webhook comprueba `X-Hub-Signature-256` con `GITHUB_WEBHOOK_SECRET`.
 2. Sin webhook (por ejemplo, en local), el botón «Comprobar GitHub» llama a `/radar/sync`, que lee las issues del repo.
-3. `issue_changed()` busca el problema por el número de la issue y aplica la transición:
+3. `issue_changed()` busca el problema por el número de la issue. Si ningún problema tiene ese número, usa el marcador `<!-- haddock-problem:P-xxxx -->` del texto, pero solo para un problema que aún no tiene issue (la base de datos se reconstruyó). Así una issue de un ensayo anterior nunca cambia el problema nuevo con el mismo id. Después aplica la transición:
    - `closed` con `state_reason = completed`: `requested` → `resolved`, y hay que avisar.
    - `closed` con `not_planned`: `requested` → `dismissed`. No hay avisos: no hay fix que contar.
    - `reopened`: `resolved` → `requested`. Los avisos que ya están en la cola se quedan; el agente CX decide.

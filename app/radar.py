@@ -209,8 +209,11 @@ def problem_for_issue(conn, number: int, body: str = "") -> str | None:
     row = conn.execute("SELECT id FROM problems WHERE github_number = ? AND status != 'merged'", (number,)).fetchone()
     if row:
         return row["id"]
-    marker = re.search(r"<!-- haddock-problem:(P-\d+) -->", body or "")  # the database was reset: the marker remains
-    if marker and conn.execute("SELECT 1 FROM problems WHERE id = ?", (marker.group(1),)).fetchone():
+    # The database was rebuilt and lost the number: the marker remains. Only for a problem with no issue yet, so an
+    # old issue from an earlier rehearsal never changes the new problem that reuses its id.
+    marker = re.search(r"<!-- haddock-problem:(P-\d+) -->", body or "")
+    if marker and conn.execute("SELECT 1 FROM problems WHERE id = ? AND github_number IS NULL",
+                               (marker.group(1),)).fetchone():
         return marker.group(1)
     return None
 

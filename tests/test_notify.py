@@ -107,3 +107,8 @@ def test_sync_reads_issues_and_finds_problems_by_marker(requested):
     assert radar.sync_issues(requested, Issues()) == ["P-0001"]
     requested.execute("UPDATE problems SET github_number = NULL")
     assert radar.problem_for_issue(requested, 7, "<!-- haddock-problem:P-0001 -->\n## Resumen") == "P-0001"
+
+
+def test_an_old_issue_never_changes_a_problem_that_has_its_own(requested):
+    """Rehearsals: issue #3 of an earlier run carries the marker P-0001; today P-0001 has issue #7."""
+    assert radar.problem_for_issue(requested, 3, "<!-- haddock-problem:P-0001 -->") is None
