@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% set active = "radar" %}
+{% block title %}Radar de producto · haddock CX copilot{% endblock %}
+{% block shell_class %}no-context metrics{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.34.3/dist/cytoscape.min.js" defer></script>
+<script src="/static/radar.js" defer></script>
+{% endblock %}
+{% block main %}
+<main class="workspace page radar-page">
+  <h1>Radar de producto</h1>
+  <p class="lede">Qué partes de haddock generan tickets, a cuántos clientes afectan y cuánto pagan esos clientes. El copiloto agrupa cada ticket en un problema; una persona decide qué se pide a producto.</p>
+
+  {% if not problems %}
+  <div class="empty">
+    <i data-lucide="radar"></i>
+    <h2>Aún no hay problemas</h2>
+    <p>Carga el histórico con <code>python -m scripts.radar_backfill</code>, o espera a que lleguen tickets.</p>
+  </div>
+  {% else %}
+  <p class="radar-kpis">
+    <span><strong>{{ signals }}</strong> tickets leídos</span>
+    <span><strong>{{ problems | length }}</strong> problemas con 2 tickets o más</span>
+    {% if candidates %}<span class="check"><strong>{{ candidates }}</strong> para pedir a producto</span>{% endif %}
+    {% if graph.multi %}<span><strong>{{ graph.multi }}</strong> clientes en varios problemas</span>{% endif %}
+  </p>
+
+  <figure class="radar-graph-box" aria-label="Grafo: áreas, problemas y clientes">
+    <figcaption>
+      <span>Área</span><span>Problema · tamaño = impacto</span><span>Cliente</span>
+    </figcaption>
+    <div id="radar-graph" style="height: {{ graph.height }}px" data-src="/radar/graph.json"></div>
+    <p class="radar-legend">
+      <span><i class="dot" style="background:#e38215"></i>Para pedir a producto</span>
+      <span><i class="dot" style="background:#03363d"></i>En producto</span>
+      <span><i class="dot" style="background:#aeb8bd"></i>Abierto</span>
+      <span><i class="dot" style="background:#8aa6b5"></i>Resuelto</span>
+      <span><i class="dot ring"></i>Cliente en varios problemas</span>
+      <span class="muted">Pasa el ratón para ver las relaciones; pulsa un problema para abrirlo.</span>
+    </p>
+  </figure>
+
+  <h2>Problemas por impacto</h2>
+  <table class="ledger problems-table">
+    <thead><tr><th>Problema</th><th>Tickets</th><th>Clientes</th><th>MRR de clientes afectados</th><th>Últimas 6 semanas</th><th>Estado</th></tr></thead>
+    <tbody>
+      {% for p in problems %}
+      {% set imp = p.impact %}
+      <tr>
+        <td><a href="/radar/problems/{{ p.id }}" class="p-title">{{ p.title }}</a>
+          <span class="p-meta"><code>{{ p.id }}</code> · {{ v.AREA_LABELS[v.area_of(p.component)] }} · {{ v.KIND_LABELS.get(p.kind, p.kind) }}{% if p.entity %} · {{ p.entity }}{% endif %}</span></td>
+        <td class="num">{{ imp.tickets }}</td>
+        <td class="num">{{ imp.customers | length }}</td>
+        <td class="num">{{ v.money(imp.mrr_eur) }}</td>
+        <td class="spark-cell">{{ v.sparkline(imp.weekly) }} <span class="muted">{{ v.trend_label(imp.trend) }}</span></td>
+        <td><span class="tag {{ p.status }}">{{ v.PROBLEM_STATUS_LABELS.get(p.status, p.status) }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="muted">Orden: MRR × (1 + 0,5 × severidad) × tendencia. Severidad = parte de tickets urgentes o altos. Tendencia = últimos 7 días contra la media de las 3 semanas anteriores. {% if hidden %}{{ hidden }} problemas de un solo ticket no se muestran: un ticket aún no es un patrón.{% endif %}</p>
+  {% endif %}
+</main>
+{% endblock %}

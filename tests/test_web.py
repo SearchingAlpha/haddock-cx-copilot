@@ -3,7 +3,8 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from app import main
+from app import db, main
+from app.domain import TicketIn
 from tests.test_db import result
 
 PAYLOAD = {"id": "Z-1", "customer_id": "C-001", "channel": "email", "created_at": "2026-10-03T10:00:00",
@@ -81,3 +82,35 @@ def test_inbox_and_metrics_render(client):
     client.post("/webhooks/ticket", json=PAYLOAD)
     assert "Z-1" in client.get("/").text
     assert client.get("/metrics").status_code == 200
+
+
+def _seed_radar():
+    from datetime import datetime
+
+    from app import problems
+    from app.domain import Component, Kind, Priority
+    from app.signals import Signal
+
+    conn = db.connect()
+    for i, c in enumerate(["C-019", "C-022", "C-025"]):
+        db.insert_ticket(conn, TicketIn(id=f"R-{i}", customer_id=c, channel="email",
+                                        created_at=datetime(2026, 9, 2 + i, 10), subject="Garrido",
+                                        body="No se lee"), source="history")
+        s = Signal(f"R-{i}", c, datetime(2026, 9, 2 + i, 10).isoformat(), "Garrido", Component.invoices_ocr, Kind.bug,
+                   "Distribuciones Garrido", "El OCR no lee Garrido", priority=Priority.high)
+        problems.assign(conn, s, matcher=lambda text: problems.Match(True, 0.9))
+        problems.refresh_status(conn, "P-0001", main.CUSTOMERS, s.created_at)
+    conn.close()
+
+
+def test_radar_pages_render(client):
+    assert "Aún no hay problemas" in client.get("/radar").text
+    _seed_radar()
+    page = client.get("/radar")
+    assert page.status_code == 200 and "El OCR no lee Garrido" in page.text
+    graph = client.get("/radar/graph.json").json()
+    assert {n["data"]["kind"] for n in graph["nodes"]} == {"area", "problem", "customer"}
+    detail = client.get("/radar/problems/P-0001")
+    assert detail.status_code == 200 and "Cruzó el umbral" in detail.text
+    assert client.get("/radar/problems/P-9999").status_code == 404
+    assert client.get("/").status_code == 200  # history tickets stay out of the queue

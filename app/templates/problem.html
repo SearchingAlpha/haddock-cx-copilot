@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% set active = "radar" %}
+{% block title %}{{ p.id }} · Radar de producto{% endblock %}
+{% block shell_class %}no-context metrics{% endblock %}
+{% block main %}
+{% set imp = p.impact %}
+<main class="workspace page radar-page">
+  <p class="crumbs"><a href="/radar"><i data-lucide="arrow-left"></i> Radar de producto</a></p>
+  <h1>{{ p.title }}</h1>
+  <p class="p-meta big"><code>{{ p.id }}</code> · {{ v.AREA_LABELS[v.area_of(p.component)] }} · <code>{{ p.component }}</code> · {{ v.KIND_LABELS.get(p.kind, p.kind) }}{% if p.entity %} · {{ p.entity }}{% endif %}
+    <span class="tag {{ p.status }}">{{ v.PROBLEM_STATUS_LABELS.get(p.status, p.status) }}</span></p>
+
+  {% if p.status == "candidate" and threshold %}
+  <div class="check-banner">
+    <i data-lucide="flag"></i>
+    <div><strong>Cruzó el umbral el {{ threshold.created_at[:10] }}, con {{ threshold.payload.tickets }} tickets de {{ threshold.payload.customers }} clientes.</strong>
+      <span>Umbral: 3 clientes, o 2 clientes con 400 € de MRR. Revisa los tickets y decide si se pide a producto.</span></div>
+  </div>
+  {% elif p.status == "merged" %}
+  <div class="info-banner"><i data-lucide="merge"></i><div>Este problema se unió a <a href="/radar/problems/{{ p.merged_into }}">{{ p.merged_into }}</a>.</div></div>
+  {% endif %}
+
+  <h2>Impacto</h2>
+  <table class="ledger">
+    <thead><tr><th>Medida</th><th>Valor</th><th>Base de cálculo</th></tr></thead>
+    <tbody>
+      <tr><td>Tickets</td><td class="v">{{ imp.tickets }}</td><td class="basis">Del {{ p.first_ticket_at[:10] }} al {{ p.last_ticket_at[:10] }}.</td></tr>
+      <tr><td>Clientes afectados</td><td class="v">{{ imp.customers | length }}</td><td class="basis">Clientes distintos con un ticket en este problema.</td></tr>
+      <tr><td>MRR de clientes afectados</td><td class="v">{{ v.money(imp.mrr_eur) }}</td><td class="basis">Suma de la cuota mensual de esos clientes. No es una predicción de bajas.</td></tr>
+      <tr><td>Severidad</td><td class="v">{{ "%.0f%%" | format(imp.severity * 100) }}</td><td class="basis">Parte de tickets con prioridad urgente o alta (Jev).</td></tr>
+      <tr><td>Tendencia</td><td class="v">{{ v.sparkline(imp.weekly) }} {{ "%.1f" | format(imp.trend) }}</td><td class="basis">Tickets de los últimos 7 días contra la media semanal de las 3 semanas anteriores. {{ v.trend_label(imp.trend) }}.</td></tr>
+      {% if p.detected_at_n %}<tr><td>Detectado con</td><td class="v">{{ p.detected_at_n }} tickets</td><td class="basis">Tickets del problema cuando cruzó el umbral, el {{ p.detected_at[:10] }}.</td></tr>{% endif %}
+    </tbody>
+  </table>
+
+  <h2>Tickets <span class="muted">· {{ p.signals | length }}</span></h2>
+  <table class="ledger tickets-table">
+    <thead><tr><th>Fecha</th><th>Cliente</th><th>Síntoma</th><th>Agrupado</th></tr></thead>
+    <tbody>
+      {% for s in p.signals | reverse %}
+      {% set c = customers.get(s.customer_id) %}
+      <tr>
+        <td class="nowrap">{{ s.created_at[:10] }}</td>
+        <td>{{ c.name if c else s.customer_id }} <span class="muted">· {{ c.plan if c }}</span></td>
+        <td><a href="/tickets/{{ s.ticket_id }}">{{ s.symptom }}</a> <code class="muted">{{ s.ticket_id }}</code></td>
+        <td class="nowrap muted">{% if s.match_confidence is not none %}sí · {{ "%.2f" | format(s.match_confidence) }}{% else %}primer ticket{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="muted">«Agrupado»: la confianza de Jev al responder «¿es el mismo problema?». Cada respuesta está en la traza <code>radar-ingest</code> del ticket.</p>
+
+  <h2>Historial</h2>
+  <ol class="timeline">
+    {% for e in p.events if e.kind != "ticket_added" %}
+    <li><span class="when">{{ e.created_at[:16] | replace("T", " ") }}</span> {{ v.EVENT_LABELS.get(e.kind, e.kind) }}
+      {% if e.kind == "threshold" %}<span class="muted">· {{ e.payload.tickets }} tickets, {{ e.payload.customers }} clientes, {{ v.money(e.payload.mrr_eur) }}</span>
+      {% elif e.kind == "merged" and e.payload.get("from") %}<span class="muted">· absorbió {{ e.payload["from"] }} ({{ e.payload.tickets }} tickets)</span>{% endif %}</li>
+    {% endfor %}
+  </ol>
+</main>
+{% endblock %}

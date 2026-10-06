@@ -109,7 +109,7 @@ Cada transición de estado es un `UPDATE … WHERE status = ?`. Repetir una tran
 **Impacto.** Es determinista y la UI muestra cada parte:
 - MRR de clientes afectados: la suma de `billing.monthly_price_eur` de los clientes distintos.
 - Severidad: la proporción de tickets `urgent` o `high`.
-- Tendencia: (tickets de los últimos 7 días + 1) dividido por (tickets de los 7 días anteriores + 1). El +1 evita dividir por cero. El límite es de 0.5 a 2.
+- Tendencia: (tickets de los últimos 7 días + 1) dividido por (media semanal de las 3 semanas anteriores + 1). El límite es de 0.5 a 2. Una semana contra otra engaña con números pequeños: 1 ticket después de una semana tranquila daría ×2. El +1 hace que un problema nuevo «suba» sin dar infinito.
 - `score = mrr × (1 + 0.5 × severidad) × tendencia`.
 
 «Ahora» es la fecha del ticket más reciente de la base de datos, no `datetime.now()`. Así el mismo dataset da siempre los mismos números.

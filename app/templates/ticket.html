@@ -20,6 +20,14 @@
     {% endif %}
   </section>
 
+  {% if problem %}
+  <section class="ctx-section">
+    <h3>Radar de producto</h3>
+    <p class="ctx-line">Forma parte de <a href="/radar/problems/{{ problem.id }}">{{ problem.id }}</a> · {{ problem_status.get(problem.status, problem.status) | lower }}</p>
+    <p class="ctx-line muted">{{ problem.title }}</p>
+  </section>
+  {% endif %}
+
   {% if not manual %}
   {% set cited = evidence | selectattr("cited") | list %}
   {% set rest = evidence | rejectattr("cited") | list %}

@@ -92,6 +92,44 @@ La identidad visual es el estándar de helpdesk (listón: Zendesk Agent Workspac
 
 **Tecnología.** FastAPI, Jinja2 y HTMX y Lucide (iconos) desde CDN. CSS y JS propios en `app/static/`. No hay build de frontend. La lógica de presentación (borrador renderizado con escape de HTML, agrupación de la cola, evidencia) está en `app/views.py`, con tests.
 
+## Radar
+
+`/radar` es la vista de producto del radar (`radar.md`). Tiene la misma barra lateral y la misma cola que las demás páginas.
+
+```mermaid
+flowchart LR
+    rail["barra lateral: icono radar"] --> page["/radar"]
+    page --> kpis["1. cifras: tickets leídos, problemas, para pedir a producto, clientes en varios problemas"]
+    page --> graph["2. grafo: área | problema | cliente"]
+    page --> table["3. tabla por impacto"]
+    graph -->|"pulsar un problema"| detail["/radar/problems/{id}"]
+    table -->|"pulsar el título"| detail
+    detail --> tickets["tickets con su síntoma"]
+    tickets -->|"pulsar"| ticket["/tickets/{id}"]
+    ticket -->|"«Forma parte de P-0004»"| detail
+```
+
+| Ruta | Respuesta |
+|---|---|
+| `GET /radar` | La página del radar. |
+| `GET /radar/graph.json` | Nodos y aristas para cytoscape, con posiciones fijas (`views.radar_graph`). |
+| `GET /radar/problems/{id}` | El detalle de un problema. 404 si no existe. |
+
+**Grafo** (`static/radar.js`, cytoscape 3.34.3 por CDN):
+- Tres columnas: área, problema y cliente. Las posiciones salen de `views.radar_graph()`, que es una función pura. El grafo no se mueve, no hace zoom y no se arrastra.
+- Cada problema tiene una franja tan alta como su número de clientes. Sus clientes están en esa franja, ordenados por la altura media de sus problemas. Así las aristas son cortas.
+- El tamaño de un problema crece con su score. El grosor de una arista crece con los tickets de ese cliente.
+- Colores (`DESIGN.md`): ámbar para «para pedir a producto», teal del rail para «en producto», gris para abierto, `meter-neutral` para resuelto. Sin verde.
+- Un cliente en dos problemas o más tiene un anillo rojo y texto rojo: el color nunca va solo.
+- Pasar el ratón por un nodo deja su vecindario y apaga el resto. Pulsar un problema abre su detalle.
+- Un problema abierto con un solo ticket no se muestra: un ticket aún no es un patrón. La página dice cuántos oculta.
+
+**Tabla:** problema (título, id, área, tipo, entidad), tickets, clientes, MRR de clientes afectados, sparkline de 6 semanas con la tendencia y el estado.
+
+**Detalle:** un aviso ámbar si el problema cruzó el umbral, el impacto con su base de cálculo (como `/metrics`), los tickets con su síntoma y la confianza de la agrupación, y el historial de `problem_events`.
+
+**Ficha del ticket:** si el ticket tiene `problem_id`, el panel de contexto enlaza a su problema.
+
 ## Errors and edge cases
 - Langfuse no responde al enviar los scores: la revisión se guarda igualmente en SQLite. El error va al log.
 - Un ticket sin borrador (`pipeline_error`): la UI muestra el textarea vacío, como en modo manual.

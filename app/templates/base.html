@@ -20,6 +20,9 @@
         <i data-lucide="inbox"></i><span class="sr-only">Cola</span>
         {% if pending %}<span class="count">{{ pending }}</span>{% endif %}
       </a>
+      <a href="/radar" {% if active == "radar" %}aria-current="page"{% endif %} title="Radar de producto">
+        <i data-lucide="radar"></i><span class="sr-only">Radar de producto</span>
+      </a>
       <a href="/metrics" {% if active == "metrics" %}aria-current="page"{% endif %} title="Impacto">
         <i data-lucide="chart-no-axes-column"></i><span class="sr-only">Impacto</span>
       </a>

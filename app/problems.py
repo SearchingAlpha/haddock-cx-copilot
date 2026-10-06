@@ -218,7 +218,7 @@ class Impact:
     customers: list[str]
     mrr_eur: float
     severity: float  # share of urgent or high tickets
-    trend: float  # last 7 days against the 7 before, clamped to 0.5-2
+    trend: float  # last 7 days against the weekly mean of the 3 weeks before, clamped to 0.5-2
     score: float
     weekly: list[int] = field(default_factory=list)  # tickets per week, oldest first, for the sparkline
 
@@ -229,10 +229,11 @@ def impact(signals: list[dict], customers: dict[str, Customer], now: datetime, w
     severity = sum(s["priority"] in ("urgent", "high") for s in signals) / len(signals) if signals else 0.0
     window = timedelta(days=TREND_WINDOW_DAYS)
     at = [datetime.fromisoformat(s["created_at"]) for s in signals]
-    recent = sum(now - window < t <= now for t in at)
-    before = sum(now - 2 * window < t <= now - window for t in at)
-    trend = min(2.0, max(0.5, (recent + 1) / (before + 1)))
     weekly = [sum(now - (w + 1) * window < t <= now - w * window for t in at) for w in reversed(range(weeks))]
+    # One week against one week lies with small numbers (1 ticket after a quiet week = x2): compare the last
+    # week with the mean of the 3 before. +1 on both sides: a brand-new problem is "up", not infinite.
+    recent, before = weekly[-1], sum(weekly[-4:-1]) / 3
+    trend = min(2.0, max(0.5, (recent + 1) / (before + 1)))
     return Impact(len(signals), ids, round(mrr, 2), round(severity, 3), round(trend, 2),
                   round(mrr * (1 + 0.5 * severity) * trend, 1), weekly)
 
@@ -262,3 +263,36 @@ def refresh_status(conn, problem_id: str, customers: dict[str, Customer], at: st
                 _event(conn, problem_id, "threshold", {"tickets": imp.tickets, "customers": len(imp.customers),
                                                        "mrr_eur": imp.mrr_eur}, at)
     return conn.execute("SELECT status FROM problems WHERE id = ?", (problem_id,)).fetchone()[0]
+
+
+# --- read side: what /radar shows -------------------------------------------------------------------
+
+def list_problems(conn, customers: dict[str, Customer], *, include_merged: bool = False) -> list[dict]:
+    """Every problem with its impact and its customers, best score first. 'Now' = newest ticket."""
+    now = now_of(conn)
+    where = "" if include_merged else "WHERE status != 'merged'"
+    out = []
+    for row in conn.execute(f"SELECT * FROM problems {where}").fetchall():
+        p = dict(row)
+        signals = problem_signals(conn, p["id"])
+        p["impact"] = impact(signals, customers, now)
+        p["by_customer"] = dict(Counter(s["customer_id"] for s in signals))
+        out.append(p)
+    out.sort(key=lambda p: (-p["impact"].score, p["id"]))
+    return out
+
+
+def get_problem(conn, problem_id: str, customers: dict[str, Customer]) -> dict | None:
+    row = conn.execute("SELECT * FROM problems WHERE id = ?", (problem_id,)).fetchone()
+    if row is None:
+        return None
+    p = dict(row)
+    p["signals"] = problem_signals(conn, problem_id)
+    for s in p["signals"]:
+        s["matched"] = json.loads(s["matched"] or "[]")
+        t = conn.execute("SELECT subject, body, channel FROM tickets WHERE id = ?", (s["ticket_id"],)).fetchone()
+        s.update(dict(t) if t else {})
+    p["impact"] = impact(p["signals"], customers, now_of(conn))
+    p["events"] = [dict(r) | {"payload": json.loads(r["payload"] or "{}")} for r in conn.execute(
+        "SELECT * FROM problem_events WHERE problem_id = ? ORDER BY created_at, id", (problem_id,))]
+    return p

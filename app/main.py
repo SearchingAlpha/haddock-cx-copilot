@@ -17,7 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langfuse import get_client
 
-from app import db, radar, story, tour, views
+from app import db, problems, radar, story, tour, views
 from app.data import load_customers, load_kb, load_tickets
 from app.domain import Category, TicketIn
 from app.entities import Gazetteer
@@ -190,10 +190,13 @@ def queue(request: Request, selected: str | None = None):
 def ticket_page(request: Request, ticket_id: str):
     conn = db.connect()
     ticket = db.get_ticket(conn, ticket_id)
+    problem = conn.execute("SELECT id, title, status FROM problems WHERE id = ?",
+                           ((ticket or {}).get("problem_id"),)).fetchone()
     conn.close()
     if ticket is None:
         raise HTTPException(404)
     return templates.TemplateResponse(request, "ticket.html", {
+        "problem": dict(problem) if problem else None, "problem_status": views.PROBLEM_STATUS_LABELS,
         **_shell(ticket_id),
         "t": ticket,
         "customer": CUSTOMERS[ticket["customer_id"]],
@@ -241,6 +244,48 @@ def metrics_page(request: Request):
     m = db.metrics(conn)
     conn.close()
     return templates.TemplateResponse(request, "metrics.html", {**_shell(), "m": m})
+
+
+# --- product radar: docs/specs/radar.md -----------------------------------------------------
+
+@app.get("/radar", response_class=HTMLResponse)
+def radar_page(request: Request):
+    conn = db.connect()
+    try:
+        found = problems.list_problems(conn, CUSTOMERS)
+        signals = conn.execute("SELECT COUNT(*) FROM signals").fetchone()[0]
+    finally:
+        conn.close()
+    shown = [p for p in found if views.shown_on_radar(p)]
+    return templates.TemplateResponse(request, "radar.html", {
+        **_shell(), "problems": shown, "hidden": len(found) - len(shown), "signals": signals,
+        "candidates": sum(1 for p in shown if p["status"] == "candidate"),
+        "graph": views.radar_graph(found, CUSTOMERS), "v": views,
+    })
+
+
+@app.get("/radar/graph.json")
+def radar_graph_json() -> dict:
+    conn = db.connect()
+    try:
+        return views.radar_graph(problems.list_problems(conn, CUSTOMERS), CUSTOMERS)
+    finally:
+        conn.close()
+
+
+@app.get("/radar/problems/{problem_id}", response_class=HTMLResponse)
+def problem_page(request: Request, problem_id: str):
+    conn = db.connect()
+    try:
+        p = problems.get_problem(conn, problem_id, CUSTOMERS)
+    finally:
+        conn.close()
+    if p is None:
+        raise HTTPException(404)
+    return templates.TemplateResponse(request, "problem.html", {
+        **_shell(), "p": p, "customers": CUSTOMERS, "v": views,
+        "threshold": next((e for e in p["events"] if e["kind"] == "threshold"), None),
+    })
 
 
 # --- Langfuse --------------------------------------------------------------------------------

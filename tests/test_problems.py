@@ -137,9 +137,17 @@ def test_impact_counts_distinct_customers_and_their_mrr(customers):
     assert imp.customers == ["C-018", "C-021"]
     assert imp.mrr_eur == 149.0 + 560.0
     assert imp.severity == round(2 / 3, 3)
-    assert imp.trend == round((2 + 1) / (1 + 1), 2)
     assert imp.weekly[-2:] == [1, 2]
-    assert imp.score == round(709.0 * (1 + 0.5 * 2 / 3) * 1.5, 1)
+    assert imp.trend == 2.0  # (2 + 1) / (1/3 + 1) = 2.25, clamped
+    assert imp.score == round(709.0 * (1 + 0.5 * 2 / 3) * 2.0, 1)
+
+
+def test_one_late_ticket_after_a_busy_month_is_a_falling_trend(customers):
+    now = T0 + timedelta(days=28)
+    days = [27, 26, 25, 24, 20, 19, 18, 17, 16, 15, 14, 13, 3]  # 4, 6 and 2 tickets, then 1 this week
+    rows = [{"customer_id": "C-018", "priority": "high", "created_at": (now - timedelta(days=d)).isoformat()}
+            for d in days]
+    assert impact(rows, customers, now).trend == 0.5
 
 
 def test_threshold_three_customers_or_two_with_400_eur(customers):
