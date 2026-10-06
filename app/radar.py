@@ -9,7 +9,7 @@ from datetime import datetime
 
 from langfuse import get_client, observe, propagate_attributes
 
-from app import db, github, problems, product_request
+from app import db, github, problems, product_request, views
 from app.classify import ClassifyResult
 from app.domain import Customer, TicketIn
 from app.entities import Gazetteer
@@ -174,7 +174,7 @@ def comment_new_customers(conn, problem_id: str, customers: dict[str, Customer],
     url = gh.comment(p["github_number"],
                      f"**+{len(new)} {'cliente' if len(new) == 1 else 'clientes'}** desde la última actualización. "
                      f"Ahora: {imp.tickets} tickets de {len(imp.customers)} clientes, "
-                     f"{imp.mrr_eur:,.0f} €/mes de MRR de clientes afectados.\n\n".replace(",", ".")
+                     f"{views.money(imp.mrr_eur)}/mes de MRR de clientes afectados.\n\n"
                      + _customers_md(new, customers))
     with conn:
         conn.execute("UPDATE problems SET issue_customers = ? WHERE id = ?", (json.dumps(sorted(known | set(new))),

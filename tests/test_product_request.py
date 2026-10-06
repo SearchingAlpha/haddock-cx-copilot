@@ -126,6 +126,7 @@ def test_approve_creates_the_issue_and_new_customers_are_commented_once(conn, cu
     problems.assign(conn, s, matcher=lambda text: problems.Match(True, 0.9))
     assert radar.comment_new_customers(conn, "P-0001", customers, gh)
     assert gh.comments[0][0] == 7 and "+1 cliente" in gh.comments[0][1] and "C-008 · enterprise" in gh.comments[0][1]
+    assert "4 clientes, 1.098 €/mes" in gh.comments[0][1]  # 560 + 59 + 59 + 420: the comma stays a comma
     assert radar.comment_new_customers(conn, "P-0001", customers, gh) is None  # once per new customer
 
 
